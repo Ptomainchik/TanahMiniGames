@@ -1,0 +1,358 @@
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: slateblue;
+}
+
+.buttonCounter{
+    position: absolute;
+    top: 50%;
+    background: red;
+}
+
+.gameField{
+    width: 70%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: seagreen;
+}
+
+.feilds{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.feildH1{
+    width: 100%;
+    display: flex;
+}
+
+.feildH2{
+    width: 100%;
+    display: flex;
+}
+
+.feildH3{
+    width: 100%;
+    display: flex;
+}
+
+.feildH4{
+    width: 100%;
+    display: flex;
+}
+
+.feildH5{
+    width: 100%;
+    display: flex;
+}
+
+.feildH6{
+    width: 100%;
+    display: flex;
+}
+
+.a1{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-top-left-radius: 10px;
+}
+
+.a2{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a3{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a4{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a5{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a6{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-top-right-radius: 10px;
+}
+
+
+
+.a7{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a8{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a9{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a10{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a11{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a12{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+
+
+.a13{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a14{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a15{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a16{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a17{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a18{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+
+
+.a19{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a20{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a21{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a22{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a23{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a24{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+
+
+.a25{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a26{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a27{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a28{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a29{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a30{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+
+
+.a31{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-bottom-left-radius: 10px;
+}
+
+.a32{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a33{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a34{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a35{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+}
+
+.a36{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-bottom-right-radius: 10px;
+}
+
+.grayCells{
+    width: 7vw;
+    height: 7vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-top-left-radius: 10px;
+    margin: 0;
+}
+
+.redCells{
+    width: 100%;
+    height: 100%;
+    background: red;
+    margin: 0;
+}
+
+.blueCells{
+    width: 100%;
+    height: 100%;
+    background: blue;
+    margin: 0;
+}
+
+.greenCells{
+    width: 100%;
+    height: 100%;
+    background: green;
+    margin: 0;
+}
+
