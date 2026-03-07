@@ -1,18 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import classes from "../Styles/Game.module.css";
 import { useEffect, useState } from "react";
 
-export const Game = () => {
+export const GameMemory1lvl = () => {
     const [start, setStart] = useState(false);
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
-        cellsRed: 12,
-        cellsBlue: 12,
-        cellsGreen: 12,
-        cellsRedName: "Red",
-        cellsBlueName: "Blue",
-        cellsGreenName: "Green",
-
+        cellsApple: 12,
+        cellsCone: 12,
+        cellsMushroom: 12,
+        cellsAppleName: "Apple",
+        cellsConeName: "Cone",
+        cellsMushroomName: "Mushroom",
+        showButtonStart: true,
+        showButtonsWhenWinning: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -237,9 +239,9 @@ export const Game = () => {
     if (start) return;
     
     const colors = [
-        ...Array(12).fill(states.cellsRedName),
-        ...Array(12).fill(states.cellsBlueName),
-        ...Array(12).fill(states.cellsGreenName)
+        ...Array(12).fill(states.cellsAppleName),
+        ...Array(12).fill(states.cellsConeName),
+        ...Array(12).fill(states.cellsMushroomName)
     ];
     
     for (let i = colors.length - 1; i > 0; i--) {
@@ -262,6 +264,21 @@ export const Game = () => {
     });
     
     setStart(true);
+    setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
+};
+
+const navigate = useNavigate();
+
+function handleRestart() {
+    navigate(0);
+};
+
+function handleNextLevel() {
+    navigate("/memory2");
+};
+
+function handleWin() {
+    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
 }
 
 useEffect(() => {
@@ -287,7 +304,8 @@ useEffect(() => {
             
             // Если все имена одинаковые
             if (allSameName) {
-                setCells((prevCells: any) => {
+                setTimeout(() => {
+                    setCells((prevCells: any) => {
                     const newCells = { ...prevCells };
                     selectedKeys.forEach(key => {
                         newCells[key] = {
@@ -297,6 +315,8 @@ useEffect(() => {
                     });
                     return newCells;
                 });
+                },1500);
+                
                 
                 // ВАЖНО: Выносим setStates за пределы setCells
                 setStates((prev: any) => ({...prev, 
@@ -309,7 +329,7 @@ useEffect(() => {
 
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
-        alert("Pobeda u mopeda!!!");
+        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
     }
 }, [states.counterOfEliminatedCells]);
 
@@ -360,12 +380,22 @@ function handleChoiceCell(cellKey: string) {
     return (
     <>
         <div className={classes.gamePage}>
-            <button className={classes.buttonStart} onClick={handleStartGame}>Start</button>
             
+            <button onClick={handleWin}>WIN</button>
+
+            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
+                    <h3>Победа! Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Рестарт уровня</p>
+                    <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
+                </div>}
+
             <div>Выбрано ячеек: {states.counterCellsChoices}/3</div>
             <div>Round for victory: {states.counterOfEliminatedCells}/12</div>
     
             <div className={classes.gameField}>
+
+                { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+                
                 <div className={classes.feilds}>
 
                     {/* HORIZONT 1 */}
@@ -376,488 +406,516 @@ function handleChoiceCell(cellKey: string) {
                             disabled={!start || cells.A1V1H1.chioce || states.counterCellsChoices === 3}
                         >  
                             <div className={
-                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Red" ? classes.redCells :
-                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Blue" ? classes.blueCells :
-                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A1-V1-H1 {cells.A1V1H1.chioce && "✓"}
-                        </button>}
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Apple" ? classes.appleCells :
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Cone" ? classes.coneCells :
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                        
+                            </button>}
+
                         { cells.A2V2H1.showCell && <button 
                             className={classes.a2}
                             onClick={() => handleChoiceCell("A2V2H1")} 
                             disabled={!start || cells.A2V2H1.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Red" ? classes.redCells :
-                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Blue" ? classes.blueCells :
-                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A2-V2-H1 {cells.A2V2H1.chioce && "✓"}
-                        </button>}
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Apple" ? classes.appleCells :
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Cone" ? classes.coneCells :
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>     
+                            </button>}
+
                         { cells.A3V3H1.showCell && <button 
                             className={classes.a3}
                             onClick={() => handleChoiceCell("A3V3H1")} 
                             disabled={!start || cells.A3V3H1.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Red" ? classes.redCells :
-                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Blue" ? classes.blueCells :
-                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A3-V3-H1 {cells.A3V3H1.chioce && "✓"}
-                        </button>}
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Apple" ? classes.appleCells :
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Cone" ? classes.coneCells :
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                        
+                            </button>}
+
                         { cells.A4V4H1.showCell && <button 
                             className={classes.a4}
                             onClick={() => handleChoiceCell("A4V4H1")} 
                             disabled={!start || cells.A4V4H1.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Red" ? classes.redCells :
-                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Blue" ? classes.blueCells :
-                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A4-V4-H1 {cells.A4V4H1.chioce && "✓"}
-                        </button>}
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Apple" ? classes.appleCells :
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Cone" ? classes.coneCells :
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                        
+                            </button>}
+
                         { cells.A5V5H1.showCell && <button 
                             className={classes.a5}
                             onClick={() => handleChoiceCell("A5V5H1")} 
                             disabled={!start || cells.A5V5H1.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Red" ? classes.redCells :
-                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Blue" ? classes.blueCells :
-                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A5-V5-H1 {cells.A5V5H1.chioce && "✓"}
-                        </button>}
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Apple" ? classes.appleCells :
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Cone" ? classes.coneCells :
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                        
+                            </button>}
+
                         { cells.A6V6H1.showCell && <button 
                             className={classes.a6}
                             onClick={() => handleChoiceCell("A6V6H1")} 
                             disabled={!start || cells.A6V6H1.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Red" ? classes.redCells :
-                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Blue" ? classes.blueCells :
-                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A6-V6-H1 {cells.A6V6H1.chioce && "✓"}
-                        </button>}
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Apple" ? classes.appleCells :
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Cone" ? classes.coneCells :
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                        
+                            </button>}
+
                     </div>
 
                     {/* HORIZONT 2 */}
                     <div className={classes.feildH2}>
+
                         { cells.A7V1H2.showCell && <button 
                             className={classes.a7}
                             onClick={() => handleChoiceCell("A7V1H2")} 
                             disabled={!start || cells.A7V1H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Red" ? classes.redCells :
-                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Blue" ? classes.blueCells :
-                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A7-V1-H2 {cells.A7V1H2.chioce && "✓"}
-                        </button>}
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Apple" ? classes.appleCells :
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Cone" ? classes.coneCells :
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>                       
+                            </button>}
+
                         { cells.A8V2H2.showCell && <button 
                             className={classes.a8}
                             onClick={() => handleChoiceCell("A8V2H2")} 
                             disabled={!start || cells.A8V2H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Red" ? classes.redCells :
-                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Blue" ? classes.blueCells :
-                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Green" ? classes.greenCells :
-                                classes.cells
-                            }></div>
-                            A8-V2-H2 {cells.A8V2H2.chioce && "✓"}
-                        </button>}
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Apple" ? classes.appleCells :
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Cone" ? classes.coneCells :
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
+                            }></div>         
+                            </button>}
+
                         { cells.A9V3H2.showCell && <button 
                             className={classes.a9}
                             onClick={() => handleChoiceCell("A9V3H2")} 
                             disabled={!start || cells.A9V3H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Red" ? classes.redCells :
-                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Blue" ? classes.blueCells :
-                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Apple" ? classes.appleCells :
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Cone" ? classes.coneCells :
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A9-V3-H2 {cells.A9V3H2.chioce && "✓"}
                         </button>}
-                        { cells.A10V4H2.showCell && <button 
+
+                        { cells.A10V4H2.showCell && <button   
                             className={classes.a10}
                             onClick={() => handleChoiceCell("A10V4H2")} 
                             disabled={!start || cells.A10V4H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Red" ? classes.redCells :
-                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Blue" ? classes.blueCells :
-                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Apple" ? classes.appleCells :
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Cone" ? classes.coneCells :
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A10-V4-H2 {cells.A10V4H2.chioce && "✓"}
+
                         </button>}
-                        { cells.A11V5H2.showCell && <button 
+
+                        { cells.A11V5H2.showCell && <button   
                             className={classes.a11}
                             onClick={() => handleChoiceCell("A11V5H2")} 
                             disabled={!start || cells.A11V5H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Red" ? classes.redCells :
-                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Blue" ? classes.blueCells :
-                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Apple" ? classes.appleCells :
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Cone" ? classes.coneCells :
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A11-V5-H2 {cells.A11V5H2.chioce && "✓"}
+
                         </button>}
-                        { cells.A12V6H2.showCell && <button 
+
+                        { cells.A12V6H2.showCell && <button   
                             className={classes.a12}
                             onClick={() => handleChoiceCell("A12V6H2")} 
                             disabled={!start || cells.A12V6H2.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Red" ? classes.redCells :
-                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Blue" ? classes.blueCells :
-                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Apple" ? classes.appleCells :
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Cone" ? classes.coneCells :
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A12-V6-H2 {cells.A12V6H2.chioce && "✓"}
+
                         </button>}
                     </div>
 
                     {/* HORIZONT 3 */}
-                    <div className={classes.feildH3}>
-                        { cells.A13V1H3.showCell && <button 
+                    <div className
+                    ={classes.feildH3}>
+                        { cells.A13V1H3.showCell && <button   
                             className={classes.a13}
                             onClick={() => handleChoiceCell("A13V1H3")} 
                             disabled={!start || cells.A13V1H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Red" ? classes.redCells :
-                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Blue" ? classes.blueCells :
-                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Apple" ? classes.appleCells :
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Cone" ? classes.coneCells :
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A13-V1-H3 {cells.A13V1H3.chioce && "✓"}
+
                         </button>}
-                        { cells.A14V2H3.showCell && <button 
+
+                        { cells.A14V2H3.showCell && <button   
                             className={classes.a14}
                             onClick={() => handleChoiceCell("A14V2H3")} 
                             disabled={!start || cells.A14V2H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Red" ? classes.redCells :
-                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Blue" ? classes.blueCells :
-                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Apple" ? classes.appleCells :
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Cone" ? classes.coneCells :
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A14-V2-H3 {cells.A14V2H3.chioce && "✓"}
+
                         </button>}
-                        { cells.A15V3H3.showCell && <button 
+
+                        { cells.A15V3H3.showCell && <button   
                             className={classes.a15}
                             onClick={() => handleChoiceCell("A15V3H3")} 
                             disabled={!start || cells.A15V3H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Red" ? classes.redCells :
-                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Blue" ? classes.blueCells :
-                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Apple" ? classes.appleCells :
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Cone" ? classes.coneCells :
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A15-V3-H3 {cells.A15V3H3.chioce && "✓"}
+
                         </button>}
-                        { cells.A16V4H3.showCell && <button 
+
+                        { cells.A16V4H3.showCell && <button   
                             className={classes.a16}
                             onClick={() => handleChoiceCell("A16V4H3")} 
                             disabled={!start || cells.A16V4H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Red" ? classes.redCells :
-                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Blue" ? classes.blueCells :
-                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Apple" ? classes.appleCells :
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Cone" ? classes.coneCells :
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A16-V4-H3 {cells.A16V4H3.chioce && "✓"}
+
                         </button>}
-                        { cells.A17V5H3.showCell && <button 
+
+                        { cells.A17V5H3.showCell && <button   
                             className={classes.a17}
                             onClick={() => handleChoiceCell("A17V5H3")} 
                             disabled={!start || cells.A17V5H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Red" ? classes.redCells :
-                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Blue" ? classes.blueCells :
-                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Apple" ? classes.appleCells :
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Cone" ? classes.coneCells :
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A17-V5-H3 {cells.A17V5H3.chioce && "✓"}
+
                         </button>}
-                        { cells.A18V6H3.showCell && <button 
+
+                        { cells.A18V6H3.showCell && <button   
                             className={classes.a18}
                             onClick={() => handleChoiceCell("A18V6H3")} 
                             disabled={!start || cells.A18V6H3.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Red" ? classes.redCells :
-                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Blue" ? classes.blueCells :
-                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Apple" ? classes.appleCells :
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Cone" ? classes.coneCells :
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A18-V6-H3 {cells.A18V6H3.chioce && "✓"}
+
                         </button>}
                     </div>
 
                     {/* HORIZONT 4 */}
-                    <div className={classes.feildH4}>
-                        { cells.A19V1H4.showCell && <button 
+                    <div className
+                    ={classes.feildH4}>
+                        { cells.A19V1H4.showCell && <button   
                             className={classes.a19}
                             onClick={() => handleChoiceCell("A19V1H4")} 
                             disabled={!start || cells.A19V1H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Red" ? classes.redCells :
-                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Blue" ? classes.blueCells :
-                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Apple" ? classes.appleCells :
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Cone" ? classes.coneCells :
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A19-V1-H4 {cells.A19V1H4.chioce && "✓"}
+
                         </button>}
-                        { cells.A20V2H4.showCell && <button 
+
+                        { cells.A20V2H4.showCell && <button   
                             className={classes.a20}
                             onClick={() => handleChoiceCell("A20V2H4")} 
                             disabled={!start || cells.A20V2H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Red" ? classes.redCells :
-                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Blue" ? classes.blueCells :
-                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Apple" ? classes.appleCells :
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Cone" ? classes.coneCells :
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A20-V2-H4 {cells.A20V2H4.chioce && "✓"}
+
                         </button>}
-                        { cells.A21V3H4.showCell && <button 
+
+                        { cells.A21V3H4.showCell && <button   
                             className={classes.a21}
                             onClick={() => handleChoiceCell("A21V3H4")} 
                             disabled={!start || cells.A21V3H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Red" ? classes.redCells :
-                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Blue" ? classes.blueCells :
-                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Apple" ? classes.appleCells :
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Cone" ? classes.coneCells :
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A21-V3-H4 {cells.A21V3H4.chioce && "✓"}
+
                         </button>}
-                        { cells.A22V4H4.showCell && <button 
+
+                        { cells.A22V4H4.showCell && <button   
                             className={classes.a22}
                             onClick={() => handleChoiceCell("A22V4H4")} 
                             disabled={!start || cells.A22V4H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Red" ? classes.redCells :
-                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Blue" ? classes.blueCells :
-                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Apple" ? classes.appleCells :
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Cone" ? classes.coneCells :
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A22-V4-H4 {cells.A22V4H4.chioce && "✓"}
+
                         </button>}
-                        { cells.A23V5H4.showCell && <button 
+
+                        { cells.A23V5H4.showCell && <button   
                             className={classes.a23}
                             onClick={() => handleChoiceCell("A23V5H4")} 
                             disabled={!start || cells.A23V5H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Red" ? classes.redCells :
-                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Blue" ? classes.blueCells :
-                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Apple" ? classes.appleCells :
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Cone" ? classes.coneCells :
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A23-V5-H4 {cells.A23V5H4.chioce && "✓"}
+
                         </button>}
-                        { cells.A24V6H4.showCell && <button 
+
+                        { cells.A24V6H4.showCell && <button   
                             className={classes.a24}
                             onClick={() => handleChoiceCell("A24V6H4")} 
                             disabled={!start || cells.A24V6H4.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Red" ? classes.redCells :
-                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Blue" ? classes.blueCells :
-                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Apple" ? classes.appleCells :
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Cone" ? classes.coneCells :
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A24-V6-H4 {cells.A24V6H4.chioce && "✓"}
+
                         </button>}
                     </div>
 
                     {/* HORIZONT 5 */}
-                    <div className={classes.feildH5}>
-                        { cells.A25V1H5.showCell && <button 
+                    <div className
+                    ={classes.feildH5}>
+                        { cells.A25V1H5.showCell && <button   
                             className={classes.a25}
                             onClick={() => handleChoiceCell("A25V1H5")} 
                             disabled={!start || cells.A25V1H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Red" ? classes.redCells :
-                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Blue" ? classes.blueCells :
-                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Apple" ? classes.appleCells :
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Cone" ? classes.coneCells :
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A25-V1-H5 {cells.A25V1H5.chioce && "✓"}
+
                         </button>}
-                        { cells.A26V2H5.showCell && <button 
+
+                        { cells.A26V2H5.showCell && <button   
                             className={classes.a26}
                             onClick={() => handleChoiceCell("A26V2H5")} 
                             disabled={!start || cells.A26V2H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Red" ? classes.redCells :
-                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Blue" ? classes.blueCells :
-                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Apple" ? classes.appleCells :
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Cone" ? classes.coneCells :
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A26-V2-H5 {cells.A26V2H5.chioce && "✓"}
+
                         </button>}
-                        { cells.A27V3H5.showCell && <button 
+
+                        { cells.A27V3H5.showCell && <button   
                             className={classes.a27}
                             onClick={() => handleChoiceCell("A27V3H5")} 
                             disabled={!start || cells.A27V3H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Red" ? classes.redCells :
-                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Blue" ? classes.blueCells :
-                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Apple" ? classes.appleCells :
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Cone" ? classes.coneCells :
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A27-V3-H5 {cells.A27V3H5.chioce && "✓"}
+
                         </button>}
-                        { cells.A28V4H5.showCell && <button 
+
+                        { cells.A28V4H5.showCell && <button   
                             className={classes.a28}
                             onClick={() => handleChoiceCell("A28V4H5")} 
                             disabled={!start || cells.A28V4H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Red" ? classes.redCells :
-                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Blue" ? classes.blueCells :
-                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Apple" ? classes.appleCells :
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Cone" ? classes.coneCells :
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A28-V4-H5 {cells.A28V4H5.chioce && "✓"}
+
                         </button>}
-                        { cells.A29V5H5.showCell && <button 
+
+                        { cells.A29V5H5.showCell && <button   
                             className={classes.a29}
                             onClick={() => handleChoiceCell("A29V5H5")} 
                             disabled={!start || cells.A29V5H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Red" ? classes.redCells :
-                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Blue" ? classes.blueCells :
-                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Apple" ? classes.appleCells :
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Cone" ? classes.coneCells :
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A29-V5-H5 {cells.A29V5H5.chioce && "✓"}
+
                         </button>}
-                        { cells.A30V6H5.showCell && <button 
+
+                        { cells.A30V6H5.showCell && <button   
                             className={classes.a30}
                             onClick={() => handleChoiceCell("A30V6H5")} 
                             disabled={!start || cells.A30V6H5.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Red" ? classes.redCells :
-                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Blue" ? classes.blueCells :
-                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Apple" ? classes.appleCells :
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Cone" ? classes.coneCells :
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A30-V6-H5 {cells.A30V6H5.chioce && "✓"}
+
                         </button>}
                     </div>
 
                     {/* HORIZONT 6 */}
-                    <div className={classes.feildH6}>
-                        { cells.A31V1H6.showCell && <button 
+                    <div className
+                    ={classes.feildH6}>
+                        { cells.A31V1H6.showCell && <button   
                             className={classes.a31}
                             onClick={() => handleChoiceCell("A31V1H6")} 
                             disabled={!start || cells.A31V1H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Red" ? classes.redCells :
-                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Blue" ? classes.blueCells :
-                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Apple" ? classes.appleCells :
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Cone" ? classes.coneCells :
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A31-V1-H6 {cells.A31V1H6.chioce && "✓"}
+
                         </button>}
-                        { cells.A32V2H6.showCell && <button 
+
+                        { cells.A32V2H6.showCell && <button   
                             className={classes.a32}
                             onClick={() => handleChoiceCell("A32V2H6")} 
                             disabled={!start || cells.A32V2H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Red" ? classes.redCells :
-                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Blue" ? classes.blueCells :
-                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Apple" ? classes.appleCells :
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Cone" ? classes.coneCells :
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A32-V2-H6 {cells.A32V2H6.chioce && "✓"}
+
                         </button>}
-                        { cells.A33V3H6.showCell && <button 
+
+                        { cells.A33V3H6.showCell && <button   
                             className={classes.a33}
                             onClick={() => handleChoiceCell("A33V3H6")} 
                             disabled={!start || cells.A33V3H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Red" ? classes.redCells :
-                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Blue" ? classes.blueCells :
-                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Apple" ? classes.appleCells :
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Cone" ? classes.coneCells :
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A33-V3-H6 {cells.A33V3H6.chioce && "✓"}
+
                         </button>}
-                        { cells.A34V4H6.showCell && <button 
+
+                        { cells.A34V4H6.showCell && <button   
                             className={classes.a34}
                             onClick={() => handleChoiceCell("A34V4H6")} 
                             disabled={!start || cells.A34V4H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Red" ? classes.redCells :
-                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Blue" ? classes.blueCells :
-                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Apple" ? classes.appleCells :
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Cone" ? classes.coneCells :
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A34-V4-H6 {cells.A34V4H6.chioce && "✓"}
+
                         </button>}
-                        { cells.A35V5H6.showCell && <button 
+
+                        { cells.A35V5H6.showCell && <button   
                             className={classes.a35}
                             onClick={() => handleChoiceCell("A35V5H6")} 
                             disabled={!start || cells.A35V5H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Red" ? classes.redCells :
-                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Blue" ? classes.blueCells :
-                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Apple" ? classes.appleCells :
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Cone" ? classes.coneCells :
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A35-V5-H6 {cells.A35V5H6.chioce && "✓"}
+
                         </button>}
-                        { cells.A36V6H6.showCell && <button 
+
+                        { cells.A36V6H6.showCell && <button   
                             className={classes.a36}
                             onClick={() => handleChoiceCell("A36V6H6")} 
                             disabled={!start || cells.A36V6H6.chioce || states.counterCellsChoices === 3}
                         >
                             <div className={
-                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Red" ? classes.redCells :
-                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Blue" ? classes.blueCells :
-                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Green" ? classes.greenCells :
-                                classes.cells
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Apple" ? classes.appleCells :
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Cone" ? classes.coneCells :
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Mushroom" ? classes.mushroomCells :
+                                classes.starCells
                             }></div>
-                            A36-V6-H6 {cells.A36V6H6.chioce && "✓"}
+
                         </button>}
+
                     </div>
 
                 </div>

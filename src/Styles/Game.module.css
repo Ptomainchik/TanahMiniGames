@@ -4,13 +4,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: slateblue;
-}
-
-.buttonCounter{
-    position: absolute;
-    top: 50%;
-    background: red;
+    background: url(../assets/TexturesOfSide.png) no-repeat center;
+    background-size: cover;
 }
 
 .gameField{
@@ -20,7 +15,114 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    background: seagreen;
+    background: url(../assets/TexturesOfFields.png) no-repeat center;
+    background-size: cover;
+    border-left: solid rgb(67, 58, 38) 3px;
+    border-right: solid rgb(67, 58, 38) 3px;
+}
+
+.buttonStart{
+    font-family: "El Messiri";
+    font-size: 15vw;
+    font-weight: 700;
+    cursor: pointer;
+    color: red;
+    -webkit-text-stroke: 2px black;
+    filter: drop-shadow( 0.2vw 0.2vw 0vw black);
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    margin: 0;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+}
+
+.buttonStart:hover{
+    filter: drop-shadow( 0vw 0vw 0vw black);
+    color:darkred;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.buttonRestart{
+    width: 100%;
+    color: darkblue;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    text-align: center;
+}
+
+.buttonRestart:hover{
+    color: wheat;
+}
+
+.buttonNext{
+    width: 100%;
+    color: darkred;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    text-align: center;
+}
+
+.buttonNext:hover{
+    color: wheat;
+}
+
+.winAndLoseModal{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/TexturesOfFields.png) no-repeat center;
+    background-size: cover;
+    z-index: 3;
+}
+
+.winAndLoseModal h3{
+    font-family: "El MEssiri";
+    font-size: 3vw;
+    font-weight: 700;
+    text-align: center;
+    color: gold;
+    -webkit-text-stroke: 1px black;
+}
+
+.buttonRestartWin{
+    width: 100%;
+    color: darkblue;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    text-align: center;
+}
+
+.buttonRestartWin:hover{
+    color: wheat;
 }
 
 .feilds{
@@ -89,6 +191,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a2{
@@ -100,6 +203,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a3{
@@ -111,6 +215,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a4{
@@ -122,6 +227,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a5{
@@ -133,6 +239,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a6{
@@ -145,6 +252,7 @@
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
 
@@ -158,6 +266,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a8{
@@ -169,6 +278,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a9{
@@ -180,6 +290,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a10{
@@ -191,6 +302,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a11{
@@ -202,6 +314,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a12{
@@ -213,6 +326,7 @@
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
 
@@ -226,6 +340,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a14{
@@ -237,6 +352,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a15{
@@ -248,6 +364,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a16{
@@ -259,6 +376,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a17{
@@ -270,6 +388,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a18{
@@ -281,6 +400,7 @@
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
 
@@ -294,6 +414,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a20{
@@ -305,6 +426,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a21{
@@ -316,6 +438,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a22{
@@ -327,6 +450,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a23{
@@ -338,6 +462,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a24{
@@ -349,6 +474,7 @@
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
 
@@ -362,6 +488,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a26{
@@ -373,6 +500,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a27{
@@ -384,6 +512,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a28{
@@ -395,6 +524,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a29{
@@ -406,6 +536,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a30{
@@ -417,6 +548,7 @@
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
 
@@ -431,6 +563,7 @@
     position: absolute;
     top: 0;
     left: 5%;
+    padding: 0;
 }
 
 .a32{
@@ -442,6 +575,7 @@
     position: absolute;
     top: 0;
     left: 20%;
+    padding: 0;
 }
 
 .a33{
@@ -453,6 +587,7 @@
     position: absolute;
     top: 0;
     left: 35%;
+    padding: 0;
 }
 
 .a34{
@@ -464,6 +599,7 @@
     position: absolute;
     top: 0;
     left: 50%;
+    padding: 0;
 }
 
 .a35{
@@ -475,6 +611,7 @@
     position: absolute;
     top: 0;
     left: 65%;
+    padding: 0;
 }
 
 .a36{
@@ -483,42 +620,99 @@
     border: solid wheat 1px;
     cursor: pointer;
     border-radius: 10px;
-    border-bottom-right-radius: 10px;
     position: absolute;
     top: 0;
     left: 80%;
+    padding: 0;
 }
 
-.grayCells{
-    width: 7vw;
-    height: 7vw;
-    border: solid wheat 1px;
-    cursor: pointer;
-    border-top-left-radius: 10px;
-    margin: 0;
-}
-
-.redCells{
+.starCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/Hammer.png) no-repeat center;
-    background-size: contain;
+    background: url(../assets/Star.png) no-repeat center;
+    background-size: cover;
     margin: 0;
+    border-radius: 10px;
 }
 
-.blueCells{
+.starCells:hover{
+    opacity: 0.7;
+}
+
+.appleCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/Apple.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
+}
+
+.mushroomCells{
     width: 100%;
     height: 100%;
     background: url(../assets/Mushroom.png) no-repeat center;
     background-size: contain;
     margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
 }
 
-.greenCells{
+.coneCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/Leaf.png) no-repeat center;
+    background: url(../assets/Cone.png) no-repeat center;
     background-size: contain;
     margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
 }
 
+.berryCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/Berry.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
+}
+
+.fishCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/Fish.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
+}
+
+.meatCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/Meat.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    border-radius: 10px;
+    animation: anima 1s forwards;
+}
+
+@keyframes anima {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes animastar {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

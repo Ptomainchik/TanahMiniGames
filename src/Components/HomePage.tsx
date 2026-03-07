@@ -5,14 +5,14 @@ export const HomePage = () => {
     let navigate = useNavigate();
 
     function handleTransition() {
-        navigate("/game");
+        navigate("/memory1");
     };
 
     return (
         <>
         <div className={classes.homePage}>
            <h1>Mini Game</h1>
-           <button onClick={handleTransition}>Game</button>
+           <button onClick={handleTransition}>Memory game</button>
         </div>
         
         </>
