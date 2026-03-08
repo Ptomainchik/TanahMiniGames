@@ -1,20 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import classes from "../Styles/Game.module.css";
 import { useEffect, useState } from "react";
+import AppleImage from "../assets/Apple.png";
+import ConeImage from "../assets/Cone.png";
+import MushroomImage from "../assets/Mushroom.png";
+import ElfGirl from "../assets/ElfGirl.png";
 
 export const GameMemory1lvl = () => {
     const [start, setStart] = useState(false);
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
-        cellsApple: 12,
-        cellsCone: 12,
-        cellsMushroom: 12,
+        cellsApple: 0,
+        cellsCone: 0,
+        cellsMushroom: 0,
         cellsAppleName: "Apple",
         cellsConeName: "Cone",
         cellsMushroomName: "Mushroom",
         showButtonStart: true,
         showButtonsWhenWinning: false,
+        showModalInfo: true,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -265,6 +270,7 @@ export const GameMemory1lvl = () => {
     
     setStart(true);
     setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
+    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
 };
 
 const navigate = useNavigate();
@@ -304,6 +310,19 @@ useEffect(() => {
             
             // Если все имена одинаковые
             if (allSameName) {
+
+                const matchedName = selectedNames[0]; 
+
+                if (matchedName === "Apple") {
+                    setStates((prev:any) => ({...prev, cellsApple: prev.cellsApple + 3}));
+                }
+                else if (matchedName === "Cone") {
+                    setStates((prev:any) => ({...prev, cellsCone: prev.cellsCone + 3}));
+                }
+                else if (matchedName === "Mushroom") {
+                    setStates((prev:any) => ({...prev, cellsMushroom: prev.cellsMushroom + 3}));
+                }
+
                 setTimeout(() => {
                     setCells((prevCells: any) => {
                     const newCells = { ...prevCells };
@@ -328,10 +347,12 @@ useEffect(() => {
 }, [states.counterCellsChoices]);
 
 useEffect(() => {
-    if (states.counterOfEliminatedCells === 12) {
+    setTimeout(() => {
+        if (states.counterOfEliminatedCells === 12) {
         setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
     }
-}, [states.counterOfEliminatedCells]);
+    }, 1500);
+}, [states.counterOfEliminatedCells]);// Проверка условия победы и показ победного модального окна
 
 useEffect(() => {
     // Проверяем, когда счетчик достигает 3
@@ -395,7 +416,27 @@ function handleChoiceCell(cellKey: string) {
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                { states.showModalInfo && <div>
+                    <p className={classes.infoIntro}>Помоги мне собрать продукты выпавшие из корзинки.</p>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                </div> }
                 
+                <div className={classes.blockApple}>
+                    <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                    <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/12</p>
+                </div>
+            
+                <div className={classes.blockCone}>
+                    <img className={states.cellsCone !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                    <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/12</p>
+                </div>
+
+                <div className={classes.blockMushroom}>
+                    <img className={states.cellsMushroom !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                    <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/12</p>
+                </div>
+   
                 <div className={classes.feilds}>
 
                     {/* HORIZONT 1 */}

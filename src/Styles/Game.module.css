@@ -21,6 +21,26 @@
     border-right: solid rgb(67, 58, 38) 3px;
 }
 
+.imageInfoIntro{
+    width: 18vw;
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+}
+
+.infoIntro{
+    width: 20vw;
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    font-family: "El Messiri";
+    font-weight: 700;
+    font-size: 2.3vw;
+    text-align: center;
+    color: gold;
+    -webkit-text-stroke: 1px black;
+}
+
 .buttonStart{
     font-family: "El Messiri";
     font-size: 15vw;
@@ -716,3 +736,93 @@
         opacity: 1;
     }
 }
+
+
+.blockApple{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 5%;
+    right: 3%;
+    margin: 0;
+}
+
+.blockCone{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 20%;
+    right: 3%;
+    margin: 0;
+}
+
+.blockMushroom{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 35%;
+    right: 3%;
+    margin: 0;
+}
+
+.blockBerry{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    margin: 0;
+}
+
+.blockFish{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 65%;
+    right: 3%;
+    margin: 0;
+}
+
+.blockMeat{
+    width: 15vw;
+    height: 7vw;
+    position: absolute;
+    top: 70%;
+    right: 3%;
+    margin: 0;
+}
+
+.iconsTransparent{
+    width: 7vw;
+    height: 7vw;
+    opacity: 0.4;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+.iconsVisible{
+    width: 7vw;
+    height: 7vw;
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+.numberOfIcons{
+    font-family: "El Messiri";
+    font-size: 1vw;
+    font-weight: 700;
+    color: red;
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
