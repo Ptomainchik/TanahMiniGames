@@ -10,7 +10,7 @@ function App() {
   return (
     <>
 
-    <BrowserRouter>
+    <BrowserRouter basename="/TanahMiniGames">
       <Routes>
           <Route path="/" element={<HomePage/>}/>
           <Route path="memory1" element={<GameMemory1lvl/>}/>
