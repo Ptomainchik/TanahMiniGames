@@ -1,0 +1,57 @@
+{
+  "short_name": "Tanah Mini Games",
+  "name": "Tanah Mini Games",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo24.png",
+      "type": "image/png",
+      "sizes": "24x24"
+    },
+    {
+      "src": "logo32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "logo64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720", 
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tanah Mini Games - Desktop View"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png", 
+      "form_factor": "narrow",
+      "label": "Tanah Mini Games - Mobile View"
+    }
+  ]
+}
