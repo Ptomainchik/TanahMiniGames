@@ -17,3 +17,21 @@
     transform: translateX(-50%);
     font-size: 3vw;
 }
+
+.buttonMemoryGame{
+    width: 30vw;
+    height: 5vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: blueviolet;
+    background: darkgreen;
+    border-radius: 10px;
+    border: solid 5px gold;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
+    cursor: pointer;
+}

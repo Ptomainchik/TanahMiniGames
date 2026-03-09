@@ -1,20 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import classes from "../Styles/Game.module.css";
 import { useEffect, useState } from "react";
+import AppleImage from "../assets/Apple.png";
+import ConeImage from "../assets/Cone.png";
+import MushroomImage from "../assets/Mushroom.png";
+import BerryImage from "../assets/Berry.png";
+import FishImage from "../assets/Fish.png";
+import MeatImage from "../assets/Meat.png";
+import ElfGirl from "../assets/ElfGirl.png";
+import SadElfGirl from "../assets/SadElfGirl.png";
 
 export const GameMemory4lvl = () => {
     const [start, setStart] = useState(false);
     const [endTime, setEndTime] = useState(null);   
-    const [timeLeft, setTimeLeft] = useState("01:00");
+    const [timeLeft, setTimeLeft] = useState("05:00");
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
-        cellsApple: 6,
-        cellsCone: 6,
-        cellsMushroom: 6,
-        cellsBerry: 6,
-        cellsFish: 6,
-        cellsMeat: 6,
+        cellsApple: 0,
+        cellsCone: 0,
+        cellsMushroom: 0,
+        cellsBerry: 0,
+        cellsFish: 0,
+        cellsMeat: 0,
         cellsAppleName: "Apple",
         cellsConeName: "Cone",
         cellsMushroomName: "Mushroom",
@@ -24,6 +32,7 @@ export const GameMemory4lvl = () => {
         showButtonStart: true,
         showButtonsWhenWinning: false,
         showLoseModal: false,
+        showModalInfo: true,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -247,7 +256,7 @@ export const GameMemory4lvl = () => {
     function handleStartGame() {
     if (start) return;
     
-    const fiveMinutesLater: any = Date.now() + 1 * 60 * 1000;
+    const fiveMinutesLater: any = Date.now() + 5.01 * 60 * 1000;
     setEndTime(fiveMinutesLater);
 
     const colors = [
@@ -280,6 +289,7 @@ export const GameMemory4lvl = () => {
     
     setStart(true);
     setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
+    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
 };
 
 useEffect(() => {
@@ -289,7 +299,9 @@ useEffect(() => {
         const now = Date.now();
         const diff = endTime - now;
 
-        if (diff <= 0) {
+        if (states.counterOfEliminatedCells === 12) return;
+
+        if (diff <= 0 && start) {
             clearInterval(interval);
             setTimeLeft("00:00");
             // ТВОЕ ДЕЙСТВИЕ: вызов модалки
@@ -304,7 +316,7 @@ useEffect(() => {
     }, 1000);
 
     return () => clearInterval(interval); // Чистим, если ушли со страницы
-}, [endTime]);
+}, [endTime, states.counterOfEliminatedCells]);
 
 const navigate = useNavigate();
 
@@ -316,9 +328,9 @@ function handleHomePageTranzition() {
     navigate("/");
 };
 
-function handleWin() {
-    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-}
+// function handleWin() {
+//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+// }
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -343,6 +355,28 @@ useEffect(() => {
             
             // Если все имена одинаковые
             if (allSameName) {
+
+                const matchedName = selectedNames[0]; 
+
+                if (matchedName === "Apple") {
+                    setStates((prev:any) => ({...prev, cellsApple: prev.cellsApple + 3}));
+                }
+                else if (matchedName === "Cone") {
+                    setStates((prev:any) => ({...prev, cellsCone: prev.cellsCone + 3}));
+                }
+                else if (matchedName === "Mushroom") {
+                    setStates((prev:any) => ({...prev, cellsMushroom: prev.cellsMushroom + 3}));
+                }
+                else if (matchedName === "Berry") {
+                    setStates((prev:any) => ({...prev, cellsBerry: prev.cellsBerry + 3}));
+                }
+                else if (matchedName === "Fish") {
+                    setStates((prev:any) => ({...prev, cellsFish: prev.cellsFish + 3}));
+                }
+                else if (matchedName === "Meat") {
+                    setStates((prev:any) => ({...prev, cellsMeat: prev.cellsMeat + 3}));
+                }
+
                 setTimeout(() => {
                     setCells((prevCells: any) => {
                     const newCells = { ...prevCells };
@@ -365,6 +399,7 @@ useEffect(() => {
         }
     }
 }, [states.counterCellsChoices]);
+
 
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
@@ -424,28 +459,73 @@ function handleChoiceCell(cellKey: string) {
     <>
         <div className={classes.gamePage}>
             
-            <button onClick={handleWin}>WIN</button>
+            {/* <button onClick={handleWin}>WIN</button> */}
 
-            <div>{timeLeft}</div>
+            <div className={classes.timer}>
+                <p>
+                    Время до прихода гостей:
+                </p>
+                {timeLeft}
+            </div>
             
-            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
-                    <p className={classes.buttonRestart} onClick={handleRestart}>Рестарт уровня</p>
+            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
+                    <div className={classes.infoOverlay}>
+                        <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/> 
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
                 </div>}
 
-            
+            { states.showLoseModal && <div className={classes.winAndLoseModal}>
+                    <div className={classes.infoOverlay}>
+                        <p className={classes.info}>(Стук в дверь) Эх, жаль. Мы не успели. Что теперь обо мне подумают гости?</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={SadElfGirl} alt="SadElfGirl" draggable={false}/> 
+                    <h3>Вы не успели. Не расстраивайтесь, может, попробуете ещё раз?</h3>
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
+                </div> }
 
-            <div>Выбрано ячеек: {states.counterCellsChoices}/3</div>
-            <div>Round for victory: {states.counterOfEliminatedCells}/12</div>
+            <div className={classes.blockApple}>
+                <img className={states.cellsApple !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/6</p>
+            </div>
+            
+            <div className={classes.blockCone}>
+                <img className={states.cellsCone !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/6</p>
+            </div>
+
+            <div className={classes.blockMushroom}>
+                <img className={states.cellsMushroom !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/6</p>
+            </div>
+
+            <div className={classes.blockBerry}>
+                <img className={states.cellsBerry !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={BerryImage} alt="BerryIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Ягоды:{states.cellsBerry}/6</p>
+            </div>
+
+            <div className={classes.blockFish}>
+                <img className={states.cellsFish !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={FishImage} alt="FishIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Рыба:{states.cellsFish}/6</p>
+            </div>
+
+            <div className={classes.blockMeat}>
+                <img className={states.cellsMeat !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MeatImage} alt="MeatIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Мясо:{states.cellsMeat}/6</p>
+            </div>
     
             <div className={classes.gameField}>
 
-                { states.showLoseModal && <div className={classes.winAndLoseModal}>
-                <h3>Вы не успели собрать все продукты и проиграли.</h3>
-                <p className={classes.buttonRestartWin} onClick={handleRestart}>Рестарт уровня</p>
-                </div> }
-
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                { states.showModalInfo && <div>
+                    <div className={classes.infoOverlay}> 
+                        <p className={classes.info}>Ты как раз вовремя. С минуту на минуту ко мне нагрянут гости, а на кухне такой беспорядок. Выручай.</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                </div> }
                 
                 <div className={classes.feilds}>
 

@@ -1,18 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import classes from "../Styles/Game.module.css";
 import { useEffect, useState } from "react";
+import AppleImage from "../assets/Apple.png";
+import ConeImage from "../assets/Cone.png";
+import MushroomImage from "../assets/Mushroom.png";
+import BerryImage from "../assets/Berry.png";
+import FishImage from "../assets/Fish.png";
+import MeatImage from "../assets/Meat.png";
+import ElfGirl from "../assets/ElfGirl.png";
 
 export const GameMemory3lvl = () => {
     const [start, setStart] = useState(false);
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
-        cellsApple: 6,
-        cellsCone: 6,
-        cellsMushroom: 6,
-        cellsBerry: 6,
-        cellsFish: 6,
-        cellsMeat: 6,
+        cellsApple: 0,
+        cellsCone: 0,
+        cellsMushroom: 0,
+        cellsBerry: 0,
+        cellsFish: 0,
+        cellsMeat: 0,
         cellsAppleName: "Apple",
         cellsConeName: "Cone",
         cellsMushroomName: "Mushroom",
@@ -21,6 +28,7 @@ export const GameMemory3lvl = () => {
         cellsMeatName: "Meat",
         showButtonStart: true,
         showButtonsWhenWinning: false,
+        showModalInfo: true,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -274,6 +282,7 @@ export const GameMemory3lvl = () => {
     
     setStart(true);
     setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
+    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
 };
 
 const navigate = useNavigate();
@@ -286,9 +295,9 @@ function handleNextLevel() {
     navigate("/memory4");
 };
 
-function handleWin() {
-    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-}
+// function handleWin() {
+//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+// }
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -313,6 +322,28 @@ useEffect(() => {
             
             // Если все имена одинаковые
             if (allSameName) {
+
+                const matchedName = selectedNames[0]; 
+
+                if (matchedName === "Apple") {
+                    setStates((prev:any) => ({...prev, cellsApple: prev.cellsApple + 3}));
+                }
+                else if (matchedName === "Cone") {
+                    setStates((prev:any) => ({...prev, cellsCone: prev.cellsCone + 3}));
+                }
+                else if (matchedName === "Mushroom") {
+                    setStates((prev:any) => ({...prev, cellsMushroom: prev.cellsMushroom + 3}));
+                }
+                else if (matchedName === "Berry") {
+                    setStates((prev:any) => ({...prev, cellsBerry: prev.cellsBerry + 3}));
+                }
+                else if (matchedName === "Fish") {
+                    setStates((prev:any) => ({...prev, cellsFish: prev.cellsFish + 3}));
+                }
+                else if (matchedName === "Meat") {
+                    setStates((prev:any) => ({...prev, cellsMeat: prev.cellsMeat + 3}));
+                }
+
                 setTimeout(() => {
                     setCells((prevCells: any) => {
                     const newCells = { ...prevCells };
@@ -390,20 +421,58 @@ function handleChoiceCell(cellKey: string) {
     <>
         <div className={classes.gamePage}>
             
-            <button onClick={handleWin}>WIN</button>
+            {/* <button onClick={handleWin}>WIN</button> */}
             
-            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
-                    <h3>Победа! Попробуешь ещё раз или перейдём на следующий уровень?</h3>
-                    <p className={classes.buttonRestart} onClick={handleRestart}>Рестарт уровня</p>
+            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>
+                    <div className={classes.infoOverlay}>
+                        <p className={classes.info}>Вот это здорово! Как у тебя это получается? Всё лежит по своим местам.</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>   
+                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
-            <div>Выбрано ячеек: {states.counterCellsChoices}/3</div>
-            <div>Round for victory: {states.counterOfEliminatedCells}/12</div>
+            <div className={classes.blockApple}>
+                <img className={states.cellsApple !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/6</p>
+            </div>
+            
+            <div className={classes.blockCone}>
+                <img className={states.cellsCone !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/6</p>
+            </div>
+
+            <div className={classes.blockMushroom}>
+                <img className={states.cellsMushroom !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/6</p>
+            </div>
+
+            <div className={classes.blockBerry}>
+                <img className={states.cellsBerry !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={BerryImage} alt="BerryIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Ягоды:{states.cellsBerry}/6</p>
+            </div>
+
+            <div className={classes.blockFish}>
+                <img className={states.cellsFish !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={FishImage} alt="FishIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Рыба:{states.cellsFish}/6</p>
+            </div>
+
+            <div className={classes.blockMeat}>
+                <img className={states.cellsMeat !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MeatImage} alt="MeatIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Мясо:{states.cellsMeat}/6</p>
+            </div>
     
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                { states.showModalInfo && <div>
+                    <div className={classes.infoOverlay}> 
+                        <p className={classes.info}>Сегодня на рынке я ещё купила свежей рыбы и мяса. Ума не приложу, куда всё это складывать.</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                </div> }
                 
                 <div className={classes.feilds}>
 

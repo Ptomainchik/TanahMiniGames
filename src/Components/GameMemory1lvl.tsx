@@ -283,9 +283,9 @@ function handleNextLevel() {
     navigate("/memory2");
 };
 
-function handleWin() {
-    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-}
+// function handleWin() {
+//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+// }
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -402,40 +402,43 @@ function handleChoiceCell(cellKey: string) {
     <>
         <div className={classes.gamePage}>
             
-            <button onClick={handleWin}>WIN</button>
+            {/* <button onClick={handleWin}>WIN</button> */}
 
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
-                    <h3>Победа! Попробуешь ещё раз или перейдём на следующий уровень?</h3>
-                    <p className={classes.buttonRestart} onClick={handleRestart}>Рестарт уровня</p>
+                    <div className={classes.infoOverlay}>
+                        <p className={classes.info}>Ух ты! Все продукты разложены по полкам. Спасибо тебе за помощь.</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
-            <div>Выбрано ячеек: {states.counterCellsChoices}/3</div>
-            <div>Round for victory: {states.counterOfEliminatedCells}/12</div>
+            <div className={classes.blockApple}>
+                <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/12</p>
+            </div>
+            
+            <div className={classes.blockCone}>
+                <img className={states.cellsCone !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/12</p>
+            </div>
+
+            <div className={classes.blockMushroom}>
+                <img className={states.cellsMushroom !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/12</p>
+            </div>
     
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
                 { states.showModalInfo && <div>
-                    <p className={classes.infoIntro}>Помоги мне собрать продукты выпавшие из корзинки.</p>
+                    <div className={classes.infoOverlay}> 
+                        <p className={classes.info}>Пожалуйста, помоги мне навести порядок на кухне и разложить продукты по полкам.</p>
+                    </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
-                
-                <div className={classes.blockApple}>
-                    <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
-                    <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/12</p>
-                </div>
-            
-                <div className={classes.blockCone}>
-                    <img className={states.cellsCone !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
-                    <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/12</p>
-                </div>
-
-                <div className={classes.blockMushroom}>
-                    <img className={states.cellsMushroom !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
-                    <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/12</p>
-                </div>
    
                 <div className={classes.feilds}>
 

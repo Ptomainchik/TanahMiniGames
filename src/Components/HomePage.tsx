@@ -12,7 +12,7 @@ export const HomePage = () => {
         <>
         <div className={classes.homePage}>
            <h1>Mini Game</h1>
-           <button onClick={handleTransition}>Memory game</button>
+           <button className={classes.buttonMemoryGame} onClick={handleTransition}>Memory game</button>
         </div>
         
         </>
