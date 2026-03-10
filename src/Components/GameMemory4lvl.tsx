@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import classes from "../Styles/Game.module.css";
+import classes from "../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
 import AppleImage from "../assets/Apple.png";
 import ConeImage from "../assets/Cone.png";
@@ -9,6 +9,7 @@ import FishImage from "../assets/Fish.png";
 import MeatImage from "../assets/Meat.png";
 import ElfGirl from "../assets/ElfGirl.png";
 import SadElfGirl from "../assets/SadElfGirl.png";
+import Casserole from "../assets/Casserole.png";
 
 export const GameMemory4lvl = () => {
     const [start, setStart] = useState(false);
@@ -33,6 +34,7 @@ export const GameMemory4lvl = () => {
         showButtonsWhenWinning: false,
         showLoseModal: false,
         showModalInfo: true,
+        showWinModalRecipe: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -428,7 +430,7 @@ useEffect(() => {
             }
         });
     }   
-    }, 2000);
+    }, 1500);
     
 }, [states.counterCellsChoices, cells]); // Добавляем cells в зависимости
 
@@ -455,6 +457,14 @@ function handleChoiceCell(cellKey: string) {
     }
 };
 
+function handleOpenWinModalRecipe() {
+    setStates((prev: any) => ({...prev, showWinModalRecipe: true}));
+}
+
+function handleCloseWinModalRecipe() {
+    setStates((prev: any) => ({...prev, showWinModalRecipe: false}));
+}
+
     return (
     <>
         <div className={classes.gamePage}>
@@ -473,9 +483,45 @@ function handleChoiceCell(cellKey: string) {
                         <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/> 
+                    <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
                 </div>}
+
+            { states.showWinModalRecipe && <div className={classes.recipeModal}>
+
+                <img src={Casserole} alt="Casserole" draggable={false}/>
+
+                <h1>Запеканка по-регистански</h1>
+
+                <div>
+
+                    <ol>
+
+                        <li>Творог — 500 г</li>
+                        <li>Манка — 100 г</li>
+                        <li>Чечевица красная — 100 г</li>
+                        <li>Тыква — 200 г</li>
+                        <li>Яйца куриные — 3 шт.</li>
+                        <li>Мёд — 2 ст. ложки</li>
+                        <li>Соль — щепоть</li>
+                        <li>Имбирь молотый — пол-чайной ложки</li>
+                        <li>Корица — пол-чайной ложки</li>
+                        <li>Масло сливочное — кусочек для смазывания</li>
+                        <li>Лепестки кешью — для украшения</li>
+                        
+                    </ol>
+
+                    <span>
+                        Нарежьте тыкву кубиками и отварите до мягкости, а промытую чечевицу также сварите до полной готовности, после чего разомните их вместе в густое пюре и соедините с творогом. 
+                        Добавьте к массе яйца, мёд, манную крупу, соль, имбирь и корицу, тщательно перемешайте всё до однородности и, плотно накрыв миску пищевой плёнкой, оставьте в холодильнике на 30 минут. 
+                        Затем переложите смесь в предварительно смазанную сливочным маслом форму, украсьте сверху лепестками кешью и отправьте в разогретую духовку запекаться в течение 40 минут при температуре 140 градусов.
+                        Приятного аппетита!
+                    </span>
+                    
+                </div>
+                <p className={classes.buttonCloseRecipe} onClick={handleCloseWinModalRecipe}>Закрыть</p>
+            </div>}
 
             { states.showLoseModal && <div className={classes.winAndLoseModal}>
                     <div className={classes.infoOverlay}>

@@ -6,7 +6,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: gray;
+    background: url(../assets/BackgroundHomePage.jpg) no-repeat center;
+    background-size: cover;
     font-family: "El Messiri";
 }
 
@@ -15,7 +16,7 @@
     top: 2%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3vw;
+    font-size: 5vw;
 }
 
 .buttonMemoryGame{
@@ -26,7 +27,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: blueviolet;
-    background: darkgreen;
+    background: mediumseagreen;
     border-radius: 10px;
     border: solid 5px gold;
     font-size: 3vw;
@@ -34,4 +35,75 @@
     font-weight: 700;
     -webkit-text-stroke: 1px yellow;
     cursor: pointer;
+}
+
+.buttonMemoryGame:active{
+    filter: drop-shadow( 1vw 1vw 1vw black);
+    background: mediumspringgreen;
+}
+
+@media (max-width: 480px) {
+
+.buttonMemoryGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: blueviolet;
+    background: mediumseagreen;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 7vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+.buttonMemoryGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: blueviolet;
+    background: mediumseagreen;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 7vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+    
+}
+
+@media (min-width: 769px) and (max-width: 1024px)  {
+
+.buttonMemoryGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: blueviolet;
+    background: mediumseagreen;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 7vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+
 }

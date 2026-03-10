@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import classes from "../Styles/Game.module.css";
+import classes from "../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
 import AppleImage from "../assets/Apple.png";
 import ConeImage from "../assets/Cone.png";
@@ -380,7 +380,7 @@ useEffect(() => {
             }
         });
     }   
-    }, 2000);
+    }, 1500);
     
 }, [states.counterCellsChoices, cells]); // Добавляем cells в зависимости
 
