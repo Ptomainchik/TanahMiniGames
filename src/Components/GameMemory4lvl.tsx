@@ -14,7 +14,7 @@ import Casserole from "../assets/Casserole.png";
 export const GameMemory4lvl = () => {
     const [start, setStart] = useState(false);
     const [endTime, setEndTime] = useState(null);   
-    const [timeLeft, setTimeLeft] = useState("05:00");
+    const [timeLeft, setTimeLeft] = useState("10:00");
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
@@ -258,7 +258,7 @@ export const GameMemory4lvl = () => {
     function handleStartGame() {
     if (start) return;
     
-    const fiveMinutesLater: any = Date.now() + 5.01 * 60 * 1000;
+    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
     setEndTime(fiveMinutesLater);
 
     const colors = [
