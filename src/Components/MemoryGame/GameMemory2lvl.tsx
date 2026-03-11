@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import classes from "../Styles/MemoryGame.module.css";
+import classes from "../../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
-import AppleImage from "../assets/Apple.png";
-import ConeImage from "../assets/Cone.png";
-import MushroomImage from "../assets/Mushroom.png";
-import ElfGirl from "../assets/ElfGirl.png";
+import AppleImage from "../../assets/Apple.png";
+import ConeImage from "../../assets/Cone.png";
+import MushroomImage from "../../assets/Mushroom.png";
+import BerryImage from "../../assets/Berry.png";
+import ElfGirl from "../../assets/ElfGirl.png";
 
-export const GameMemory1lvl = () => {
+export const GameMemory2lvl = () => {
     const [start, setStart] = useState(false);
     const [states, setStates] = useState({
         counterCellsChoices: 0,
@@ -14,9 +15,11 @@ export const GameMemory1lvl = () => {
         cellsApple: 0,
         cellsCone: 0,
         cellsMushroom: 0,
+        cellsBerry: 0,
         cellsAppleName: "Apple",
         cellsConeName: "Cone",
         cellsMushroomName: "Mushroom",
+        cellsBerryName: "Berry",
         showButtonStart: true,
         showButtonsWhenWinning: false,
         showModalInfo: true,
@@ -244,9 +247,10 @@ export const GameMemory1lvl = () => {
     if (start) return;
     
     const colors = [
-        ...Array(12).fill(states.cellsAppleName),
-        ...Array(12).fill(states.cellsConeName),
-        ...Array(12).fill(states.cellsMushroomName)
+        ...Array(9).fill(states.cellsAppleName),
+        ...Array(9).fill(states.cellsConeName),
+        ...Array(9).fill(states.cellsMushroomName),
+        ...Array(9).fill(states.cellsBerryName)
     ];
     
     for (let i = colors.length - 1; i > 0; i--) {
@@ -280,7 +284,7 @@ function handleRestart() {
 };
 
 function handleNextLevel() {
-    navigate("/memory2");
+    navigate("/memory3");
 };
 
 // function handleWin() {
@@ -322,6 +326,9 @@ useEffect(() => {
                 else if (matchedName === "Mushroom") {
                     setStates((prev:any) => ({...prev, cellsMushroom: prev.cellsMushroom + 3}));
                 }
+                else if (matchedName === "Berry") {
+                    setStates((prev:any) => ({...prev, cellsBerry: prev.cellsBerry + 3}));
+                }
 
                 setTimeout(() => {
                     setCells((prevCells: any) => {
@@ -347,12 +354,10 @@ useEffect(() => {
 }, [states.counterCellsChoices]);
 
 useEffect(() => {
-    setTimeout(() => {
-        if (states.counterOfEliminatedCells === 12) {
+    if (states.counterOfEliminatedCells === 12) {
         setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
     }
-    }, 1500);
-}, [states.counterOfEliminatedCells]);// Проверка условия победы и показ победного модального окна
+}, [states.counterOfEliminatedCells]);
 
 useEffect(() => {
     // Проверяем, когда счетчик достигает 3
@@ -403,43 +408,48 @@ function handleChoiceCell(cellKey: string) {
         <div className={classes.gamePage}>
             
             {/* <button onClick={handleWin}>WIN</button> */}
-
-            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
+            
+            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ух ты! Все продукты разложены по полкам. Спасибо тебе за помощь.</p>
+                        <p className={classes.info}>Ура! На кухне снова порядок. Какая я растяпа. Без твоей помощи мне бы не справиться.</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
-                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3> 
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
             <div className={classes.blockApple}>
-                <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
-                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/12</p>
+                <img className={states.cellsApple !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/9</p>
             </div>
             
             <div className={classes.blockCone}>
-                <img className={states.cellsCone !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
-                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/12</p>
+                <img className={states.cellsCone !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/9</p>
             </div>
 
             <div className={classes.blockMushroom}>
-                <img className={states.cellsMushroom !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
-                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/12</p>
+                <img className={states.cellsMushroom !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/9</p>
+            </div>
+
+            <div className={classes.blockBerry}>
+                <img className={states.cellsBerry !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={BerryImage} alt="BerryIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Ягоды:{states.cellsBerry}/9</p>
             </div>
     
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
-
+                
                 { states.showModalInfo && <div>
                     <div className={classes.infoOverlay}> 
-                        <p className={classes.info}>Пожалуйста, помоги мне навести порядок на кухне и разложить продукты по полкам.</p>
+                        <p className={classes.info}>Кажется, я рассыпала ягоды черники по всей кухне. Поможешь мне их собрать?</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
-   
+
                 <div className={classes.feilds}>
 
                     {/* HORIZONT 1 */}
@@ -453,6 +463,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Apple" ? classes.appleCells :
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Cone" ? classes.coneCells :
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -466,6 +477,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Apple" ? classes.appleCells :
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Cone" ? classes.coneCells :
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>     
                             </button>}
@@ -479,6 +491,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Apple" ? classes.appleCells :
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Cone" ? classes.coneCells :
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -492,6 +505,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Apple" ? classes.appleCells :
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Cone" ? classes.coneCells :
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -505,6 +519,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Apple" ? classes.appleCells :
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Cone" ? classes.coneCells :
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -518,6 +533,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Apple" ? classes.appleCells :
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Cone" ? classes.coneCells :
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -536,6 +552,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Apple" ? classes.appleCells :
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Cone" ? classes.coneCells :
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>                       
                             </button>}
@@ -549,6 +566,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Apple" ? classes.appleCells :
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Cone" ? classes.coneCells :
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>         
                             </button>}
@@ -562,6 +580,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Apple" ? classes.appleCells :
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Cone" ? classes.coneCells :
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
                         </button>}
@@ -575,6 +594,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Apple" ? classes.appleCells :
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Cone" ? classes.coneCells :
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -589,6 +609,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Apple" ? classes.appleCells :
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Cone" ? classes.coneCells :
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -603,6 +624,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Apple" ? classes.appleCells :
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Cone" ? classes.coneCells :
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -621,6 +643,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Apple" ? classes.appleCells :
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Cone" ? classes.coneCells :
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -635,6 +658,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Apple" ? classes.appleCells :
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Cone" ? classes.coneCells :
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -649,6 +673,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Apple" ? classes.appleCells :
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Cone" ? classes.coneCells :
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -663,6 +688,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Apple" ? classes.appleCells :
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Cone" ? classes.coneCells :
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -677,6 +703,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Apple" ? classes.appleCells :
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Cone" ? classes.coneCells :
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -691,6 +718,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Apple" ? classes.appleCells :
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Cone" ? classes.coneCells :
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -709,6 +737,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Apple" ? classes.appleCells :
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Cone" ? classes.coneCells :
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -723,6 +752,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Apple" ? classes.appleCells :
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Cone" ? classes.coneCells :
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -737,6 +767,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Apple" ? classes.appleCells :
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Cone" ? classes.coneCells :
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -751,6 +782,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Apple" ? classes.appleCells :
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Cone" ? classes.coneCells :
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -765,6 +797,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Apple" ? classes.appleCells :
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Cone" ? classes.coneCells :
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -779,6 +812,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Apple" ? classes.appleCells :
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Cone" ? classes.coneCells :
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -797,6 +831,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Apple" ? classes.appleCells :
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Cone" ? classes.coneCells :
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -811,6 +846,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Apple" ? classes.appleCells :
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Cone" ? classes.coneCells :
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -825,6 +861,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Apple" ? classes.appleCells :
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Cone" ? classes.coneCells :
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -839,6 +876,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Apple" ? classes.appleCells :
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Cone" ? classes.coneCells :
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -853,6 +891,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Apple" ? classes.appleCells :
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Cone" ? classes.coneCells :
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -867,6 +906,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Apple" ? classes.appleCells :
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Cone" ? classes.coneCells :
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -885,6 +925,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Apple" ? classes.appleCells :
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Cone" ? classes.coneCells :
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -899,6 +940,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Apple" ? classes.appleCells :
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Cone" ? classes.coneCells :
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -913,6 +955,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Apple" ? classes.appleCells :
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Cone" ? classes.coneCells :
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -927,6 +970,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Apple" ? classes.appleCells :
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Cone" ? classes.coneCells :
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -941,6 +985,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Apple" ? classes.appleCells :
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Cone" ? classes.coneCells :
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 
@@ -955,6 +1000,7 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Apple" ? classes.appleCells :
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Cone" ? classes.coneCells :
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Mushroom" ? classes.mushroomCells :
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Berry" ? classes.berryCells :
                                 classes.starCells
                             }></div>
 

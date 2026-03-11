@@ -1,14 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import classes from "../Styles/MemoryGame.module.css";
+import classes from "../../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
-import AppleImage from "../assets/Apple.png";
-import ConeImage from "../assets/Cone.png";
-import MushroomImage from "../assets/Mushroom.png";
-import BerryImage from "../assets/Berry.png";
-import ElfGirl from "../assets/ElfGirl.png";
+import AppleImage from "../../assets/Apple.png";
+import ConeImage from "../../assets/Cone.png";
+import MushroomImage from "../../assets/Mushroom.png";
+import BerryImage from "../../assets/Berry.png";
+import FishImage from "../../assets/Fish.png";
+import MeatImage from "../../assets/Meat.png";
+import ElfGirl from "../../assets/ElfGirl.png";
+import SadElfGirl from "../../assets/SadElfGirl.png";
+import Casserole from "../../assets/Casserole.png";
 
-export const GameMemory2lvl = () => {
+export const GameMemory4lvl = () => {
     const [start, setStart] = useState(false);
+    const [endTime, setEndTime] = useState(null);   
+    const [timeLeft, setTimeLeft] = useState("10:00");
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
@@ -16,13 +22,19 @@ export const GameMemory2lvl = () => {
         cellsCone: 0,
         cellsMushroom: 0,
         cellsBerry: 0,
+        cellsFish: 0,
+        cellsMeat: 0,
         cellsAppleName: "Apple",
         cellsConeName: "Cone",
         cellsMushroomName: "Mushroom",
         cellsBerryName: "Berry",
+        cellsFishName: "Fish",
+        cellsMeatName: "Meat",
         showButtonStart: true,
         showButtonsWhenWinning: false,
+        showLoseModal: false,
         showModalInfo: true,
+        showWinModalRecipe: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -246,11 +258,16 @@ export const GameMemory2lvl = () => {
     function handleStartGame() {
     if (start) return;
     
+    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+    setEndTime(fiveMinutesLater);
+
     const colors = [
-        ...Array(9).fill(states.cellsAppleName),
-        ...Array(9).fill(states.cellsConeName),
-        ...Array(9).fill(states.cellsMushroomName),
-        ...Array(9).fill(states.cellsBerryName)
+        ...Array(6).fill(states.cellsAppleName),
+        ...Array(6).fill(states.cellsConeName),
+        ...Array(6).fill(states.cellsMushroomName),
+        ...Array(6).fill(states.cellsBerryName),
+        ...Array(6).fill(states.cellsFishName),
+        ...Array(6).fill(states.cellsMeatName)
     ];
     
     for (let i = colors.length - 1; i > 0; i--) {
@@ -277,14 +294,40 @@ export const GameMemory2lvl = () => {
     setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
 };
 
+useEffect(() => {
+    if (!endTime) return;
+
+    const interval = setInterval(() => {
+        const now = Date.now();
+        const diff = endTime - now;
+
+        if (states.counterOfEliminatedCells === 12) return;
+
+        if (diff <= 0 && start) {
+            clearInterval(interval);
+            setTimeLeft("00:00");
+            // ТВОЕ ДЕЙСТВИЕ: вызов модалки
+            setStates(prev => ({ ...prev, showLoseModal: true })); 
+            return;
+        }
+
+        // Форматируем остаток
+        const mins = Math.floor(diff / 1000 / 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        setTimeLeft(`${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
+    }, 1000);
+
+    return () => clearInterval(interval); // Чистим, если ушли со страницы
+}, [endTime, states.counterOfEliminatedCells]);
+
 const navigate = useNavigate();
 
 function handleRestart() {
     navigate(0);
 };
 
-function handleNextLevel() {
-    navigate("/memory3");
+function handleHomePageTranzition() {
+    navigate("/");
 };
 
 // function handleWin() {
@@ -329,6 +372,12 @@ useEffect(() => {
                 else if (matchedName === "Berry") {
                     setStates((prev:any) => ({...prev, cellsBerry: prev.cellsBerry + 3}));
                 }
+                else if (matchedName === "Fish") {
+                    setStates((prev:any) => ({...prev, cellsFish: prev.cellsFish + 3}));
+                }
+                else if (matchedName === "Meat") {
+                    setStates((prev:any) => ({...prev, cellsMeat: prev.cellsMeat + 3}));
+                }
 
                 setTimeout(() => {
                     setCells((prevCells: any) => {
@@ -352,6 +401,7 @@ useEffect(() => {
         }
     }
 }, [states.counterCellsChoices]);
+
 
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
@@ -385,6 +435,10 @@ useEffect(() => {
 }, [states.counterCellsChoices, cells]); // Добавляем cells в зависимости
 
 
+useEffect(() => {
+
+},[]);
+
 // Функция выбора становится простой
 function handleChoiceCell(cellKey: string) {
     if (!cells[cellKey].chioce && states.counterCellsChoices < 3) {
@@ -403,53 +457,122 @@ function handleChoiceCell(cellKey: string) {
     }
 };
 
+function handleOpenWinModalRecipe() {
+    setStates((prev: any) => ({...prev, showWinModalRecipe: true}));
+}
+
+function handleCloseWinModalRecipe() {
+    setStates((prev: any) => ({...prev, showWinModalRecipe: false}));
+}
+
     return (
     <>
         <div className={classes.gamePage}>
             
             {/* <button onClick={handleWin}>WIN</button> */}
+
+            <div className={classes.timer}>
+                <p>
+                    Время до прихода гостей:
+                </p>
+                {timeLeft}
+            </div>
             
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ура! На кухне снова порядок. Какая я растяпа. Без твоей помощи мне бы не справиться.</p>
+                        <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
-                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3> 
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/> 
+                    <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
-                    <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
+                    <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
                 </div>}
 
+            { states.showWinModalRecipe && <div className={classes.recipeModal}>
+
+                <img src={Casserole} alt="Casserole" draggable={false}/>
+
+                <h1>Запеканка по-регистански</h1>
+
+                <div>
+
+                    <ol>
+
+                        <li>Творог — 500 г</li>
+                        <li>Манка — 100 г</li>
+                        <li>Чечевица красная — 100 г</li>
+                        <li>Тыква — 200 г</li>
+                        <li>Яйца куриные — 3 шт.</li>
+                        <li>Мёд — 2 ст. ложки</li>
+                        <li>Соль — щепоть</li>
+                        <li>Имбирь молотый — пол-чайной ложки</li>
+                        <li>Корица — пол-чайной ложки</li>
+                        <li>Масло сливочное — кусочек для смазывания</li>
+                        <li>Лепестки кешью — для украшения</li>
+                        
+                    </ol>
+
+                    <span>
+                        Нарежьте тыкву кубиками и отварите до мягкости, а промытую чечевицу также сварите до полной готовности, после чего разомните их вместе в густое пюре и соедините с творогом. 
+                        Добавьте к массе яйца, мёд, манную крупу, соль, имбирь и корицу, тщательно перемешайте всё до однородности и, плотно накрыв миску пищевой плёнкой, оставьте в холодильнике на 30 минут. 
+                        Затем переложите смесь в предварительно смазанную сливочным маслом форму, украсьте сверху лепестками кешью и отправьте в разогретую духовку запекаться в течение 40 минут при температуре 140 градусов.
+                        Приятного аппетита!
+                    </span>
+                    
+                </div>
+                <p className={classes.buttonCloseRecipe} onClick={handleCloseWinModalRecipe}>Закрыть</p>
+            </div>}
+
+            { states.showLoseModal && <div className={classes.winAndLoseModal}>
+                    <div className={classes.infoOverlay}>
+                        <p className={classes.info}>(Стук в дверь) Эх, жаль. Мы не успели. Что теперь обо мне подумают гости?</p>
+                    </div>
+                    <img className={classes.imageInfoIntro} src={SadElfGirl} alt="SadElfGirl" draggable={false}/> 
+                    <h3>Вы не успели. Не расстраивайтесь, может, попробуете ещё раз?</h3>
+                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
+                </div> }
+
             <div className={classes.blockApple}>
-                <img className={states.cellsApple !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
-                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/9</p>
+                <img className={states.cellsApple !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/6</p>
             </div>
             
             <div className={classes.blockCone}>
-                <img className={states.cellsCone !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
-                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/9</p>
+                <img className={states.cellsCone !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={ConeImage} alt="ConeIconTransparent" draggable={false}/>
+                <p className={classes.numberOfIcons}>Шишки:{states.cellsCone}/6</p>
             </div>
 
             <div className={classes.blockMushroom}>
-                <img className={states.cellsMushroom !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
-                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/9</p>
+                <img className={states.cellsMushroom !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MushroomImage} alt="MushroomIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Грибы:{states.cellsMushroom}/6</p>
             </div>
 
             <div className={classes.blockBerry}>
-                <img className={states.cellsBerry !== 9 ? classes.iconsTransparent : classes.iconsVisible} src={BerryImage} alt="BerryIconTransparent" draggable={false}/> 
-                <p className={classes.numberOfIcons}>Ягоды:{states.cellsBerry}/9</p>
+                <img className={states.cellsBerry !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={BerryImage} alt="BerryIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Ягоды:{states.cellsBerry}/6</p>
+            </div>
+
+            <div className={classes.blockFish}>
+                <img className={states.cellsFish !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={FishImage} alt="FishIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Рыба:{states.cellsFish}/6</p>
+            </div>
+
+            <div className={classes.blockMeat}>
+                <img className={states.cellsMeat !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={MeatImage} alt="MeatIconTransparent" draggable={false}/> 
+                <p className={classes.numberOfIcons}>Мясо:{states.cellsMeat}/6</p>
             </div>
     
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
-                
+
                 { states.showModalInfo && <div>
                     <div className={classes.infoOverlay}> 
-                        <p className={classes.info}>Кажется, я рассыпала ягоды черники по всей кухне. Поможешь мне их собрать?</p>
+                        <p className={classes.info}>Ты как раз вовремя. С минуту на минуту ко мне нагрянут гости, а на кухне такой беспорядок. Выручай.</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
-
+                
                 <div className={classes.feilds}>
 
                     {/* HORIZONT 1 */}
@@ -464,6 +587,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Cone" ? classes.coneCells :
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Berry" ? classes.berryCells :
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Fish" ? classes.fishCells :
+                                cells.A1V1H1.chioce === true && cells.A1V1H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -478,6 +603,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Cone" ? classes.coneCells :
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Berry" ? classes.berryCells :
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Fish" ? classes.fishCells :
+                                cells.A2V2H1.chioce === true && cells.A2V2H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>     
                             </button>}
@@ -492,6 +619,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Cone" ? classes.coneCells :
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Berry" ? classes.berryCells :
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Fish" ? classes.fishCells :
+                                cells.A3V3H1.chioce === true && cells.A3V3H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -506,6 +635,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Cone" ? classes.coneCells :
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Berry" ? classes.berryCells :
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Fish" ? classes.fishCells :
+                                cells.A4V4H1.chioce === true && cells.A4V4H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -520,6 +651,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Cone" ? classes.coneCells :
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Berry" ? classes.berryCells :
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Fish" ? classes.fishCells :
+                                cells.A5V5H1.chioce === true && cells.A5V5H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -534,6 +667,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Cone" ? classes.coneCells :
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Berry" ? classes.berryCells :
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Fish" ? classes.fishCells :
+                                cells.A6V6H1.chioce === true && cells.A6V6H1.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                        
                             </button>}
@@ -553,6 +688,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Cone" ? classes.coneCells :
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Berry" ? classes.berryCells :
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Fish" ? classes.fishCells :
+                                cells.A7V1H2.chioce === true && cells.A7V1H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>                       
                             </button>}
@@ -567,6 +704,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Cone" ? classes.coneCells :
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Berry" ? classes.berryCells :
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Fish" ? classes.fishCells :
+                                cells.A8V2H2.chioce === true && cells.A8V2H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>         
                             </button>}
@@ -581,6 +720,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Cone" ? classes.coneCells :
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Berry" ? classes.berryCells :
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Fish" ? classes.fishCells :
+                                cells.A9V3H2.chioce === true && cells.A9V3H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
                         </button>}
@@ -595,6 +736,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Cone" ? classes.coneCells :
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Berry" ? classes.berryCells :
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Fish" ? classes.fishCells :
+                                cells.A10V4H2.chioce === true && cells.A10V4H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -610,6 +753,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Cone" ? classes.coneCells :
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Berry" ? classes.berryCells :
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Fish" ? classes.fishCells :
+                                cells.A11V5H2.chioce === true && cells.A11V5H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -625,6 +770,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Cone" ? classes.coneCells :
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Berry" ? classes.berryCells :
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Fish" ? classes.fishCells :
+                                cells.A12V6H2.chioce === true && cells.A12V6H2.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -644,6 +791,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Cone" ? classes.coneCells :
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Berry" ? classes.berryCells :
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Fish" ? classes.fishCells :
+                                cells.A13V1H3.chioce === true && cells.A13V1H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -659,6 +808,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Cone" ? classes.coneCells :
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Berry" ? classes.berryCells :
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Fish" ? classes.fishCells :
+                                cells.A14V2H3.chioce === true && cells.A14V2H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -674,6 +825,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Cone" ? classes.coneCells :
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Berry" ? classes.berryCells :
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Fish" ? classes.fishCells :
+                                cells.A15V3H3.chioce === true && cells.A15V3H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -689,6 +842,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Cone" ? classes.coneCells :
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Berry" ? classes.berryCells :
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Fish" ? classes.fishCells :
+                                cells.A16V4H3.chioce === true && cells.A16V4H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -704,6 +859,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Cone" ? classes.coneCells :
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Berry" ? classes.berryCells :
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Fish" ? classes.fishCells :
+                                cells.A17V5H3.chioce === true && cells.A17V5H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -719,6 +876,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Cone" ? classes.coneCells :
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Berry" ? classes.berryCells :
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Fish" ? classes.fishCells :
+                                cells.A18V6H3.chioce === true && cells.A18V6H3.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -738,6 +897,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Cone" ? classes.coneCells :
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Berry" ? classes.berryCells :
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Fish" ? classes.fishCells :
+                                cells.A19V1H4.chioce === true && cells.A19V1H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -753,6 +914,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Cone" ? classes.coneCells :
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Berry" ? classes.berryCells :
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Fish" ? classes.fishCells :
+                                cells.A20V2H4.chioce === true && cells.A20V2H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -768,6 +931,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Cone" ? classes.coneCells :
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Berry" ? classes.berryCells :
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Fish" ? classes.fishCells :
+                                cells.A21V3H4.chioce === true && cells.A21V3H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -783,6 +948,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Cone" ? classes.coneCells :
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Berry" ? classes.berryCells :
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Fish" ? classes.fishCells :
+                                cells.A22V4H4.chioce === true && cells.A22V4H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -798,6 +965,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Cone" ? classes.coneCells :
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Berry" ? classes.berryCells :
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Fish" ? classes.fishCells :
+                                cells.A23V5H4.chioce === true && cells.A23V5H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -813,6 +982,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Cone" ? classes.coneCells :
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Berry" ? classes.berryCells :
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Fish" ? classes.fishCells :
+                                cells.A24V6H4.chioce === true && cells.A24V6H4.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -832,6 +1003,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Cone" ? classes.coneCells :
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Berry" ? classes.berryCells :
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Fish" ? classes.fishCells :
+                                cells.A25V1H5.chioce === true && cells.A25V1H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -847,6 +1020,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Cone" ? classes.coneCells :
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Berry" ? classes.berryCells :
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Fish" ? classes.fishCells :
+                                cells.A26V2H5.chioce === true && cells.A26V2H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -862,6 +1037,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Cone" ? classes.coneCells :
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Berry" ? classes.berryCells :
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Fish" ? classes.fishCells :
+                                cells.A27V3H5.chioce === true && cells.A27V3H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -877,6 +1054,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Cone" ? classes.coneCells :
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Berry" ? classes.berryCells :
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Fish" ? classes.fishCells :
+                                cells.A28V4H5.chioce === true && cells.A28V4H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -892,6 +1071,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Cone" ? classes.coneCells :
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Berry" ? classes.berryCells :
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Fish" ? classes.fishCells :
+                                cells.A29V5H5.chioce === true && cells.A29V5H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -907,6 +1088,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Cone" ? classes.coneCells :
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Berry" ? classes.berryCells :
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Fish" ? classes.fishCells :
+                                cells.A30V6H5.chioce === true && cells.A30V6H5.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -926,6 +1109,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Cone" ? classes.coneCells :
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Berry" ? classes.berryCells :
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Fish" ? classes.fishCells :
+                                cells.A31V1H6.chioce === true && cells.A31V1H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -941,6 +1126,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Cone" ? classes.coneCells :
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Berry" ? classes.berryCells :
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Fish" ? classes.fishCells :
+                                cells.A32V2H6.chioce === true && cells.A32V2H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -956,6 +1143,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Cone" ? classes.coneCells :
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Berry" ? classes.berryCells :
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Fish" ? classes.fishCells :
+                                cells.A33V3H6.chioce === true && cells.A33V3H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -971,6 +1160,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Cone" ? classes.coneCells :
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Berry" ? classes.berryCells :
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Fish" ? classes.fishCells :
+                                cells.A34V4H6.chioce === true && cells.A34V4H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -986,6 +1177,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Cone" ? classes.coneCells :
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Berry" ? classes.berryCells :
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Fish" ? classes.fishCells :
+                                cells.A35V5H6.chioce === true && cells.A35V5H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 
@@ -1001,6 +1194,8 @@ function handleChoiceCell(cellKey: string) {
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Cone" ? classes.coneCells :
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Mushroom" ? classes.mushroomCells :
                                 cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Berry" ? classes.berryCells :
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Fish" ? classes.fishCells :
+                                cells.A36V6H6.chioce === true && cells.A36V6H6.name === "Meat" ? classes.meatCells :
                                 classes.starCells
                             }></div>
 

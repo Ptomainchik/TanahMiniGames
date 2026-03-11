@@ -9,6 +9,8 @@
     background: url(../assets/BackgroundHomePage.jpg) no-repeat center;
     background-size: cover;
     font-family: "El Messiri";
+    color: black;
+    -webkit-text-stroke: 1px yellow;
 }
 
 .homePage h1 {
@@ -42,6 +44,29 @@
     background: mediumspringgreen;
 }
 
+.buttonSortingGame{
+    width: 30vw;
+    height: 5vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: teal;
+    background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 5px gold;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
+    cursor: pointer;
+}
+
+.buttonSortingGame:active{
+    filter: drop-shadow( 1vw 1vw 1vw black);
+    background: mediumorchid
+}
+
 @media (max-width: 480px) {
 
 .buttonMemoryGame{
@@ -55,10 +80,28 @@
     background: mediumseagreen;
     border-radius: 10px;
     border: solid 2px gold;
-    font-size: 7vw;
+    font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+
+.buttonSortingGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: teal;
+    background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
     cursor: pointer;
 }
 
@@ -77,10 +120,28 @@
     background: mediumseagreen;
     border-radius: 10px;
     border: solid 2px gold;
-    font-size: 7vw;
+    font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+
+.buttonSortingGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: teal;
+    background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
     cursor: pointer;
 }
     
@@ -99,10 +160,28 @@
     background: mediumseagreen;
     border-radius: 10px;
     border: solid 2px gold;
-    font-size: 7vw;
+    font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px darkblue;
+    cursor: pointer;
+}
+
+.buttonSortingGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: teal;
+    background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
     cursor: pointer;
 }
 

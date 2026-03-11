@@ -1,20 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import classes from "../Styles/MemoryGame.module.css";
+import classes from "../../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
-import AppleImage from "../assets/Apple.png";
-import ConeImage from "../assets/Cone.png";
-import MushroomImage from "../assets/Mushroom.png";
-import BerryImage from "../assets/Berry.png";
-import FishImage from "../assets/Fish.png";
-import MeatImage from "../assets/Meat.png";
-import ElfGirl from "../assets/ElfGirl.png";
-import SadElfGirl from "../assets/SadElfGirl.png";
-import Casserole from "../assets/Casserole.png";
+import AppleImage from "../../assets/Apple.png";
+import ConeImage from "../../assets/Cone.png";
+import MushroomImage from "../../assets/Mushroom.png";
+import BerryImage from "../../assets/Berry.png";
+import FishImage from "../../assets/Fish.png";
+import MeatImage from "../../assets/Meat.png";
+import ElfGirl from "../../assets/ElfGirl.png";
 
-export const GameMemory4lvl = () => {
+export const GameMemory3lvl = () => {
     const [start, setStart] = useState(false);
-    const [endTime, setEndTime] = useState(null);   
-    const [timeLeft, setTimeLeft] = useState("10:00");
     const [states, setStates] = useState({
         counterCellsChoices: 0,
         counterOfEliminatedCells: 0,
@@ -32,9 +28,7 @@ export const GameMemory4lvl = () => {
         cellsMeatName: "Meat",
         showButtonStart: true,
         showButtonsWhenWinning: false,
-        showLoseModal: false,
         showModalInfo: true,
-        showWinModalRecipe: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -258,9 +252,6 @@ export const GameMemory4lvl = () => {
     function handleStartGame() {
     if (start) return;
     
-    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-    setEndTime(fiveMinutesLater);
-
     const colors = [
         ...Array(6).fill(states.cellsAppleName),
         ...Array(6).fill(states.cellsConeName),
@@ -294,40 +285,14 @@ export const GameMemory4lvl = () => {
     setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
 };
 
-useEffect(() => {
-    if (!endTime) return;
-
-    const interval = setInterval(() => {
-        const now = Date.now();
-        const diff = endTime - now;
-
-        if (states.counterOfEliminatedCells === 12) return;
-
-        if (diff <= 0 && start) {
-            clearInterval(interval);
-            setTimeLeft("00:00");
-            // ТВОЕ ДЕЙСТВИЕ: вызов модалки
-            setStates(prev => ({ ...prev, showLoseModal: true })); 
-            return;
-        }
-
-        // Форматируем остаток
-        const mins = Math.floor(diff / 1000 / 60);
-        const secs = Math.floor((diff / 1000) % 60);
-        setTimeLeft(`${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
-    }, 1000);
-
-    return () => clearInterval(interval); // Чистим, если ушли со страницы
-}, [endTime, states.counterOfEliminatedCells]);
-
 const navigate = useNavigate();
 
 function handleRestart() {
     navigate(0);
 };
 
-function handleHomePageTranzition() {
-    navigate("/");
+function handleNextLevel() {
+    navigate("/memory4");
 };
 
 // function handleWin() {
@@ -402,7 +367,6 @@ useEffect(() => {
     }
 }, [states.counterCellsChoices]);
 
-
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
         setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
@@ -435,10 +399,6 @@ useEffect(() => {
 }, [states.counterCellsChoices, cells]); // Добавляем cells в зависимости
 
 
-useEffect(() => {
-
-},[]);
-
 // Функция выбора становится простой
 function handleChoiceCell(cellKey: string) {
     if (!cells[cellKey].chioce && states.counterCellsChoices < 3) {
@@ -457,80 +417,21 @@ function handleChoiceCell(cellKey: string) {
     }
 };
 
-function handleOpenWinModalRecipe() {
-    setStates((prev: any) => ({...prev, showWinModalRecipe: true}));
-}
-
-function handleCloseWinModalRecipe() {
-    setStates((prev: any) => ({...prev, showWinModalRecipe: false}));
-}
-
     return (
     <>
         <div className={classes.gamePage}>
             
             {/* <button onClick={handleWin}>WIN</button> */}
-
-            <div className={classes.timer}>
-                <p>
-                    Время до прихода гостей:
-                </p>
-                {timeLeft}
-            </div>
             
-            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
+            { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
+                        <p className={classes.info}>Вот это здорово! Как у тебя это получается? Всё лежит по своим местам.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/> 
-                    <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
+                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>   
+                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
-                    <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
+                    <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
-
-            { states.showWinModalRecipe && <div className={classes.recipeModal}>
-
-                <img src={Casserole} alt="Casserole" draggable={false}/>
-
-                <h1>Запеканка по-регистански</h1>
-
-                <div>
-
-                    <ol>
-
-                        <li>Творог — 500 г</li>
-                        <li>Манка — 100 г</li>
-                        <li>Чечевица красная — 100 г</li>
-                        <li>Тыква — 200 г</li>
-                        <li>Яйца куриные — 3 шт.</li>
-                        <li>Мёд — 2 ст. ложки</li>
-                        <li>Соль — щепоть</li>
-                        <li>Имбирь молотый — пол-чайной ложки</li>
-                        <li>Корица — пол-чайной ложки</li>
-                        <li>Масло сливочное — кусочек для смазывания</li>
-                        <li>Лепестки кешью — для украшения</li>
-                        
-                    </ol>
-
-                    <span>
-                        Нарежьте тыкву кубиками и отварите до мягкости, а промытую чечевицу также сварите до полной готовности, после чего разомните их вместе в густое пюре и соедините с творогом. 
-                        Добавьте к массе яйца, мёд, манную крупу, соль, имбирь и корицу, тщательно перемешайте всё до однородности и, плотно накрыв миску пищевой плёнкой, оставьте в холодильнике на 30 минут. 
-                        Затем переложите смесь в предварительно смазанную сливочным маслом форму, украсьте сверху лепестками кешью и отправьте в разогретую духовку запекаться в течение 40 минут при температуре 140 градусов.
-                        Приятного аппетита!
-                    </span>
-                    
-                </div>
-                <p className={classes.buttonCloseRecipe} onClick={handleCloseWinModalRecipe}>Закрыть</p>
-            </div>}
-
-            { states.showLoseModal && <div className={classes.winAndLoseModal}>
-                    <div className={classes.infoOverlay}>
-                        <p className={classes.info}>(Стук в дверь) Эх, жаль. Мы не успели. Что теперь обо мне подумают гости?</p>
-                    </div>
-                    <img className={classes.imageInfoIntro} src={SadElfGirl} alt="SadElfGirl" draggable={false}/> 
-                    <h3>Вы не успели. Не расстраивайтесь, может, попробуете ещё раз?</h3>
-                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
-                </div> }
 
             <div className={classes.blockApple}>
                 <img className={states.cellsApple !== 6 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
@@ -568,7 +469,7 @@ function handleCloseWinModalRecipe() {
 
                 { states.showModalInfo && <div>
                     <div className={classes.infoOverlay}> 
-                        <p className={classes.info}>Ты как раз вовремя. С минуту на минуту ко мне нагрянут гости, а на кухне такой беспорядок. Выручай.</p>
+                        <p className={classes.info}>Сегодня на рынке я ещё купила свежей рыбы и мяса. Ума не приложу, куда всё это складывать.</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
