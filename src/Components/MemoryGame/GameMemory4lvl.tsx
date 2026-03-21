@@ -38,217 +38,181 @@ export const GameMemory4lvl = () => {
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
-            id: "A1-V1-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A2V2H1: {
-            id: "A2-V2-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A3V3H1: {
-            id: "A3-V3-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A4V4H1: {
-            id: "A4-V4-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A5V5H1: {
-            id: "A5-V5-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A6V6H1: {
-            id: "A6-V6-H1",
             name: "",
             chioce: false,
             showCell: true,
         },
         A7V1H2: {
-            id: "A7-V1-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A8V2H2: {
-            id: "A8-V2-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A9V3H2: {
-            id: "A9-V3-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A10V4H2: {
-            id: "A10-V4-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A11V5H2: {
-            id: "A11-V5-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A12V6H2: {
-            id: "A12-V6-H2",
             name: "",
             chioce: false,
             showCell: true,
         },
         A13V1H3: {
-            id: "A13-V1-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A14V2H3: {
-            id: "A14-V2-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A15V3H3: {
-            id: "A15-V3-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A16V4H3: {
-            id: "A16-V4-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A17V5H3: {
-            id: "A17-V5-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A18V6H3: {
-            id: "A18-V6-H3",
             name: "",
             chioce: false,
             showCell: true,
         },
         A19V1H4: {
-            id: "A19-V1-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A20V2H4: {
-            id: "A20-V2-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A21V3H4: {
-            id: "A21-V3-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A22V4H4: {
-            id: "A22-V4-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A23V5H4: {
-            id: "A23-V5-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A24V6H4: {
-            id: "A24-V6-H4",
             name: "",
             chioce: false,
             showCell: true,
         },
         A25V1H5: {
-            id: "A25-V1-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A26V2H5: {
-            id: "A26-V2-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A27V3H5: {
-            id: "A27-V3-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A28V4H5: {
-            id: "A28-V4-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A29V5H5: {
-            id: "A29-V5-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A30V6H5: {
-            id: "A30-V6-H5",
             name: "",
             chioce: false,
             showCell: true,
         },
         A31V1H6: {
-            id: "A31-V1-H6",
             name: "",
             chioce: false,
             showCell: true,
         },
         A32V2H6: {
-            id: "A32-V2-H6",
             name: "",
             chioce: false,
             showCell: true,
         },
         A33V3H6: {
-            id: "A33-V3-H6",
             name: "",
             chioce: false,
             showCell: true,
         },
         A34V4H6: {
-            id: "A34-V4-H6",
             name: "",
             chioce: false,
             showCell: true,
         },
         A35V5H6: {
-            id: "A35-V5-H6",
             name: "",
             chioce: false,
             showCell: true,
         },
         A36V6H6: {
-            id: "A36-V6-H6",
             name: "",
             chioce: false,
             showCell: true,
@@ -573,10 +537,10 @@ function handleCloseWinModalRecipe() {
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
                 
-                <div className={classes.feilds}>
+                <div className={classes.fields}>
 
                     {/* HORIZONT 1 */}
-                    <div className={classes.feildH1}>
+                    <div className={classes.fieldH1}>
                         { cells.A1V1H1.showCell && <button 
                             className={classes.a1}
                             onClick={() => handleChoiceCell("A1V1H1")} 
@@ -676,7 +640,7 @@ function handleCloseWinModalRecipe() {
                     </div>
 
                     {/* HORIZONT 2 */}
-                    <div className={classes.feildH2}>
+                    <div className={classes.fieldH2}>
 
                         { cells.A7V1H2.showCell && <button 
                             className={classes.a7}
@@ -779,8 +743,7 @@ function handleCloseWinModalRecipe() {
                     </div>
 
                     {/* HORIZONT 3 */}
-                    <div className
-                    ={classes.feildH3}>
+                    <div className={classes.fieldH3}>
                         { cells.A13V1H3.showCell && <button   
                             className={classes.a13}
                             onClick={() => handleChoiceCell("A13V1H3")} 
@@ -885,8 +848,7 @@ function handleCloseWinModalRecipe() {
                     </div>
 
                     {/* HORIZONT 4 */}
-                    <div className
-                    ={classes.feildH4}>
+                    <div className={classes.fieldH4}>
                         { cells.A19V1H4.showCell && <button   
                             className={classes.a19}
                             onClick={() => handleChoiceCell("A19V1H4")} 
@@ -991,8 +953,7 @@ function handleCloseWinModalRecipe() {
                     </div>
 
                     {/* HORIZONT 5 */}
-                    <div className
-                    ={classes.feildH5}>
+                    <div className={classes.fieldH5}>
                         { cells.A25V1H5.showCell && <button   
                             className={classes.a25}
                             onClick={() => handleChoiceCell("A25V1H5")} 
@@ -1097,8 +1058,7 @@ function handleCloseWinModalRecipe() {
                     </div>
 
                     {/* HORIZONT 6 */}
-                    <div className
-                    ={classes.feildH6}>
+                    <div className={classes.fieldH6}>
                         { cells.A31V1H6.showCell && <button   
                             className={classes.a31}
                             onClick={() => handleChoiceCell("A31V1H6")} 

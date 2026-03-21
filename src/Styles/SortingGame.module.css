@@ -7,3 +7,206 @@
     background: url(../assets/TexturesOfSide.png) no-repeat center;
     background-size: cover;
 }
+
+.gameField{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: darkslategrey;
+    background-size: cover;
+    border-left: solid rgb(67, 58, 38) 3px;
+    border-right: solid rgb(67, 58, 38) 3px;
+}
+
+.fields{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 2.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.fieldH1{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: red;
+}
+
+.fieldH2{
+    width: 100%;
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: blue;
+}
+
+.fieldH3{
+    width: 100%;
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: green;
+}
+
+.fieldH4{
+    width: 100%;
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: yellow;
+}
+
+.fieldH5{
+    width: 100%;
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: violet;
+}
+
+.fieldH6{
+    width: 100%;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: gray;
+}
+
+.fieldH7{
+    width: 100%;
+    position: absolute;
+    top: 84%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    background: white;
+}
+
+
+.cellsLeftSide{
+    width: 6vw;
+    height: 6vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0;
+    margin-left: 11%;
+}
+
+.cellsCenterSide{
+    width: 6vw;
+    height: 6vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0;
+}
+
+.cellsRightSide{
+    width: 6vw;
+    height: 6vw;
+    border: solid wheat 1px;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0;
+    margin-right: 11%;
+}
+
+.redCells{
+    width: 100%;
+    height: 100%;
+    background: darkred;
+    border-radius: 10px;
+}
+
+.redCells:hover{
+    opacity: 0.5;
+}
+
+.blueCells{
+    width: 100%;
+    height: 100%;
+    background: darkblue;
+    border-radius: 10px;
+}
+
+.blueCells:hover{
+    opacity: 0.5;
+}
+
+.greenCells{
+    width: 100%;
+    height: 100%;
+    background: darkgreen;
+    border-radius: 10px;
+}
+
+.greenCells:hover{
+    opacity: 0.5;
+}
+
+.yellowCells{
+    width: 100%;
+    height: 100%;
+    background: gold;
+    border-radius: 10px;
+}
+
+.yellowCells:hover{
+    opacity: 0.5;
+}
+
+.violetCells{
+    width: 100%;
+    height: 100%;
+    background: darkmagenta;
+    border-radius: 10px;
+}
+
+.violetCells:hover{
+    opacity: 0.5;
+}
+
+.grayCells{
+    width: 100%;
+    height: 100%;
+    background: gray;
+    border-radius: 10px;
+}
+
+.grayCells:hover{
+    opacity: 0.5;
+}
+
+.jarCells{
+    width: 100%;
+    height: 100%;
+    background: lightseagreen;
+    border-radius: 10px;
+}
+
