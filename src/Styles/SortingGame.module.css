@@ -38,7 +38,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: red;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH2{
@@ -49,7 +50,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: blue;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH3{
@@ -60,7 +62,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: green;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH4{
@@ -71,7 +74,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: yellow;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH5{
@@ -82,7 +86,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: violet;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH6{
@@ -93,7 +98,8 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: gray;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 .fieldH7{
@@ -104,16 +110,14 @@
     transform: translateX(-50%);
     justify-content: space-between;
     display: flex;
-    background: white;
+    background: url(../assets/SortingGameImages/Shelf.png) center no-repeat;
+    background-size: contain;
 }
 
 
 .cellsLeftSide{
     width: 6vw;
     height: 6vw;
-    border: solid wheat 1px;
-    cursor: pointer;
-    border-radius: 10px;
     padding: 0;
     margin-left: 11%;
 }
@@ -121,18 +125,12 @@
 .cellsCenterSide{
     width: 6vw;
     height: 6vw;
-    border: solid wheat 1px;
-    cursor: pointer;
-    border-radius: 10px;
     padding: 0;
 }
 
 .cellsRightSide{
     width: 6vw;
     height: 6vw;
-    border: solid wheat 1px;
-    cursor: pointer;
-    border-radius: 10px;
     padding: 0;
     margin-right: 11%;
 }
@@ -140,8 +138,11 @@
 .redCells{
     width: 100%;
     height: 100%;
-    background: darkred;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/RedJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .redCells:hover{
@@ -151,8 +152,11 @@
 .blueCells{
     width: 100%;
     height: 100%;
-    background: darkblue;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/BlueJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .blueCells:hover{
@@ -162,8 +166,11 @@
 .greenCells{
     width: 100%;
     height: 100%;
-    background: darkgreen;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/GreenJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .greenCells:hover{
@@ -173,8 +180,11 @@
 .yellowCells{
     width: 100%;
     height: 100%;
-    background: gold;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/YellowJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .yellowCells:hover{
@@ -184,8 +194,11 @@
 .violetCells{
     width: 100%;
     height: 100%;
-    background: darkmagenta;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/VioletJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .violetCells:hover{
@@ -195,8 +208,11 @@
 .grayCells{
     width: 100%;
     height: 100%;
-    background: gray;
-    border-radius: 10px;
+    background: url(../assets/SortingGameImages/GrayJar.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
 }
 
 .grayCells:hover{
