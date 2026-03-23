@@ -1,5 +1,6 @@
 import { useState } from "react";
 import classes from "../../Styles/SortingGame.module.css";
+import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.png";
 
 export const GameSorting1lvl = () => {
     const [states, setStates] = useState({
@@ -23,6 +24,7 @@ export const GameSorting1lvl = () => {
             showLoseModal: false,
             showModalInfo: true,
             showWinModalRecipe: false,
+            door: true,
     });
 
     const [cells, setCells]: any = useState({
@@ -313,8 +315,10 @@ export const GameSorting1lvl = () => {
             return newCells;
     });
 
-    setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
-    setStates((prev: any) => ({...prev, stateStart: prev.stataStart === true}));
+    setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true, showModalIntro: false, showModalInfo: false}));
+    setTimeout(() => {
+        setStates((prev:any) => ({...prev, door: false}));
+    },2000);
 };
 
     function handleChoiceCell(cellKey: string) {
@@ -338,9 +342,20 @@ export const GameSorting1lvl = () => {
         <>
             <div className={classes.gamePage}>
 
-                { states.showButtonStart && <button className={classes.buttonStart} onClick={handleStartGame}>Старт</button>}
-
                 <div className={classes.gameField}>
+
+                        { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                        { states.showModalInfo && <div>
+                            <div className={classes.infoOverlay}> 
+                                <p className={classes.info}>Пожалуйста, помоги мне навести порядок в кладовой с банками.</p>
+                            </div>
+                                <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
+                        </div> }
+
+                        {states.door && <div className={states.stateStart ? classes.leftDoorOpen : !states.stateStart ? classes.leftDoorClose : classes.door}></div>}
+
+                        {states.door && <div className={states.stateStart ? classes.rightDoorOpen : !states.stateStart ? classes.rightDoorClose : classes.door}></div>}
 
                     <div className={classes.fields}>
 

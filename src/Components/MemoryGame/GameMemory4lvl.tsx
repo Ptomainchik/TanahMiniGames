@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import classes from "../../Styles/MemoryGame.module.css";
 import { useEffect, useState } from "react";
-import AppleImage from "../../assets/Apple.png";
-import ConeImage from "../../assets/Cone.png";
-import MushroomImage from "../../assets/Mushroom.png";
-import BerryImage from "../../assets/Berry.png";
-import FishImage from "../../assets/Fish.png";
-import MeatImage from "../../assets/Meat.png";
-import ElfGirl from "../../assets/ElfGirl.png";
-import SadElfGirl from "../../assets/SadElfGirl.png";
-import Casserole from "../../assets/Casserole.png";
+import AppleImage from "../../assets/MemoryGameImages/Apple.png";
+import ConeImage from "../../assets/MemoryGameImages/Cone.png";
+import MushroomImage from "../../assets/MemoryGameImages/Mushroom.png";
+import BerryImage from "../../assets/MemoryGameImages/Berry.png";
+import FishImage from "../../assets/MemoryGameImages/Fish.png";
+import MeatImage from "../../assets/MemoryGameImages/Meat.png";
+import ElfGirl from "../../assets/MemoryGameImages/ElfGirl.png";
+import SadElfGirl from "../../assets/MemoryGameImages/SadElfGirl.png";
+import Casserole from "../../assets/MemoryGameImages/Casserole.png";
 
 export const GameMemory4lvl = () => {
     const [start, setStart] = useState(false);
