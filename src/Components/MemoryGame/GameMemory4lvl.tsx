@@ -398,11 +398,6 @@ useEffect(() => {
     
 }, [states.counterCellsChoices, cells]); // Добавляем cells в зависимости
 
-
-useEffect(() => {
-
-},[]);
-
 // Функция выбора становится простой
 function handleChoiceCell(cellKey: string) {
     if (!cells[cellKey].chioce && states.counterCellsChoices < 3) {
