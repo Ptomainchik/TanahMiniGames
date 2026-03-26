@@ -637,7 +637,10 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A1V1H1")}
-                                    disabled={!states.stateStart || cells.A1V1H1.choice}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice 
+                                            || cells.A2V2H1.name !== "" || cells.A3V3H1.name !== "" 
+                                            || cells.A4V4H1.name !== "" || cells.A5V5H1.name !== "" 
+                                            || cells.A6V6H1.name !== "" || cells.A7V7H1.name !== ""}
                                 ></button>
                             </div>}
 
@@ -659,7 +662,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A2V2H1")}
-                                    disabled={!states.stateStart || cells.A2V2H1.choice}
+                                    disabled={!states.stateStart || cells.A2V2H1.choice
+                                            || cells.A3V3H1.name !== "" 
+                                            || cells.A4V4H1.name !== "" || cells.A5V5H1.name !== "" 
+                                            || cells.A6V6H1.name !== "" || cells.A7V7H1.name !== ""
+                                            || cells.A1V1H1.empty === true || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -681,7 +688,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A3V3H1")}
-                                    disabled={!states.stateStart || cells.A3V3H1.choice}
+                                    disabled={!states.stateStart || cells.A3V3H1.choice
+                                            || cells.A4V4H1.name !== "" || cells.A5V5H1.name !== "" 
+                                            || cells.A6V6H1.name !== "" || cells.A7V7H1.name !== ""
+                                            || cells.A2V2H1.empty === true
+                                            || cells.A2V2H1.choice || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -703,7 +714,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A4V4H1")}
-                                    disabled={!states.stateStart || cells.A4V4H1.choice}
+                                    disabled={!states.stateStart || cells.A4V4H1.choice
+                                            || cells.A5V5H1.name !== "" 
+                                            || cells.A6V6H1.name !== "" || cells.A7V7H1.name !== ""
+                                            || cells.A3V3H1.empty === true
+                                            || cells.A3V3H1.choice
+                                            || cells.A2V2H1.choice || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -725,7 +741,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A5V5H1")}
-                                    disabled={!states.stateStart || cells.A5V5H1.choice}
+                                    disabled={!states.stateStart || cells.A5V5H1.choice
+                                            || cells.A6V6H1.name !== "" || cells.A7V7H1.name !== ""
+                                            || cells.A4V4H1.empty === true 
+                                            || cells.A4V4H1.choice || cells.A3V3H1.choice
+                                            || cells.A2V2H1.choice || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -747,7 +767,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A6V6H1")}
-                                    disabled={!states.stateStart || cells.A6V6H1.choice}
+                                    disabled={!states.stateStart || cells.A6V6H1.choice
+                                            || cells.A7V7H1.name !== ""
+                                            || cells.A5V5H1.empty === true
+                                            || cells.A5V5H1.choice
+                                            || cells.A4V4H1.choice || cells.A3V3H1.choice
+                                            || cells.A2V2H1.choice || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -769,7 +794,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A7V7H1")}
-                                    disabled={!states.stateStart || cells.A7V7H1.choice}
+                                    disabled={!states.stateStart || cells.A7V7H1.choice 
+                                            || cells.A6V6H1.empty === true
+                                            || cells.A6V6H1.choice || cells.A5V5H1.choice
+                                            || cells.A4V4H1.choice || cells.A3V3H1.choice
+                                            || cells.A2V2H1.choice || cells.A1V1H1.choice}
                                 ></button>
                             </div>}
 
@@ -796,7 +825,10 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A8V1H2")}
-                                    disabled={!states.stateStart || cells.A8V1H2.choice}
+                                    disabled={!states.stateStart || cells.A8V1H2.choice 
+                                            || cells.A9V2H2.name !== "" || cells.A10V3H2.name !== "" 
+                                            || cells.A11V4H2.name !== "" || cells.A12V5H2.name !== "" 
+                                            || cells.A13V6H2.name !== "" || cells.A14V7H2.name !== ""}
                                 ></button>
                             </div>}
 
@@ -818,7 +850,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A9V2H2")}
-                                    disabled={!states.stateStart || cells.A9V2H2.choice}
+                                    disabled={!states.stateStart || cells.A9V2H2.choice
+                                            || cells.A10V3H2.name !== "" 
+                                            || cells.A11V4H2.name !== "" || cells.A12V5H2.name !== "" 
+                                            || cells.A13V6H2.name !== "" || cells.A14V7H2.name !== ""
+                                            || cells.A8V1H2.empty === true || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -840,7 +876,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A10V3H2")}
-                                    disabled={!states.stateStart || cells.A10V3H2.choice}
+                                    disabled={!states.stateStart || cells.A10V3H2.choice
+                                            || cells.A11V4H2.name !== "" || cells.A12V5H2.name !== "" 
+                                            || cells.A13V6H2.name !== "" || cells.A14V7H2.name !== ""
+                                            || cells.A9V2H2.empty === true
+                                            || cells.A9V2H2.choice || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -862,7 +902,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A11V4H2")}
-                                    disabled={!states.stateStart || cells.A11V4H2.choice}
+                                    disabled={!states.stateStart || cells.A11V4H2.choice
+                                            || cells.A12V5H2.name !== "" 
+                                            || cells.A13V6H2.name !== "" || cells.A14V7H2.name !== ""
+                                            || cells.A10V3H2.empty === true
+                                            || cells.A10V3H2.choice
+                                            || cells.A9V2H2.choice || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -884,7 +929,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A12V5H2")}
-                                    disabled={!states.stateStart || cells.A12V5H2.choice}
+                                    disabled={!states.stateStart || cells.A12V5H2.choice
+                                            || cells.A13V6H2.name !== "" || cells.A14V7H2.name !== ""
+                                            || cells.A11V4H2.empty === true 
+                                            || cells.A11V4H2.choice || cells.A10V3H2.choice
+                                            || cells.A9V2H2.choice || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -906,7 +955,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A13V6H2")}
-                                    disabled={!states.stateStart || cells.A13V6H2.choice}
+                                    disabled={!states.stateStart || cells.A13V6H2.choice
+                                            || cells.A14V7H2.name !== ""
+                                            || cells.A12V5H2.empty === true
+                                            || cells.A12V5H2.choice
+                                            || cells.A11V4H2.choice || cells.A10V3H2.choice
+                                            || cells.A9V2H2.choice || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -928,7 +982,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A14V7H2")}
-                                    disabled={!states.stateStart || cells.A14V7H2.choice}
+                                    disabled={!states.stateStart || cells.A14V7H2.choice 
+                                            || cells.A13V6H2.empty === true
+                                            || cells.A13V6H2.choice || cells.A12V5H2.choice
+                                            || cells.A11V4H2.choice || cells.A10V3H2.choice
+                                            || cells.A9V2H2.choice || cells.A8V1H2.choice}
                                 ></button>
                             </div>}
 
@@ -955,7 +1013,10 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A15V1H3")}
-                                    disabled={!states.stateStart || cells.A15V1H3.choice}
+                                    disabled={!states.stateStart || cells.A15V1H3.choice 
+                                            || cells.A16V2H3.name !== "" || cells.A17V3H3.name !== "" 
+                                            || cells.A18V4H3.name !== "" || cells.A19V5H3.name !== "" 
+                                            || cells.A20V6H3.name !== "" || cells.A21V7H3.name !== ""}
                                 ></button>
                             </div>}
 
@@ -977,7 +1038,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A16V2H3")}
-                                    disabled={!states.stateStart || cells.A16V2H3.choice}
+                                    disabled={!states.stateStart || cells.A16V2H3.choice
+                                            || cells.A17V3H3.name !== "" 
+                                            || cells.A18V4H3.name !== "" || cells.A19V5H3.name !== "" 
+                                            || cells.A20V6H3.name !== "" || cells.A21V7H3.name !== ""
+                                            || cells.A15V1H3.empty === true || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -999,7 +1064,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A17V3H3")}
-                                    disabled={!states.stateStart || cells.A17V3H3.choice}
+                                    disabled={!states.stateStart || cells.A17V3H3.choice
+                                            || cells.A18V4H3.name !== "" || cells.A19V5H3.name !== "" 
+                                            || cells.A20V6H3.name !== "" || cells.A21V7H3.name !== ""
+                                            || cells.A16V2H3.empty === true
+                                            || cells.A16V2H3.choice || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -1021,7 +1090,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A18V4H3")}
-                                    disabled={!states.stateStart || cells.A18V4H3.choice}
+                                    disabled={!states.stateStart || cells.A18V4H3.choice
+                                            || cells.A19V5H3.name !== "" 
+                                            || cells.A20V6H3.name !== "" || cells.A21V7H3.name !== ""
+                                            || cells.A17V3H3.empty === true
+                                            || cells.A17V3H3.choice
+                                            || cells.A16V2H3.choice || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -1043,7 +1117,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A19V5H3")}
-                                    disabled={!states.stateStart || cells.A19V5H3.choice}
+                                    disabled={!states.stateStart || cells.A19V5H3.choice
+                                            || cells.A20V6H3.name !== "" || cells.A21V7H3.name !== ""
+                                            || cells.A18V4H3.empty === true 
+                                            || cells.A18V4H3.choice || cells.A17V3H3.choice
+                                            || cells.A16V2H3.choice || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -1065,7 +1143,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A20V6H3")}
-                                    disabled={!states.stateStart || cells.A20V6H3.choice}
+                                    disabled={!states.stateStart || cells.A20V6H3.choice
+                                            || cells.A21V7H3.name !== ""
+                                            || cells.A19V5H3.empty === true
+                                            || cells.A19V5H3.choice
+                                            || cells.A18V4H3.choice || cells.A17V3H3.choice
+                                            || cells.A16V2H3.choice || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -1087,7 +1170,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A21V7H3")}
-                                    disabled={!states.stateStart || cells.A21V7H3.choice}
+                                    disabled={!states.stateStart || cells.A21V7H3.choice 
+                                            || cells.A20V6H3.empty === true
+                                            || cells.A20V6H3.choice || cells.A19V5H3.choice
+                                            || cells.A18V4H3.choice || cells.A17V3H3.choice
+                                            || cells.A16V2H3.choice || cells.A15V1H3.choice}
                                 ></button>
                             </div>}
 
@@ -1114,7 +1201,10 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A22V1H4")}
-                                    disabled={!states.stateStart || cells.A22V1H4.choice}
+                                    disabled={!states.stateStart || cells.A22V1H4.choice 
+                                            || cells.A23V2H4.name !== "" || cells.A24V3H4.name !== "" 
+                                            || cells.A25V4H4.name !== "" || cells.A26V5H4.name !== "" 
+                                            || cells.A27V6H4.name !== "" || cells.A28V7H4.name !== ""}
                                 ></button>
                             </div>}
 
@@ -1136,7 +1226,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A23V2H4")}
-                                    disabled={!states.stateStart || cells.A23V2H4.choice}
+                                    disabled={!states.stateStart || cells.A23V2H4.choice
+                                            || cells.A24V3H4.name !== "" 
+                                            || cells.A25V4H4.name !== "" || cells.A26V5H4.name !== "" 
+                                            || cells.A27V6H4.name !== "" || cells.A28V7H4.name !== ""
+                                            || cells.A22V1H4.empty === true || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1158,7 +1252,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A24V3H4")}
-                                    disabled={!states.stateStart || cells.A24V3H4.choice}
+                                    disabled={!states.stateStart || cells.A24V3H4.choice
+                                            || cells.A25V4H4.name !== "" || cells.A26V5H4.name !== "" 
+                                            || cells.A27V6H4.name !== "" || cells.A28V7H4.name !== ""
+                                            || cells.A23V2H4.empty === true
+                                            || cells.A23V2H4.choice || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1180,7 +1278,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A25V4H4")}
-                                    disabled={!states.stateStart || cells.A25V4H4.choice}
+                                    disabled={!states.stateStart || cells.A25V4H4.choice
+                                            || cells.A26V5H4.name !== "" 
+                                            || cells.A27V6H4.name !== "" || cells.A28V7H4.name !== ""
+                                            || cells.A24V3H4.empty === true
+                                            || cells.A24V3H4.choice
+                                            || cells.A23V2H4.choice || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1202,7 +1305,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A26V5H4")}
-                                    disabled={!states.stateStart || cells.A26V5H4.choice}
+                                    disabled={!states.stateStart || cells.A26V5H4.choice
+                                            || cells.A27V6H4.name !== "" || cells.A28V7H4.name !== ""
+                                            || cells.A25V4H4.empty === true 
+                                            || cells.A25V4H4.choice || cells.A24V3H4.choice
+                                            || cells.A23V2H4.choice || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1224,7 +1331,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A27V6H4")}
-                                    disabled={!states.stateStart || cells.A27V6H4.choice}
+                                    disabled={!states.stateStart || cells.A27V6H4.choice
+                                            || cells.A28V7H4.name !== ""
+                                            || cells.A26V5H4.empty === true
+                                            || cells.A26V5H4.choice
+                                            || cells.A25V4H4.choice || cells.A24V3H4.choice
+                                            || cells.A23V2H4.choice || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1246,7 +1358,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A28V7H4")}
-                                    disabled={!states.stateStart || cells.A28V7H4.choice}
+                                    disabled={!states.stateStart || cells.A28V7H4.choice 
+                                            || cells.A27V6H4.empty === true
+                                            || cells.A27V6H4.choice || cells.A26V5H4.choice
+                                            || cells.A25V4H4.choice || cells.A24V3H4.choice
+                                            || cells.A23V2H4.choice || cells.A22V1H4.choice}
                                 ></button>
                             </div>}
 
@@ -1273,7 +1389,10 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A29V1H5")}
-                                    disabled={!states.stateStart || cells.A29V1H5.choice}
+                                    disabled={!states.stateStart || cells.A29V1H5.choice 
+                                            || cells.A30V2H5.name !== "" || cells.A31V3H5.name !== "" 
+                                            || cells.A32V4H5.name !== "" || cells.A33V5H5.name !== "" 
+                                            || cells.A34V6H5.name !== "" || cells.A35V7H5.name !== ""}
                                 ></button>
                             </div>}
 
@@ -1295,7 +1414,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A30V2H5")}
-                                    disabled={!states.stateStart || cells.A30V2H5.choice}
+                                    disabled={!states.stateStart || cells.A30V2H5.choice
+                                            || cells.A31V3H5.name !== "" 
+                                            || cells.A32V4H5.name !== "" || cells.A33V5H5.name !== "" 
+                                            || cells.A34V6H5.name !== "" || cells.A35V7H5.name !== ""
+                                            || cells.A29V1H5.empty === true || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1317,7 +1440,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A31V3H5")}
-                                    disabled={!states.stateStart || cells.A31V3H5.choice}
+                                    disabled={!states.stateStart || cells.A31V3H5.choice
+                                            || cells.A32V4H5.name !== "" || cells.A33V5H5.name !== "" 
+                                            || cells.A34V6H5.name !== "" || cells.A35V7H5.name !== ""
+                                            || cells.A30V2H5.empty === true
+                                            || cells.A30V2H5.choice || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1339,7 +1466,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A32V4H5")}
-                                    disabled={!states.stateStart || cells.A32V4H5.choice}
+                                    disabled={!states.stateStart || cells.A32V4H5.choice
+                                            || cells.A33V5H5.name !== "" 
+                                            || cells.A34V6H5.name !== "" || cells.A35V7H5.name !== ""
+                                            || cells.A31V3H5.empty === true
+                                            || cells.A31V3H5.choice
+                                            || cells.A30V2H5.choice || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1361,7 +1493,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A33V5H5")}
-                                    disabled={!states.stateStart || cells.A33V5H5.choice}
+                                    disabled={!states.stateStart || cells.A33V5H5.choice
+                                            || cells.A34V6H5.name !== "" || cells.A35V7H5.name !== ""
+                                            || cells.A32V4H5.empty === true 
+                                            || cells.A32V4H5.choice || cells.A31V3H5.choice
+                                            || cells.A30V2H5.choice || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1383,7 +1519,12 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A34V6H5")}
-                                    disabled={!states.stateStart || cells.A34V6H5.choice}
+                                    disabled={!states.stateStart || cells.A34V6H5.choice
+                                            || cells.A35V7H5.name !== ""
+                                            || cells.A33V5H5.empty === true
+                                            || cells.A33V5H5.choice
+                                            || cells.A32V4H5.choice || cells.A31V3H5.choice
+                                            || cells.A30V2H5.choice || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1405,7 +1546,11 @@ export const GameSorting4lvl = () => {
                                         classes.jarCells
                                     }
                                     onClick={() => handleChoiceCell("A35V7H5")}
-                                    disabled={!states.stateStart || cells.A35V7H5.choice}
+                                    disabled={!states.stateStart || cells.A35V7H5.choice 
+                                            || cells.A34V6H5.empty === true
+                                            || cells.A34V6H5.choice || cells.A33V5H5.choice
+                                            || cells.A32V4H5.choice || cells.A31V3H5.choice
+                                            || cells.A30V2H5.choice || cells.A29V1H5.choice}
                                 ></button>
                             </div>}
 
@@ -1414,322 +1559,378 @@ export const GameSorting4lvl = () => {
                         {/* HORIZONT 6 */}
                         <div className={classes.fieldH6} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
 
-                                {cells.A36V1H6.showCell && <div className={classes.cellsLeftSide}>
-                                    <button
-                                        className={
-                                            cells.A36V1H6.name === "RedJar" && cells.A36V1H6.choice === false ? classes.redCells :
-                                            cells.A36V1H6.name === "BlueJar" && cells.A36V1H6.choice === false ? classes.blueCells :
-                                            cells.A36V1H6.name === "GreenJar" && cells.A36V1H6.choice === false ? classes.greenCells :
-                                            cells.A36V1H6.name === "YellowJar" && cells.A36V1H6.choice === false ? classes.yellowCells :
-                                            cells.A36V1H6.name === "VioletJar" && cells.A36V1H6.choice === false ? classes.violetCells :
-                                            cells.A36V1H6.name === "GrayJar" && cells.A36V1H6.choice === false ? classes.grayCells :
-                                            cells.A36V1H6.name === "RedJar" && cells.A36V1H6.choice === true ? classes.redCellsChoice :
-                                            cells.A36V1H6.name === "BlueJar" && cells.A36V1H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A36V1H6.name === "GreenJar" && cells.A36V1H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A36V1H6.name === "YellowJar" && cells.A36V1H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A36V1H6.name === "VioletJar" && cells.A36V1H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A36V1H6.name === "GrayJar" && cells.A36V1H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A36V1H6")}
-                                        disabled={!states.stateStart || cells.A36V1H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A36V1H6.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={
+                                        cells.A36V1H6.name === "RedJar" && cells.A36V1H6.choice === false ? classes.redCells :
+                                        cells.A36V1H6.name === "BlueJar" && cells.A36V1H6.choice === false ? classes.blueCells :
+                                        cells.A36V1H6.name === "GreenJar" && cells.A36V1H6.choice === false ? classes.greenCells :
+                                        cells.A36V1H6.name === "YellowJar" && cells.A36V1H6.choice === false ? classes.yellowCells :
+                                        cells.A36V1H6.name === "VioletJar" && cells.A36V1H6.choice === false ? classes.violetCells :
+                                        cells.A36V1H6.name === "GrayJar" && cells.A36V1H6.choice === false ? classes.grayCells :
+                                        cells.A36V1H6.name === "RedJar" && cells.A36V1H6.choice === true ? classes.redCellsChoice :
+                                        cells.A36V1H6.name === "BlueJar" && cells.A36V1H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A36V1H6.name === "GreenJar" && cells.A36V1H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A36V1H6.name === "YellowJar" && cells.A36V1H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A36V1H6.name === "VioletJar" && cells.A36V1H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A36V1H6.name === "GrayJar" && cells.A36V1H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A36V1H6")}
+                                    disabled={!states.stateStart || cells.A36V1H6.choice 
+                                            || cells.A37V2H6.name !== "" || cells.A38V3H6.name !== "" 
+                                            || cells.A39V4H6.name !== "" || cells.A40V5H6.name !== "" 
+                                            || cells.A41V6H6.name !== "" || cells.A42V7H6.name !== ""}
+                                ></button>
+                            </div>}
 
-                                {cells.A37V2H6.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A37V2H6.name === "RedJar" && cells.A37V2H6.choice === false ? classes.redCells :
-                                            cells.A37V2H6.name === "BlueJar" && cells.A37V2H6.choice === false ? classes.blueCells :
-                                            cells.A37V2H6.name === "GreenJar" && cells.A37V2H6.choice === false ? classes.greenCells :
-                                            cells.A37V2H6.name === "YellowJar" && cells.A37V2H6.choice === false ? classes.yellowCells :
-                                            cells.A37V2H6.name === "VioletJar" && cells.A37V2H6.choice === false ? classes.violetCells :
-                                            cells.A37V2H6.name === "GrayJar" && cells.A37V2H6.choice === false ? classes.grayCells :
-                                            cells.A37V2H6.name === "RedJar" && cells.A37V2H6.choice === true ? classes.redCellsChoice :
-                                            cells.A37V2H6.name === "BlueJar" && cells.A37V2H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A37V2H6.name === "GreenJar" && cells.A37V2H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A37V2H6.name === "YellowJar" && cells.A37V2H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A37V2H6.name === "VioletJar" && cells.A37V2H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A37V2H6.name === "GrayJar" && cells.A37V2H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A37V2H6")}
-                                        disabled={!states.stateStart || cells.A37V2H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A37V2H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A37V2H6.name === "RedJar" && cells.A37V2H6.choice === false ? classes.redCells :
+                                        cells.A37V2H6.name === "BlueJar" && cells.A37V2H6.choice === false ? classes.blueCells :
+                                        cells.A37V2H6.name === "GreenJar" && cells.A37V2H6.choice === false ? classes.greenCells :
+                                        cells.A37V2H6.name === "YellowJar" && cells.A37V2H6.choice === false ? classes.yellowCells :
+                                        cells.A37V2H6.name === "VioletJar" && cells.A37V2H6.choice === false ? classes.violetCells :
+                                        cells.A37V2H6.name === "GrayJar" && cells.A37V2H6.choice === false ? classes.grayCells :
+                                        cells.A37V2H6.name === "RedJar" && cells.A37V2H6.choice === true ? classes.redCellsChoice :
+                                        cells.A37V2H6.name === "BlueJar" && cells.A37V2H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A37V2H6.name === "GreenJar" && cells.A37V2H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A37V2H6.name === "YellowJar" && cells.A37V2H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A37V2H6.name === "VioletJar" && cells.A37V2H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A37V2H6.name === "GrayJar" && cells.A37V2H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A37V2H6")}
+                                    disabled={!states.stateStart || cells.A37V2H6.choice
+                                            || cells.A38V3H6.name !== "" 
+                                            || cells.A39V4H6.name !== "" || cells.A40V5H6.name !== "" 
+                                            || cells.A41V6H6.name !== "" || cells.A42V7H6.name !== ""
+                                            || cells.A36V1H6.empty === true || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A38V3H6.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A38V3H6.name === "RedJar" && cells.A38V3H6.choice === false ? classes.redCells :
-                                            cells.A38V3H6.name === "BlueJar" && cells.A38V3H6.choice === false ? classes.blueCells :
-                                            cells.A38V3H6.name === "GreenJar" && cells.A38V3H6.choice === false ? classes.greenCells :
-                                            cells.A38V3H6.name === "YellowJar" && cells.A38V3H6.choice === false ? classes.yellowCells :
-                                            cells.A38V3H6.name === "VioletJar" && cells.A38V3H6.choice === false ? classes.violetCells :
-                                            cells.A38V3H6.name === "GrayJar" && cells.A38V3H6.choice === false ? classes.grayCells :
-                                            cells.A38V3H6.name === "RedJar" && cells.A38V3H6.choice === true ? classes.redCellsChoice :
-                                            cells.A38V3H6.name === "BlueJar" && cells.A38V3H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A38V3H6.name === "GreenJar" && cells.A38V3H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A38V3H6.name === "YellowJar" && cells.A38V3H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A38V3H6.name === "VioletJar" && cells.A38V3H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A38V3H6.name === "GrayJar" && cells.A38V3H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A38V3H6")}
-                                        disabled={!states.stateStart || cells.A38V3H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A38V3H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A38V3H6.name === "RedJar" && cells.A38V3H6.choice === false ? classes.redCells :
+                                        cells.A38V3H6.name === "BlueJar" && cells.A38V3H6.choice === false ? classes.blueCells :
+                                        cells.A38V3H6.name === "GreenJar" && cells.A38V3H6.choice === false ? classes.greenCells :
+                                        cells.A38V3H6.name === "YellowJar" && cells.A38V3H6.choice === false ? classes.yellowCells :
+                                        cells.A38V3H6.name === "VioletJar" && cells.A38V3H6.choice === false ? classes.violetCells :
+                                        cells.A38V3H6.name === "GrayJar" && cells.A38V3H6.choice === false ? classes.grayCells :
+                                        cells.A38V3H6.name === "RedJar" && cells.A38V3H6.choice === true ? classes.redCellsChoice :
+                                        cells.A38V3H6.name === "BlueJar" && cells.A38V3H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A38V3H6.name === "GreenJar" && cells.A38V3H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A38V3H6.name === "YellowJar" && cells.A38V3H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A38V3H6.name === "VioletJar" && cells.A38V3H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A38V3H6.name === "GrayJar" && cells.A38V3H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A38V3H6")}
+                                    disabled={!states.stateStart || cells.A38V3H6.choice
+                                            || cells.A39V4H6.name !== "" || cells.A40V5H6.name !== "" 
+                                            || cells.A41V6H6.name !== "" || cells.A42V7H6.name !== ""
+                                            || cells.A37V2H6.empty === true
+                                            || cells.A37V2H6.choice || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A39V4H6.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A39V4H6.name === "RedJar" && cells.A39V4H6.choice === false ? classes.redCells :
-                                            cells.A39V4H6.name === "BlueJar" && cells.A39V4H6.choice === false ? classes.blueCells :
-                                            cells.A39V4H6.name === "GreenJar" && cells.A39V4H6.choice === false ? classes.greenCells :
-                                            cells.A39V4H6.name === "YellowJar" && cells.A39V4H6.choice === false ? classes.yellowCells :
-                                            cells.A39V4H6.name === "VioletJar" && cells.A39V4H6.choice === false ? classes.violetCells :
-                                            cells.A39V4H6.name === "GrayJar" && cells.A39V4H6.choice === false ? classes.grayCells :
-                                            cells.A39V4H6.name === "RedJar" && cells.A39V4H6.choice === true ? classes.redCellsChoice :
-                                            cells.A39V4H6.name === "BlueJar" && cells.A39V4H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A39V4H6.name === "GreenJar" && cells.A39V4H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A39V4H6.name === "YellowJar" && cells.A39V4H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A39V4H6.name === "VioletJar" && cells.A39V4H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A39V4H6.name === "GrayJar" && cells.A39V4H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A39V4H6")}
-                                        disabled={!states.stateStart || cells.A39V4H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A39V4H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A39V4H6.name === "RedJar" && cells.A39V4H6.choice === false ? classes.redCells :
+                                        cells.A39V4H6.name === "BlueJar" && cells.A39V4H6.choice === false ? classes.blueCells :
+                                        cells.A39V4H6.name === "GreenJar" && cells.A39V4H6.choice === false ? classes.greenCells :
+                                        cells.A39V4H6.name === "YellowJar" && cells.A39V4H6.choice === false ? classes.yellowCells :
+                                        cells.A39V4H6.name === "VioletJar" && cells.A39V4H6.choice === false ? classes.violetCells :
+                                        cells.A39V4H6.name === "GrayJar" && cells.A39V4H6.choice === false ? classes.grayCells :
+                                        cells.A39V4H6.name === "RedJar" && cells.A39V4H6.choice === true ? classes.redCellsChoice :
+                                        cells.A39V4H6.name === "BlueJar" && cells.A39V4H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A39V4H6.name === "GreenJar" && cells.A39V4H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A39V4H6.name === "YellowJar" && cells.A39V4H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A39V4H6.name === "VioletJar" && cells.A39V4H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A39V4H6.name === "GrayJar" && cells.A39V4H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A39V4H6")}
+                                    disabled={!states.stateStart || cells.A39V4H6.choice
+                                            || cells.A40V5H6.name !== "" 
+                                            || cells.A41V6H6.name !== "" || cells.A42V7H6.name !== ""
+                                            || cells.A38V3H6.empty === true
+                                            || cells.A38V3H6.choice
+                                            || cells.A37V2H6.choice || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A40V5H6.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A40V5H6.name === "RedJar" && cells.A40V5H6.choice === false ? classes.redCells :
-                                            cells.A40V5H6.name === "BlueJar" && cells.A40V5H6.choice === false ? classes.blueCells :
-                                            cells.A40V5H6.name === "GreenJar" && cells.A40V5H6.choice === false ? classes.greenCells :
-                                            cells.A40V5H6.name === "YellowJar" && cells.A40V5H6.choice === false ? classes.yellowCells :
-                                            cells.A40V5H6.name === "VioletJar" && cells.A40V5H6.choice === false ? classes.violetCells :
-                                            cells.A40V5H6.name === "GrayJar" && cells.A40V5H6.choice === false ? classes.grayCells :
-                                            cells.A40V5H6.name === "RedJar" && cells.A40V5H6.choice === true ? classes.redCellsChoice :
-                                            cells.A40V5H6.name === "BlueJar" && cells.A40V5H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A40V5H6.name === "GreenJar" && cells.A40V5H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A40V5H6.name === "YellowJar" && cells.A40V5H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A40V5H6.name === "VioletJar" && cells.A40V5H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A40V5H6.name === "GrayJar" && cells.A40V5H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A40V5H6")}
-                                        disabled={!states.stateStart || cells.A40V5H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A40V5H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A40V5H6.name === "RedJar" && cells.A40V5H6.choice === false ? classes.redCells :
+                                        cells.A40V5H6.name === "BlueJar" && cells.A40V5H6.choice === false ? classes.blueCells :
+                                        cells.A40V5H6.name === "GreenJar" && cells.A40V5H6.choice === false ? classes.greenCells :
+                                        cells.A40V5H6.name === "YellowJar" && cells.A40V5H6.choice === false ? classes.yellowCells :
+                                        cells.A40V5H6.name === "VioletJar" && cells.A40V5H6.choice === false ? classes.violetCells :
+                                        cells.A40V5H6.name === "GrayJar" && cells.A40V5H6.choice === false ? classes.grayCells :
+                                        cells.A40V5H6.name === "RedJar" && cells.A40V5H6.choice === true ? classes.redCellsChoice :
+                                        cells.A40V5H6.name === "BlueJar" && cells.A40V5H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A40V5H6.name === "GreenJar" && cells.A40V5H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A40V5H6.name === "YellowJar" && cells.A40V5H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A40V5H6.name === "VioletJar" && cells.A40V5H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A40V5H6.name === "GrayJar" && cells.A40V5H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A40V5H6")}
+                                    disabled={!states.stateStart || cells.A40V5H6.choice
+                                            || cells.A41V6H6.name !== "" || cells.A42V7H6.name !== ""
+                                            || cells.A39V4H6.empty === true 
+                                            || cells.A39V4H6.choice || cells.A38V3H6.choice
+                                            || cells.A37V2H6.choice || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A41V6H6.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A41V6H6.name === "RedJar" && cells.A41V6H6.choice === false ? classes.redCells :
-                                            cells.A41V6H6.name === "BlueJar" && cells.A41V6H6.choice === false ? classes.blueCells :
-                                            cells.A41V6H6.name === "GreenJar" && cells.A41V6H6.choice === false ? classes.greenCells :
-                                            cells.A41V6H6.name === "YellowJar" && cells.A41V6H6.choice === false ? classes.yellowCells :
-                                            cells.A41V6H6.name === "VioletJar" && cells.A41V6H6.choice === false ? classes.violetCells :
-                                            cells.A41V6H6.name === "GrayJar" && cells.A41V6H6.choice === false ? classes.grayCells :
-                                            cells.A41V6H6.name === "RedJar" && cells.A41V6H6.choice === true ? classes.redCellsChoice :
-                                            cells.A41V6H6.name === "BlueJar" && cells.A41V6H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A41V6H6.name === "GreenJar" && cells.A41V6H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A41V6H6.name === "YellowJar" && cells.A41V6H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A41V6H6.name === "VioletJar" && cells.A41V6H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A41V6H6.name === "GrayJar" && cells.A41V6H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A41V6H6")}
-                                        disabled={!states.stateStart || cells.A41V6H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A41V6H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A41V6H6.name === "RedJar" && cells.A41V6H6.choice === false ? classes.redCells :
+                                        cells.A41V6H6.name === "BlueJar" && cells.A41V6H6.choice === false ? classes.blueCells :
+                                        cells.A41V6H6.name === "GreenJar" && cells.A41V6H6.choice === false ? classes.greenCells :
+                                        cells.A41V6H6.name === "YellowJar" && cells.A41V6H6.choice === false ? classes.yellowCells :
+                                        cells.A41V6H6.name === "VioletJar" && cells.A41V6H6.choice === false ? classes.violetCells :
+                                        cells.A41V6H6.name === "GrayJar" && cells.A41V6H6.choice === false ? classes.grayCells :
+                                        cells.A41V6H6.name === "RedJar" && cells.A41V6H6.choice === true ? classes.redCellsChoice :
+                                        cells.A41V6H6.name === "BlueJar" && cells.A41V6H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A41V6H6.name === "GreenJar" && cells.A41V6H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A41V6H6.name === "YellowJar" && cells.A41V6H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A41V6H6.name === "VioletJar" && cells.A41V6H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A41V6H6.name === "GrayJar" && cells.A41V6H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A41V6H6")}
+                                    disabled={!states.stateStart || cells.A41V6H6.choice
+                                            || cells.A42V7H6.name !== ""
+                                            || cells.A40V5H6.empty === true
+                                            || cells.A40V5H6.choice
+                                            || cells.A39V4H6.choice || cells.A38V3H6.choice
+                                            || cells.A37V2H6.choice || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A42V7H6.showCell && <div className={classes.cellsRightSide}>
-                                    <button
-                                        className={
-                                            cells.A42V7H6.name === "RedJar" && cells.A42V7H6.choice === false ? classes.redCells :
-                                            cells.A42V7H6.name === "BlueJar" && cells.A42V7H6.choice === false ? classes.blueCells :
-                                            cells.A42V7H6.name === "GreenJar" && cells.A42V7H6.choice === false ? classes.greenCells :
-                                            cells.A42V7H6.name === "YellowJar" && cells.A42V7H6.choice === false ? classes.yellowCells :
-                                            cells.A42V7H6.name === "VioletJar" && cells.A42V7H6.choice === false ? classes.violetCells :
-                                            cells.A42V7H6.name === "GrayJar" && cells.A42V7H6.choice === false ? classes.grayCells :
-                                            cells.A42V7H6.name === "RedJar" && cells.A42V7H6.choice === true ? classes.redCellsChoice :
-                                            cells.A42V7H6.name === "BlueJar" && cells.A42V7H6.choice === true ? classes.blueCellsChoice :
-                                            cells.A42V7H6.name === "GreenJar" && cells.A42V7H6.choice === true ? classes.greenCellsChoice :
-                                            cells.A42V7H6.name === "YellowJar" && cells.A42V7H6.choice === true ? classes.yellowCellsChoice :
-                                            cells.A42V7H6.name === "VioletJar" && cells.A42V7H6.choice === true ? classes.violetCellsChoice :
-                                            cells.A42V7H6.name === "GrayJar" && cells.A42V7H6.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A42V7H6")}
-                                        disabled={!states.stateStart || cells.A42V7H6.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A42V7H6.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={
+                                        cells.A42V7H6.name === "RedJar" && cells.A42V7H6.choice === false ? classes.redCells :
+                                        cells.A42V7H6.name === "BlueJar" && cells.A42V7H6.choice === false ? classes.blueCells :
+                                        cells.A42V7H6.name === "GreenJar" && cells.A42V7H6.choice === false ? classes.greenCells :
+                                        cells.A42V7H6.name === "YellowJar" && cells.A42V7H6.choice === false ? classes.yellowCells :
+                                        cells.A42V7H6.name === "VioletJar" && cells.A42V7H6.choice === false ? classes.violetCells :
+                                        cells.A42V7H6.name === "GrayJar" && cells.A42V7H6.choice === false ? classes.grayCells :
+                                        cells.A42V7H6.name === "RedJar" && cells.A42V7H6.choice === true ? classes.redCellsChoice :
+                                        cells.A42V7H6.name === "BlueJar" && cells.A42V7H6.choice === true ? classes.blueCellsChoice :
+                                        cells.A42V7H6.name === "GreenJar" && cells.A42V7H6.choice === true ? classes.greenCellsChoice :
+                                        cells.A42V7H6.name === "YellowJar" && cells.A42V7H6.choice === true ? classes.yellowCellsChoice :
+                                        cells.A42V7H6.name === "VioletJar" && cells.A42V7H6.choice === true ? classes.violetCellsChoice :
+                                        cells.A42V7H6.name === "GrayJar" && cells.A42V7H6.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A42V7H6")}
+                                    disabled={!states.stateStart || cells.A42V7H6.choice 
+                                            || cells.A41V6H6.empty === true
+                                            || cells.A41V6H6.choice || cells.A40V5H6.choice
+                                            || cells.A39V4H6.choice || cells.A38V3H6.choice
+                                            || cells.A37V2H6.choice || cells.A36V1H6.choice}
+                                ></button>
+                            </div>}
 
                         </div>
 
                         {/* HORIZONT 7 */}
                         <div className={classes.fieldH7} style={{background: `url(${Shelf}) center no-repeat`,backgroundSize: "contain"}}>
 
-                                {cells.A43V1H7.showCell && <div className={classes.cellsLeftSide}>
-                                    <button
-                                        className={
-                                            cells.A43V1H7.name === "RedJar" && cells.A43V1H7.choice === false ? classes.redCells :
-                                            cells.A43V1H7.name === "BlueJar" && cells.A43V1H7.choice === false ? classes.blueCells :
-                                            cells.A43V1H7.name === "GreenJar" && cells.A43V1H7.choice === false ? classes.greenCells :
-                                            cells.A43V1H7.name === "YellowJar" && cells.A43V1H7.choice === false ? classes.yellowCells :
-                                            cells.A43V1H7.name === "VioletJar" && cells.A43V1H7.choice === false ? classes.violetCells :
-                                            cells.A43V1H7.name === "GrayJar" && cells.A43V1H7.choice === false ? classes.grayCells :
-                                            cells.A43V1H7.name === "RedJar" && cells.A43V1H7.choice === true ? classes.redCellsChoice :
-                                            cells.A43V1H7.name === "BlueJar" && cells.A43V1H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A43V1H7.name === "GreenJar" && cells.A43V1H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A43V1H7.name === "YellowJar" && cells.A43V1H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A43V1H7.name === "VioletJar" && cells.A43V1H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A43V1H7.name === "GrayJar" && cells.A43V1H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A43V1H7")}
-                                        disabled={!states.stateStart || cells.A43V1H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A43V1H7.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={
+                                        cells.A43V1H7.name === "RedJar" && cells.A43V1H7.choice === false ? classes.redCells :
+                                        cells.A43V1H7.name === "BlueJar" && cells.A43V1H7.choice === false ? classes.blueCells :
+                                        cells.A43V1H7.name === "GreenJar" && cells.A43V1H7.choice === false ? classes.greenCells :
+                                        cells.A43V1H7.name === "YellowJar" && cells.A43V1H7.choice === false ? classes.yellowCells :
+                                        cells.A43V1H7.name === "VioletJar" && cells.A43V1H7.choice === false ? classes.violetCells :
+                                        cells.A43V1H7.name === "GrayJar" && cells.A43V1H7.choice === false ? classes.grayCells :
+                                        cells.A43V1H7.name === "RedJar" && cells.A43V1H7.choice === true ? classes.redCellsChoice :
+                                        cells.A43V1H7.name === "BlueJar" && cells.A43V1H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A43V1H7.name === "GreenJar" && cells.A43V1H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A43V1H7.name === "YellowJar" && cells.A43V1H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A43V1H7.name === "VioletJar" && cells.A43V1H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A43V1H7.name === "GrayJar" && cells.A43V1H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A43V1H7")}
+                                    disabled={!states.stateStart || cells.A43V1H7.choice 
+                                            || !cells.A44V2H7.empty || !cells.A45V3H7.empty
+                                            || !cells.A46V4H7.empty || !cells.A47V5H7.empty 
+                                            || !cells.A48V6H7.empty || !cells.A49V7H7.empty}
+                                ></button>
+                            </div>}
 
-                                {cells.A44V2H7.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A44V2H7.name === "RedJar" && cells.A44V2H7.choice === false ? classes.redCells :
-                                            cells.A44V2H7.name === "BlueJar" && cells.A44V2H7.choice === false ? classes.blueCells :
-                                            cells.A44V2H7.name === "GreenJar" && cells.A44V2H7.choice === false ? classes.greenCells :
-                                            cells.A44V2H7.name === "YellowJar" && cells.A44V2H7.choice === false ? classes.yellowCells :
-                                            cells.A44V2H7.name === "VioletJar" && cells.A44V2H7.choice === false ? classes.violetCells :
-                                            cells.A44V2H7.name === "GrayJar" && cells.A44V2H7.choice === false ? classes.grayCells :
-                                            cells.A44V2H7.name === "RedJar" && cells.A44V2H7.choice === true ? classes.redCellsChoice :
-                                            cells.A44V2H7.name === "BlueJar" && cells.A44V2H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A44V2H7.name === "GreenJar" && cells.A44V2H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A44V2H7.name === "YellowJar" && cells.A44V2H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A44V2H7.name === "VioletJar" && cells.A44V2H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A44V2H7.name === "GrayJar" && cells.A44V2H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A44V2H7")}
-                                        disabled={!states.stateStart || cells.A44V2H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A44V2H7.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A44V2H7.name === "RedJar" && cells.A44V2H7.choice === false ? classes.redCells :
+                                        cells.A44V2H7.name === "BlueJar" && cells.A44V2H7.choice === false ? classes.blueCells :
+                                        cells.A44V2H7.name === "GreenJar" && cells.A44V2H7.choice === false ? classes.greenCells :
+                                        cells.A44V2H7.name === "YellowJar" && cells.A44V2H7.choice === false ? classes.yellowCells :
+                                        cells.A44V2H7.name === "VioletJar" && cells.A44V2H7.choice === false ? classes.violetCells :
+                                        cells.A44V2H7.name === "GrayJar" && cells.A44V2H7.choice === false ? classes.grayCells :
+                                        cells.A44V2H7.name === "RedJar" && cells.A44V2H7.choice === true ? classes.redCellsChoice :
+                                        cells.A44V2H7.name === "BlueJar" && cells.A44V2H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A44V2H7.name === "GreenJar" && cells.A44V2H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A44V2H7.name === "YellowJar" && cells.A44V2H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A44V2H7.name === "VioletJar" && cells.A44V2H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A44V2H7.name === "GrayJar" && cells.A44V2H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A44V2H7")}
+                                    disabled={!states.stateStart || cells.A44V2H7.choice
+                                            || !cells.A45V3H7.empty 
+                                            || !cells.A46V4H7.empty || !cells.A47V5H7.empty
+                                            || !cells.A48V6H7.empty || !cells.A49V7H7.empty
+                                            || cells.A43V1H7.empty || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A45V3H7.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A45V3H7.name === "RedJar" && cells.A45V3H7.choice === false ? classes.redCells :
-                                            cells.A45V3H7.name === "BlueJar" && cells.A45V3H7.choice === false ? classes.blueCells :
-                                            cells.A45V3H7.name === "GreenJar" && cells.A45V3H7.choice === false ? classes.greenCells :
-                                            cells.A45V3H7.name === "YellowJar" && cells.A45V3H7.choice === false ? classes.yellowCells :
-                                            cells.A45V3H7.name === "VioletJar" && cells.A45V3H7.choice === false ? classes.violetCells :
-                                            cells.A45V3H7.name === "GrayJar" && cells.A45V3H7.choice === false ? classes.grayCells :
-                                            cells.A45V3H7.name === "RedJar" && cells.A45V3H7.choice === true ? classes.redCellsChoice :
-                                            cells.A45V3H7.name === "BlueJar" && cells.A45V3H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A45V3H7.name === "GreenJar" && cells.A45V3H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A45V3H7.name === "YellowJar" && cells.A45V3H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A45V3H7.name === "VioletJar" && cells.A45V3H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A45V3H7.name === "GrayJar" && cells.A45V3H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A45V3H7")}
-                                        disabled={!states.stateStart || cells.A45V3H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A45V3H7.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A45V3H7.name === "RedJar" && cells.A45V3H7.choice === false ? classes.redCells :
+                                        cells.A45V3H7.name === "BlueJar" && cells.A45V3H7.choice === false ? classes.blueCells :
+                                        cells.A45V3H7.name === "GreenJar" && cells.A45V3H7.choice === false ? classes.greenCells :
+                                        cells.A45V3H7.name === "YellowJar" && cells.A45V3H7.choice === false ? classes.yellowCells :
+                                        cells.A45V3H7.name === "VioletJar" && cells.A45V3H7.choice === false ? classes.violetCells :
+                                        cells.A45V3H7.name === "GrayJar" && cells.A45V3H7.choice === false ? classes.grayCells :
+                                        cells.A45V3H7.name === "RedJar" && cells.A45V3H7.choice === true ? classes.redCellsChoice :
+                                        cells.A45V3H7.name === "BlueJar" && cells.A45V3H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A45V3H7.name === "GreenJar" && cells.A45V3H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A45V3H7.name === "YellowJar" && cells.A45V3H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A45V3H7.name === "VioletJar" && cells.A45V3H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A45V3H7.name === "GrayJar" && cells.A45V3H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A45V3H7")}
+                                    disabled={!states.stateStart || cells.A45V3H7.choice
+                                            || !cells.A46V4H7.empty || !cells.A47V5H7.empty 
+                                            || !cells.A48V6H7.empty || !cells.A49V7H7.empty
+                                            || cells.A44V2H7.empty
+                                            || cells.A44V2H7.choice || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A46V4H7.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A46V4H7.name === "RedJar" && cells.A46V4H7.choice === false ? classes.redCells :
-                                            cells.A46V4H7.name === "BlueJar" && cells.A46V4H7.choice === false ? classes.blueCells :
-                                            cells.A46V4H7.name === "GreenJar" && cells.A46V4H7.choice === false ? classes.greenCells :
-                                            cells.A46V4H7.name === "YellowJar" && cells.A46V4H7.choice === false ? classes.yellowCells :
-                                            cells.A46V4H7.name === "VioletJar" && cells.A46V4H7.choice === false ? classes.violetCells :
-                                            cells.A46V4H7.name === "GrayJar" && cells.A46V4H7.choice === false ? classes.grayCells :
-                                            cells.A46V4H7.name === "RedJar" && cells.A46V4H7.choice === true ? classes.redCellsChoice :
-                                            cells.A46V4H7.name === "BlueJar" && cells.A46V4H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A46V4H7.name === "GreenJar" && cells.A46V4H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A46V4H7.name === "YellowJar" && cells.A46V4H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A46V4H7.name === "VioletJar" && cells.A46V4H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A46V4H7.name === "GrayJar" && cells.A46V4H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A46V4H7")}
-                                        disabled={!states.stateStart || cells.A46V4H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A46V4H7.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A46V4H7.name === "RedJar" && cells.A46V4H7.choice === false ? classes.redCells :
+                                        cells.A46V4H7.name === "BlueJar" && cells.A46V4H7.choice === false ? classes.blueCells :
+                                        cells.A46V4H7.name === "GreenJar" && cells.A46V4H7.choice === false ? classes.greenCells :
+                                        cells.A46V4H7.name === "YellowJar" && cells.A46V4H7.choice === false ? classes.yellowCells :
+                                        cells.A46V4H7.name === "VioletJar" && cells.A46V4H7.choice === false ? classes.violetCells :
+                                        cells.A46V4H7.name === "GrayJar" && cells.A46V4H7.choice === false ? classes.grayCells :
+                                        cells.A46V4H7.name === "RedJar" && cells.A46V4H7.choice === true ? classes.redCellsChoice :
+                                        cells.A46V4H7.name === "BlueJar" && cells.A46V4H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A46V4H7.name === "GreenJar" && cells.A46V4H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A46V4H7.name === "YellowJar" && cells.A46V4H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A46V4H7.name === "VioletJar" && cells.A46V4H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A46V4H7.name === "GrayJar" && cells.A46V4H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A46V4H7")}
+                                    disabled={!states.stateStart || cells.A46V4H7.choice
+                                            || !cells.A47V5H7.empty 
+                                            || !cells.A48V6H7.empty || !cells.A49V7H7.empty
+                                            || cells.A45V3H7.empty
+                                            || cells.A45V3H7.choice
+                                            || cells.A44V2H7.choice || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A47V5H7.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A47V5H7.name === "RedJar" && cells.A47V5H7.choice === false ? classes.redCells :
-                                            cells.A47V5H7.name === "BlueJar" && cells.A47V5H7.choice === false ? classes.blueCells :
-                                            cells.A47V5H7.name === "GreenJar" && cells.A47V5H7.choice === false ? classes.greenCells :
-                                            cells.A47V5H7.name === "YellowJar" && cells.A47V5H7.choice === false ? classes.yellowCells :
-                                            cells.A47V5H7.name === "VioletJar" && cells.A47V5H7.choice === false ? classes.violetCells :
-                                            cells.A47V5H7.name === "GrayJar" && cells.A47V5H7.choice === false ? classes.grayCells :
-                                            cells.A47V5H7.name === "RedJar" && cells.A47V5H7.choice === true ? classes.redCellsChoice :
-                                            cells.A47V5H7.name === "BlueJar" && cells.A47V5H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A47V5H7.name === "GreenJar" && cells.A47V5H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A47V5H7.name === "YellowJar" && cells.A47V5H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A47V5H7.name === "VioletJar" && cells.A47V5H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A47V5H7.name === "GrayJar" && cells.A47V5H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A47V5H7")}
-                                        disabled={!states.stateStart || cells.A47V5H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A47V5H7.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A47V5H7.name === "RedJar" && cells.A47V5H7.choice === false ? classes.redCells :
+                                        cells.A47V5H7.name === "BlueJar" && cells.A47V5H7.choice === false ? classes.blueCells :
+                                        cells.A47V5H7.name === "GreenJar" && cells.A47V5H7.choice === false ? classes.greenCells :
+                                        cells.A47V5H7.name === "YellowJar" && cells.A47V5H7.choice === false ? classes.yellowCells :
+                                        cells.A47V5H7.name === "VioletJar" && cells.A47V5H7.choice === false ? classes.violetCells :
+                                        cells.A47V5H7.name === "GrayJar" && cells.A47V5H7.choice === false ? classes.grayCells :
+                                        cells.A47V5H7.name === "RedJar" && cells.A47V5H7.choice === true ? classes.redCellsChoice :
+                                        cells.A47V5H7.name === "BlueJar" && cells.A47V5H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A47V5H7.name === "GreenJar" && cells.A47V5H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A47V5H7.name === "YellowJar" && cells.A47V5H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A47V5H7.name === "VioletJar" && cells.A47V5H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A47V5H7.name === "GrayJar" && cells.A47V5H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A47V5H7")}
+                                    disabled={!states.stateStart || cells.A47V5H7.choice
+                                            || !cells.A48V6H7.empty || !cells.A49V7H7.empty
+                                            || cells.A46V4H7.empty 
+                                            || cells.A46V4H7.choice || cells.A45V3H7.choice
+                                            || cells.A44V2H7.choice || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A48V6H7.showCell && <div className={classes.cellsCenterSide}>
-                                    <button
-                                        className={
-                                            cells.A48V6H7.name === "RedJar" && cells.A48V6H7.choice === false ? classes.redCells :
-                                            cells.A48V6H7.name === "BlueJar" && cells.A48V6H7.choice === false ? classes.blueCells :
-                                            cells.A48V6H7.name === "GreenJar" && cells.A48V6H7.choice === false ? classes.greenCells :
-                                            cells.A48V6H7.name === "YellowJar" && cells.A48V6H7.choice === false ? classes.yellowCells :
-                                            cells.A48V6H7.name === "VioletJar" && cells.A48V6H7.choice === false ? classes.violetCells :
-                                            cells.A48V6H7.name === "GrayJar" && cells.A48V6H7.choice === false ? classes.grayCells :
-                                            cells.A48V6H7.name === "RedJar" && cells.A48V6H7.choice === true ? classes.redCellsChoice :
-                                            cells.A48V6H7.name === "BlueJar" && cells.A48V6H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A48V6H7.name === "GreenJar" && cells.A48V6H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A48V6H7.name === "YellowJar" && cells.A48V6H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A48V6H7.name === "VioletJar" && cells.A48V6H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A48V6H7.name === "GrayJar" && cells.A48V6H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A48V6H7")}
-                                        disabled={!states.stateStart || cells.A48V6H7.choice}
-                                    ></button>
-                                </div>}
+                            {cells.A48V6H7.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={
+                                        cells.A48V6H7.name === "RedJar" && cells.A48V6H7.choice === false ? classes.redCells :
+                                        cells.A48V6H7.name === "BlueJar" && cells.A48V6H7.choice === false ? classes.blueCells :
+                                        cells.A48V6H7.name === "GreenJar" && cells.A48V6H7.choice === false ? classes.greenCells :
+                                        cells.A48V6H7.name === "YellowJar" && cells.A48V6H7.choice === false ? classes.yellowCells :
+                                        cells.A48V6H7.name === "VioletJar" && cells.A48V6H7.choice === false ? classes.violetCells :
+                                        cells.A48V6H7.name === "GrayJar" && cells.A48V6H7.choice === false ? classes.grayCells :
+                                        cells.A48V6H7.name === "RedJar" && cells.A48V6H7.choice === true ? classes.redCellsChoice :
+                                        cells.A48V6H7.name === "BlueJar" && cells.A48V6H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A48V6H7.name === "GreenJar" && cells.A48V6H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A48V6H7.name === "YellowJar" && cells.A48V6H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A48V6H7.name === "VioletJar" && cells.A48V6H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A48V6H7.name === "GrayJar" && cells.A48V6H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A48V6H7")}
+                                    disabled={!states.stateStart || cells.A48V6H7.choice
+                                            || !cells.A49V7H7.empty
+                                            || cells.A47V5H7.empty
+                                            || cells.A47V5H7.choice
+                                            || cells.A46V4H7.choice || cells.A45V3H7.choice
+                                            || cells.A44V2H7.choice || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
-                                {cells.A49V7H7.showCell && <div className={classes.cellsRightSide}>
-                                    <button
-                                        className={
-                                            cells.A49V7H7.name === "RedJar" && cells.A49V7H7.choice === false ? classes.redCells :
-                                            cells.A49V7H7.name === "BlueJar" && cells.A49V7H7.choice === false ? classes.blueCells :
-                                            cells.A49V7H7.name === "GreenJar" && cells.A49V7H7.choice === false ? classes.greenCells :
-                                            cells.A49V7H7.name === "YellowJar" && cells.A49V7H7.choice === false ? classes.yellowCells :
-                                            cells.A49V7H7.name === "VioletJar" && cells.A49V7H7.choice === false ? classes.violetCells :
-                                            cells.A49V7H7.name === "GrayJar" && cells.A49V7H7.choice === false ? classes.grayCells :
-                                            cells.A49V7H7.name === "RedJar" && cells.A49V7H7.choice === true ? classes.redCellsChoice :
-                                            cells.A49V7H7.name === "BlueJar" && cells.A49V7H7.choice === true ? classes.blueCellsChoice :
-                                            cells.A49V7H7.name === "GreenJar" && cells.A49V7H7.choice === true ? classes.greenCellsChoice :
-                                            cells.A49V7H7.name === "YellowJar" && cells.A49V7H7.choice === true ? classes.yellowCellsChoice :
-                                            cells.A49V7H7.name === "VioletJar" && cells.A49V7H7.choice === true ? classes.violetCellsChoice :
-                                            cells.A49V7H7.name === "GrayJar" && cells.A49V7H7.choice === true ? classes.grayCellsChoice :
-                                            classes.jarCells
-                                        }
-                                        onClick={() => handleChoiceCell("A49V7H7")}
-                                        disabled={!states.stateStart || cells.A49V7H7.choice}
-                                    ></button>
-                        </div>}
+                            {cells.A49V7H7.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={
+                                        cells.A49V7H7.name === "RedJar" && cells.A49V7H7.choice === false ? classes.redCells :
+                                        cells.A49V7H7.name === "BlueJar" && cells.A49V7H7.choice === false ? classes.blueCells :
+                                        cells.A49V7H7.name === "GreenJar" && cells.A49V7H7.choice === false ? classes.greenCells :
+                                        cells.A49V7H7.name === "YellowJar" && cells.A49V7H7.choice === false ? classes.yellowCells :
+                                        cells.A49V7H7.name === "VioletJar" && cells.A49V7H7.choice === false ? classes.violetCells :
+                                        cells.A49V7H7.name === "GrayJar" && cells.A49V7H7.choice === false ? classes.grayCells :
+                                        cells.A49V7H7.name === "RedJar" && cells.A49V7H7.choice === true ? classes.redCellsChoice :
+                                        cells.A49V7H7.name === "BlueJar" && cells.A49V7H7.choice === true ? classes.blueCellsChoice :
+                                        cells.A49V7H7.name === "GreenJar" && cells.A49V7H7.choice === true ? classes.greenCellsChoice :
+                                        cells.A49V7H7.name === "YellowJar" && cells.A49V7H7.choice === true ? classes.yellowCellsChoice :
+                                        cells.A49V7H7.name === "VioletJar" && cells.A49V7H7.choice === true ? classes.violetCellsChoice :
+                                        cells.A49V7H7.name === "GrayJar" && cells.A49V7H7.choice === true ? classes.grayCellsChoice :
+                                        classes.jarCells
+                                    }
+                                    onClick={() => handleChoiceCell("A49V7H7")}
+                                    disabled={!states.stateStart || cells.A49V7H7.choice 
+                                            || cells.A48V6H7.empty
+                                            || cells.A48V6H7.choice || cells.A47V5H7.choice
+                                            || cells.A46V4H7.choice || cells.A45V3H7.choice
+                                            || cells.A44V2H7.choice || cells.A43V1H7.choice}
+                                ></button>
+                            </div>}
 
                         </div>
-
-                    
 
                 </div>
 

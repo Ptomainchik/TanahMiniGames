@@ -5,6 +5,8 @@ import { GameMemory4lvl } from "./Components/MemoryGame/GameMemory4lvl";
 import { HomePage } from "./Components/HomePage"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GameSorting1lvl } from "./Components/SortingGame/GameSorting1lvl";
+import { GameSorting2lvl } from "./Components/SortingGame/GameSorting2lvl";
+import { GameSorting3lvl } from "./Components/SortingGame/GameSorting3lvl";
 import { GameSorting4lvl } from "./Components/SortingGame/GameSorting4lvl";
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <Route path="memory3" element={<GameMemory3lvl/>}/>
           <Route path="memory4" element={<GameMemory4lvl/>}/>
           <Route path="sort1" element={<GameSorting1lvl/>}/>
+          <Route path="sort2" element={<GameSorting2lvl/>}/>
+          <Route path="sort3" element={<GameSorting3lvl/>}/>
           <Route path="sort4" element={<GameSorting4lvl/>}/>
       </Routes>
     </BrowserRouter>
