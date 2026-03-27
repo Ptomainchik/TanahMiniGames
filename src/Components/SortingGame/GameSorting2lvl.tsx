@@ -4,6 +4,10 @@ import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.
 import Shelf from "../../assets/SortingGameImages/Shelf.png";
 import Shelf2 from "../../assets/SortingGameImages/Shelf2.png";
 import { useNavigate } from "react-router-dom";
+import RedJarImage from "../../assets/SortingGameImages/RedJar.png";
+import BlueJarImage from "../../assets/SortingGameImages/BlueJar.png";
+import GreenJarImage from "../../assets/SortingGameImages/GreenJar.png";
+import YellowJarImage from "../../assets/SortingGameImages/YellowJar.png";
 
 export const GameSorting2lvl = () => {
     const [states, setStates] = useState({
@@ -208,43 +212,43 @@ export const GameSorting2lvl = () => {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A30V2H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A31V3H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A32V4H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A33V5H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A34V6H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
         A35V7H5: {
             name: "",
             choice: false,
             showCell: true,
-            empty: false,
+            empty: true,
         },
 
     });
@@ -408,12 +412,20 @@ export const GameSorting2lvl = () => {
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
+                        <p className={classes.info}>А у тебя хорошо это получается.</p>
                     </div>
+                    <div className={classes.leftDoorClosing}></div>
+                    <div className={classes.rightDoorClosing}></div>
                     <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/> 
+                    <h3>Ещё раз или на следующий уровень?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
+
+                <img className={classes.redJarPointer} src={RedJarImage} alt="RedJarImage" draggable={false}/>
+                <img className={classes.blueJarPointer} src={BlueJarImage} alt="BlueJarImage" draggable={false}/>
+                <img className={classes.greenJarPointer} src={GreenJarImage} alt="GreenJarImage" draggable={false}/>
+                <img className={classes.yellowJarPointer} src={YellowJarImage} alt="YellowJarImage" draggable={false}/>
 
                 <div className={classes.gameField}>
 
@@ -421,7 +433,7 @@ export const GameSorting2lvl = () => {
 
                         { states.showModalInfo && <div>
                             <div className={classes.infoOverlay}> 
-                                <p className={classes.info}>Пожалуйста, помоги мне навести порядок в кладовой с банками.</p>
+                                <p className={classes.info}>Мне снова нужна твоя помощь в кладовой.</p>
                             </div>
                                 <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
                         </div> }
@@ -1205,7 +1217,7 @@ export const GameSorting2lvl = () => {
                                     }
                                     onClick={() => handleChoiceCell("A29V1H5")}
                                     disabled={!states.stateStart || cells.A29V1H5.choice 
-                                            || !cells.A30V2H5.empty || !cells.A31V3H5.empty 
+                                            || !cells.A30V2H5.empty || !cells.A31V3H5.empty
                                             || !cells.A32V4H5.empty || !cells.A33V5H5.empty 
                                             || !cells.A34V6H5.empty || !cells.A35V7H5.empty}
                                 ></button>
@@ -1231,7 +1243,7 @@ export const GameSorting2lvl = () => {
                                     onClick={() => handleChoiceCell("A30V2H5")}
                                     disabled={!states.stateStart || cells.A30V2H5.choice
                                             || !cells.A31V3H5.empty 
-                                            || !cells.A32V4H5.empty|| !cells.A33V5H5.empty 
+                                            || !cells.A32V4H5.empty || !cells.A33V5H5.empty 
                                             || !cells.A34V6H5.empty || !cells.A35V7H5.empty
                                             || cells.A29V1H5.empty || cells.A29V1H5.choice}
                                 ></button>
@@ -1256,7 +1268,7 @@ export const GameSorting2lvl = () => {
                                     }
                                     onClick={() => handleChoiceCell("A31V3H5")}
                                     disabled={!states.stateStart || cells.A31V3H5.choice
-                                            || !cells.A32V4H5.empty || !cells.A33V5H5.empty 
+                                            || !cells.A32V4H5.empty|| !cells.A33V5H5.empty
                                             || !cells.A34V6H5.empty || !cells.A35V7H5.empty
                                             || cells.A30V2H5.empty
                                             || cells.A30V2H5.choice || cells.A29V1H5.choice}

@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import classes from "../../Styles/SortingGame.module.css";
 import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.png";
+import OrcMushroomPickerLose from "../../assets/SortingGameImages/OrcMushroomPickerLose.png";
 import Shelf from "../../assets/SortingGameImages/Shelf.png";
 import Shelf2 from "../../assets/SortingGameImages/Shelf2.png";
 import { useNavigate } from "react-router-dom";
-import Casserole from "../../assets/MemoryGameImages/Cone.png"
+import Porridge from "../../assets/SortingGameImages/Porridge.jpg";
+import RedJarImage from "../../assets/SortingGameImages/RedJar.png";
+import BlueJarImage from "../../assets/SortingGameImages/BlueJar.png";
+import GreenJarImage from "../../assets/SortingGameImages/GreenJar.png";
+import YellowJarImage from "../../assets/SortingGameImages/YellowJar.png";
+import VioletJarImage from "../../assets/SortingGameImages/VioletJar.png";
+import GrayJarImage from "../../assets/SortingGameImages/GrayJar.png";
 
 export const GameSorting4lvl = () => {
     const [endTime, setEndTime] = useState(null);   
@@ -496,7 +503,7 @@ export const GameSorting4lvl = () => {
             const now = Date.now();
             const diff = endTime - now;
     
-            if (states.counterOfEliminatedCells === 12) return;
+            if (states.showButtonsWhenWinning) return;
     
             if (diff <= 0 && states.stateStart) {
                 clearInterval(interval);
@@ -513,7 +520,7 @@ export const GameSorting4lvl = () => {
         }, 1000);
     
         return () => clearInterval(interval); // Чистим, если ушли со страницы
-    }, [endTime, states.counterOfEliminatedCells]);
+    }, [endTime, states.showButtonsWhenWinning]);
 
     useEffect(() => {
         if (cells.A1V1H1.name === "RedJar" && cells.A2V2H1.name === "RedJar" && cells.A3V3H1.name === "RedJar" 
@@ -541,15 +548,17 @@ export const GameSorting4lvl = () => {
 
                 <div className={classes.timer}>
                     <p>
-                        Время до прихода гостей:
+                        Возвращение наставника:
                     </p>
                     {timeLeft}
                 </div>
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
+                        <p className={classes.info}>Вот это сноровка! Вот тебе секретный рецепт наставника в награду.</p>
                     </div>
+                    <div className={classes.leftDoorClosing}></div>
+                    <div className={classes.rightDoorClosing}></div>
                     <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/> 
                     <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
@@ -558,9 +567,9 @@ export const GameSorting4lvl = () => {
 
                 { states.showWinModalRecipe && <div className={classes.recipeModal}>
 
-                <img src={Casserole} alt="Casserole" draggable={false}/>
+                <img src={Porridge} alt="Porridge" draggable={false}/>
 
-                <h1>Запеканка по-регистански</h1>
+                <h1>Каша</h1>
 
                 <div>
 
@@ -593,12 +602,21 @@ export const GameSorting4lvl = () => {
 
                 { states.showLoseModal && <div className={classes.winAndLoseModal}>
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>(Стук в дверь) Эх, жаль. Мы не успели. Что теперь обо мне подумают гости?</p>
+                        <p className={classes.info}>(Шаги у дверей) О нет! Это наставник. Ну и влетит же мне.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/> 
-                    <h3>Вы не успели. Не расстраивайтесь, может, попробуете ещё раз?</h3>
+                    <div className={classes.leftDoorClosing}></div>
+                    <div className={classes.rightDoorClosing}></div>
+                    <img className={classes.imageInfoIntro} src={OrcMushroomPickerLose} alt="OrcMushroomPickerLose" draggable={false}/> 
+                    <h3>Время вышло, попробуете ещё раз?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                 </div> }
+
+                <img className={classes.redJarPointer} src={RedJarImage} alt="RedJarImage" draggable={false}/>
+                <img className={classes.blueJarPointer} src={BlueJarImage} alt="BlueJarImage" draggable={false}/>
+                <img className={classes.greenJarPointer} src={GreenJarImage} alt="GreenJarImage" draggable={false}/>
+                <img className={classes.yellowJarPointer} src={YellowJarImage} alt="YellowJarImage" draggable={false}/>
+                <img className={classes.violetJarPointer} src={VioletJarImage} alt="VioletJarImage" draggable={false}/>
+                <img className={classes.grayJarPointer} src={GrayJarImage} alt="GrayJarImage" draggable={false}/>
 
                 <div className={classes.gameField}>
 
@@ -606,7 +624,7 @@ export const GameSorting4lvl = () => {
 
                         { states.showModalInfo && <div>
                             <div className={classes.infoOverlay}> 
-                                <p className={classes.info}>Пожалуйста, помоги мне навести порядок в кладовой с банками.</p>
+                                <p className={classes.info}>Спаси! Нам нужно успеть навести порядок до прихода наставника.</p>
                             </div>
                                 <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
                         </div> }

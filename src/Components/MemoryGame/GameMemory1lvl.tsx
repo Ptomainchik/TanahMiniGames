@@ -373,7 +373,7 @@ function handleChoiceCell(cellKey: string) {
                         <p className={classes.info}>Ух ты! Все продукты разложены по полкам. Спасибо тебе за помощь.</p>
                     </div>
                     <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
-                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <h3>Повторим или дальше?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}

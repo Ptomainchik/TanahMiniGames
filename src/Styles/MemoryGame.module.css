@@ -73,13 +73,13 @@
 }
 
 .buttonStart:hover{
-    filter: drop-shadow( 0vw 0vw 0vw black);
+    filter: drop-shadow( 0 0 0 black);
     color:darkred;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
 .buttonRestart{
-    color: cornflowerblue;
+    color: cyan;
     font-family: "El Messiri";
     font-size: 4vw;
     font-weight: 700;
@@ -92,11 +92,12 @@
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
 }
 
 .buttonRestart:hover{
-    filter: drop-shadow( 0vw 0vw 0vw black);
-    color: cornflowerblue;
+    filter: drop-shadow(0 0 0 black);
+    color: cyan;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
@@ -114,10 +115,11 @@
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
 }
 
 .buttonNext:hover{
-    filter: drop-shadow( 0vw 0vw 0vw black);
+    filter: drop-shadow(0 0 0 black);
     color: chartreuse;
     transform: translate(-50%, -50%) scale(1.1);
 }
@@ -147,6 +149,7 @@
     top: 5%;
     left: 50%;
     transform: translateX(-50%);
+    filter: drop-shadow(0 0 1vw black);
 }
 
 .timer{
@@ -864,10 +867,11 @@
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
 }
 
 .buttonRecipe:hover{
-    filter: drop-shadow( 0vw 0vw 1vw gold);
+    filter: drop-shadow(0 0 1vw black);
     color: pink;
     transform: translate(-50%, -50%) scale(1.1);
 }

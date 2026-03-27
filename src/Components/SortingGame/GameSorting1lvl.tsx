@@ -4,6 +4,9 @@ import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.
 import { useNavigate } from "react-router-dom";
 import Shelf from "../../assets/SortingGameImages/Shelf.png";
 import Shelf2 from "../../assets/SortingGameImages/Shelf2.png";
+import RedJarImage from "../../assets/SortingGameImages/RedJar.png";
+import BlueJarImage from "../../assets/SortingGameImages/BlueJar.png";
+import GreenJarImage from "../../assets/SortingGameImages/GreenJar.png";
 
 export const GameSorting1lvl = () => {
     const [states, setStates] = useState({
@@ -365,15 +368,19 @@ export const GameSorting1lvl = () => {
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Ух ты! Все банки разложены по полкам. Спасибо тебе за помощь.</p>
+                        <p className={classes.info}>Когда в кладовой порядок — это здорово.</p>
                     </div>
                     <div className={classes.leftDoorClosing}></div>
                     <div className={classes.rightDoorClosing}></div>
                     <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
-                    <h3>Попробуешь ещё раз или перейдём на следующий уровень?</h3>
+                    <h3>Ещё раз или на следующий уровень?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
+
+                <img className={classes.redJarPointer} src={RedJarImage} alt="RedJarImage" draggable={false}/>
+                <img className={classes.blueJarPointer} src={BlueJarImage} alt="BlueJarImage" draggable={false}/>
+                <img className={classes.greenJarPointer} src={GreenJarImage} alt="GreenJarImage" draggable={false}/>
 
                 <div className={classes.gameField}>
 
@@ -381,7 +388,7 @@ export const GameSorting1lvl = () => {
 
                         { states.showModalInfo && <div>
                             <div className={classes.infoOverlay}> 
-                                <p className={classes.info}>Пожалуйста, помоги мне навести порядок в кладовой с банками.</p>
+                                <p className={classes.info}>Помоги мне навести порядок в кладовой с банками.</p>
                             </div>
                                 <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
                         </div> }

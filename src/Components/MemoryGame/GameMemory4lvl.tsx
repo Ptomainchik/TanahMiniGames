@@ -432,7 +432,7 @@ function handleCloseWinModalRecipe() {
 
             <div className={classes.timer}>
                 <p>
-                    Время до прихода гостей:
+                    До прихода гостей:
                 </p>
                 {timeLeft}
             </div>
