@@ -35,6 +35,8 @@ export const GameMemory4lvl = () => {
         showLoseModal: false,
         showModalInfo: true,
         showWinModalRecipe: false,
+        showCuttingBoardUp: true,
+        showCuttingBoardDown: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -254,8 +256,10 @@ export const GameMemory4lvl = () => {
     });
     
     setStart(true);
-    setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
-    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
+    setStates((prev: any) => ({...prev, showButtonStart: false}));
+    setTimeout(() => {
+        setStates((prev: any) => ({...prev, showModalInfo: false, showCuttingBoardUp: false}));
+    }, 1000);
 };
 
 useEffect(() => {
@@ -294,9 +298,9 @@ function handleHomePageTranzition() {
     navigate("/");
 };
 
-// function handleWin() {
-//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-// }
+function handleWin() {
+    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+}
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -369,7 +373,7 @@ useEffect(() => {
 
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
-        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
+        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, showCuttingBoardDown: true}));
     }
 }, [states.counterOfEliminatedCells]);
 
@@ -428,7 +432,7 @@ function handleCloseWinModalRecipe() {
     <>
         <div className={classes.gamePage}>
             
-            {/* <button onClick={handleWin}>WIN</button> */}
+            <button onClick={handleWin}>WIN</button>
 
             <div className={classes.timer}>
                 <p>
@@ -438,6 +442,7 @@ function handleCloseWinModalRecipe() {
             </div>
             
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
+                {states.showCuttingBoardDown && <div className={states.showButtonsWhenWinning ? classes.bottomCuttingBoard : classes.downCuttingBoard}></div>}
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>Ты лучше всех. За твою доброту я открою тебе свой секретный рецепт. Только никому не рассказывай.</p>
                     </div>
@@ -525,11 +530,13 @@ function handleCloseWinModalRecipe() {
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
+                {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
+
                 { states.showModalInfo && <div>
-                    <div className={classes.infoOverlay}> 
+                    <div className={start ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                         <p className={classes.info}>Ты как раз вовремя. С минуту на минуту ко мне нагрянут гости, а на кухне такой беспорядок. Выручай.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                    <img className={start ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
                 
                 <div className={classes.fields}>

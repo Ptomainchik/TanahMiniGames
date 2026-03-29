@@ -23,6 +23,8 @@ export const GameMemory2lvl = () => {
         showButtonStart: true,
         showButtonsWhenWinning: false,
         showModalInfo: true,
+        showCuttingBoardUp: true,
+        showCuttingBoardDown: false,
     });
     const [cells, setCells]: any = useState({
         A1V1H1: {
@@ -237,8 +239,10 @@ export const GameMemory2lvl = () => {
     });
     
     setStart(true);
-    setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
-    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
+    setStates((prev: any) => ({...prev, showButtonStart: false}));
+    setTimeout(() => {
+        setStates((prev: any) => ({...prev, showModalInfo: false, showCuttingBoardUp: false}));
+    }, 1000);
 };
 
 const navigate = useNavigate();
@@ -251,9 +255,9 @@ function handleNextLevel() {
     navigate("/memory3");
 };
 
-// function handleWin() {
-//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-// }
+function handleWin() {
+    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+}
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -319,7 +323,7 @@ useEffect(() => {
 
 useEffect(() => {
     if (states.counterOfEliminatedCells === 12) {
-        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
+        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, showCuttingBoardDown: true}));
     }
 }, [states.counterOfEliminatedCells]);
 
@@ -371,9 +375,10 @@ function handleChoiceCell(cellKey: string) {
     <>
         <div className={classes.gamePage}>
             
-            {/* <button onClick={handleWin}>WIN</button> */}
+            <button onClick={handleWin}>WIN</button>
             
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
+                {states.showCuttingBoardDown && <div className={states.showButtonsWhenWinning ? classes.bottomCuttingBoard : classes.downCuttingBoard}></div>}
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>Ура! На кухне снова порядок. Какая я растяпа. Без твоей помощи мне бы не справиться.</p>
                     </div>
@@ -406,12 +411,14 @@ function handleChoiceCell(cellKey: string) {
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
                 
                 { states.showModalInfo && <div>
-                    <div className={classes.infoOverlay}> 
+                    <div className={start ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                         <p className={classes.info}>Кажется, я рассыпала ягоды черники по всей кухне. Поможешь мне их собрать?</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                    <img className={start ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
 
                 <div className={classes.fields}>

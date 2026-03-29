@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import classes from "../../Styles/SortingGame.module.css";
 import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.png";
 import Shelf from "../../assets/SortingGameImages/Shelf.png";
-import Shelf2 from "../../assets/SortingGameImages/Shelf2.png";
 import { useNavigate } from "react-router-dom";
-import RedJarImage from "../../assets/SortingGameImages/RedJar.png";
-import BlueJarImage from "../../assets/SortingGameImages/BlueJar.png";
-import GreenJarImage from "../../assets/SortingGameImages/GreenJar.png";
-import YellowJarImage from "../../assets/SortingGameImages/YellowJar.png";
+import RedShelf from "../../assets/SortingGameImages/RedShelf.png";
+import BlueShelf from "../../assets/SortingGameImages/BlueShelf.png";
+import GreenShelf from "../../assets/SortingGameImages/GreenShelf.png";
+import YellowShelf from "../../assets/SortingGameImages/YellowShelf.png";
 
 export const GameSorting2lvl = () => {
     const [states, setStates] = useState({
@@ -282,10 +281,15 @@ export const GameSorting2lvl = () => {
             return newCells;
     });
 
-    setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true, showModalIntro: false, showModalInfo: false}));
+    setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true}));
     setTimeout(() => {
         setStates((prev:any) => ({...prev, door: false}));
     },2000);
+
+    setTimeout(() => {
+        setStates((prev:any) => ({...prev, showModalInfo: false}));
+    },1500);
+
     };
 
     function handleChoiceCell(cellKey: string) {
@@ -422,20 +426,15 @@ export const GameSorting2lvl = () => {
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
-                <img className={classes.redJarPointer} src={RedJarImage} alt="RedJarImage" draggable={false}/>
-                <img className={classes.blueJarPointer} src={BlueJarImage} alt="BlueJarImage" draggable={false}/>
-                <img className={classes.greenJarPointer} src={GreenJarImage} alt="GreenJarImage" draggable={false}/>
-                <img className={classes.yellowJarPointer} src={YellowJarImage} alt="YellowJarImage" draggable={false}/>
-
                 <div className={classes.gameField}>
 
                         { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
                         { states.showModalInfo && <div>
-                            <div className={classes.infoOverlay}> 
+                            <div className={states.stateStart ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                                 <p className={classes.info}>Мне снова нужна твоя помощь в кладовой.</p>
                             </div>
-                                <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
+                                <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
                         </div> }
 
                         {states.door && <div className={states.stateStart ? classes.leftDoorOpening : !states.stateStart ? classes.leftDoorClose : classes.door}></div>}
@@ -444,7 +443,7 @@ export const GameSorting2lvl = () => {
 
                     <div className={classes.fields}>
                         {/* HORIZONT 1 */}
-                        <div className={classes.fieldH1} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH1} style={{background: `url(${RedShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A1V1H1.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -632,7 +631,7 @@ export const GameSorting2lvl = () => {
                         </div>
 
                         {/* HORIZONT 2 */}
-                        <div className={classes.fieldH2} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH2} style={{background: `url(${BlueShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A8V1H2.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -820,7 +819,7 @@ export const GameSorting2lvl = () => {
                         </div>
 
                         {/* HORIZONT 3 */}
-                        <div className={classes.fieldH3} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH3} style={{background: `url(${GreenShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A15V1H3.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -1008,7 +1007,7 @@ export const GameSorting2lvl = () => {
                         </div>
 
                         {/* HORIZONT 4 */}
-                        <div className={classes.fieldH4} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH4} style={{background: `url(${YellowShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A22V1H4.showCell && <div className={classes.cellsLeftSide}>
                                 <button

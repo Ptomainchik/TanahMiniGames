@@ -3,15 +3,14 @@ import classes from "../../Styles/SortingGame.module.css";
 import OrcMushroomPicker from "../../assets/SortingGameImages/OrcMushroomPicker.png";
 import OrcMushroomPickerLose from "../../assets/SortingGameImages/OrcMushroomPickerLose.png";
 import Shelf from "../../assets/SortingGameImages/Shelf.png";
-import Shelf2 from "../../assets/SortingGameImages/Shelf2.png";
 import { useNavigate } from "react-router-dom";
 import Porridge from "../../assets/SortingGameImages/Porridge.jpg";
-import RedJarImage from "../../assets/SortingGameImages/RedJar.png";
-import BlueJarImage from "../../assets/SortingGameImages/BlueJar.png";
-import GreenJarImage from "../../assets/SortingGameImages/GreenJar.png";
-import YellowJarImage from "../../assets/SortingGameImages/YellowJar.png";
-import VioletJarImage from "../../assets/SortingGameImages/VioletJar.png";
-import GrayJarImage from "../../assets/SortingGameImages/GrayJar.png";
+import RedShelf from "../../assets/SortingGameImages/RedShelf.png";
+import BlueShelf from "../../assets/SortingGameImages/BlueShelf.png";
+import GreenShelf from "../../assets/SortingGameImages/GreenShelf.png";
+import YellowShelf from "../../assets/SortingGameImages/YellowShelf.png";
+import VioletShelf from "../../assets/SortingGameImages/VioletShelf.png";
+import GrayShelf from "../../assets/SortingGameImages/GrayShelf.png";
 
 export const GameSorting4lvl = () => {
     const [endTime, setEndTime] = useState(null);   
@@ -380,10 +379,15 @@ export const GameSorting4lvl = () => {
             return newCells;
     });
 
-    setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true, showModalIntro: false, showModalInfo: false}));
+    setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true}));
     setTimeout(() => {
         setStates((prev:any) => ({...prev, door: false}));
     },2000);
+
+    setTimeout(() => {
+        setStates((prev:any) => ({...prev, showModalInfo: false}));
+    },1500);
+
     };
 
     function handleChoiceCell(cellKey: string) {
@@ -569,31 +573,38 @@ export const GameSorting4lvl = () => {
 
                 <img src={Porridge} alt="Porridge" draggable={false}/>
 
-                <h1>Каша</h1>
+                <h1>Чернолесский плов</h1>
 
                 <div>
 
                     <ol>
 
-                        <li>Творог — 500 г</li>
-                        <li>Манка — 100 г</li>
-                        <li>Чечевица красная — 100 г</li>
-                        <li>Тыква — 200 г</li>
-                        <li>Яйца куриные — 3 шт.</li>
-                        <li>Мёд — 2 ст. ложки</li>
-                        <li>Соль — щепоть</li>
-                        <li>Имбирь молотый — пол-чайной ложки</li>
-                        <li>Корица — пол-чайной ложки</li>
-                        <li>Масло сливочное — кусочек для смазывания</li>
-                        <li>Лепестки кешью — для украшения</li>
+                        <li>Полба — 300 г</li>
+                        <li>Квашеная капуста с морковью — 400 г</li>
+                        <li>1 рубленая курица без грудки</li> 
+                        <li>Шампиньоны свежие — 200 г</li>
+                        <li>Лук — 1 большая луковица</li>   
+                        <li>Масло сливочное — кусочек для обжарки</li>
+                        <li>Чеснок — 3 зубчика</li>
+                        <li>Барбарис сушёный — две столовые ложки</li>
+                        <li>Имбирь молотый — полчайной ложки</li>
+                        <li>Зира — полчайной ложки</li>
+                        <li>Два лавровых листочка</li>
+                        <li>Чёрный молотый перец — щепоть</li>
+                        <li>Соль — по вкусу</li>
+
                         
                     </ol>
 
                     <span>
-                        Нарежьте тыкву кубиками и отварите до мягкости, а промытую чечевицу также сварите до полной готовности, после чего разомните их вместе в густое пюре и соедините с творогом. 
-                        Добавьте к массе яйца, мёд, манную крупу, соль, имбирь и корицу, тщательно перемешайте всё до однородности и, плотно накрыв миску пищевой плёнкой, оставьте в холодильнике на 30 минут. 
-                        Затем переложите смесь в предварительно смазанную сливочным маслом форму, украсьте сверху лепестками кешью и отправьте в разогретую духовку запекаться в течение 40 минут при температуре 140 градусов.
-                        Приятного аппетита!
+                        Разделите курицу (без грудки) на части: окорочка и крылья разрежьте по суставам, остальное порубите на средние куски. 
+                        В разогретом казане растопите сливочное масло и обжарьте мясо с добавлением чеснока до золотистой корочки.
+                        Залейте курицу водой и тушите 5 минут. Затем всыпьте полбу и добавьте воды так, чтобы её уровень был на два пальца выше крупы. 
+                        Накройте крышкой и томите на слабом огне. Через 5 минут перемешайте, добавьте барбарис, имбирь, зиру, лавровый лист, перец и соль по вкусу. 
+                        Снова накройте и оставьте ещё на 10 минут.
+                        Параллельно обжарьте на сковороде нарезанные лук с шампиньонами на сливочном масле до легкого румянца. 
+                        Добавьте зажарку и квашеную капусту в казан к полбе, перемешайте (если нужно, подлейте немного воды) и отправьте в духовку на полчаса при 150 градусах.
+                        Готовый казан достаньте из духовки и, не открывая крышки, укутайте в теплое одеяло на 30 минут — так блюдо окончательно «дойдёт» и станет максимально ароматным.
                     </span>
                     
                 </div>
@@ -611,22 +622,15 @@ export const GameSorting4lvl = () => {
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                 </div> }
 
-                <img className={classes.redJarPointer} src={RedJarImage} alt="RedJarImage" draggable={false}/>
-                <img className={classes.blueJarPointer} src={BlueJarImage} alt="BlueJarImage" draggable={false}/>
-                <img className={classes.greenJarPointer} src={GreenJarImage} alt="GreenJarImage" draggable={false}/>
-                <img className={classes.yellowJarPointer} src={YellowJarImage} alt="YellowJarImage" draggable={false}/>
-                <img className={classes.violetJarPointer} src={VioletJarImage} alt="VioletJarImage" draggable={false}/>
-                <img className={classes.grayJarPointer} src={GrayJarImage} alt="GrayJarImage" draggable={false}/>
-
                 <div className={classes.gameField}>
 
                         { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
                         { states.showModalInfo && <div>
-                            <div className={classes.infoOverlay}> 
+                            <div className={states.stateStart ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                                 <p className={classes.info}>Спаси! Нам нужно успеть навести порядок до прихода наставника.</p>
                             </div>
-                                <img className={classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
+                                <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={OrcMushroomPicker} alt="OrcMushroomPicker" draggable={false}/>
                         </div> }
 
                         {states.door && <div className={states.stateStart ? classes.leftDoorOpening : !states.stateStart ? classes.leftDoorClose : classes.door}></div>}
@@ -635,7 +639,7 @@ export const GameSorting4lvl = () => {
 
                     <div className={classes.fields}>
                         {/* HORIZONT 1 */}
-                        <div className={classes.fieldH1} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH1} style={{background: `url(${RedShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A1V1H1.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -823,7 +827,7 @@ export const GameSorting4lvl = () => {
                         </div>
 
                         {/* HORIZONT 2 */}
-                        <div className={classes.fieldH2} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH2} style={{background: `url(${BlueShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A8V1H2.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -1011,7 +1015,7 @@ export const GameSorting4lvl = () => {
                         </div>
 
                         {/* HORIZONT 3 */}
-                        <div className={classes.fieldH3} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH3} style={{background: `url(${GreenShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A15V1H3.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -1199,7 +1203,7 @@ export const GameSorting4lvl = () => {
                         </div>
 
                         {/* HORIZONT 4 */}
-                        <div className={classes.fieldH4} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH4} style={{background: `url(${YellowShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A22V1H4.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -1387,7 +1391,7 @@ export const GameSorting4lvl = () => {
                         </div>
 
                         {/* HORIZONT 5 */}
-                        <div className={classes.fieldH5} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH5} style={{background: `url(${VioletShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A29V1H5.showCell && <div className={classes.cellsLeftSide}>
                                 <button
@@ -1575,7 +1579,7 @@ export const GameSorting4lvl = () => {
                         </div>
 
                         {/* HORIZONT 6 */}
-                        <div className={classes.fieldH6} style={{background: `url(${Shelf2}) center no-repeat`,backgroundSize: "contain"}}>
+                        <div className={classes.fieldH6} style={{background: `url(${GrayShelf}) center no-repeat`,backgroundSize: "contain"}}>
 
                             {cells.A36V1H6.showCell && <div className={classes.cellsLeftSide}>
                                 <button

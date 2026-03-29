@@ -21,11 +21,78 @@
     border-right: solid rgb(67, 58, 38) 3px;
 }
 
+.downCuttingBoard{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.upCuttingBoard{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 1;
+    animation: upBoard 2s forwards;
+}
+
+.bottomCuttingBoard{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: bottomBoard 2s forwards;
+}
+
+@keyframes upBoard {
+    0%, 100% {
+        transform: translateY(0%) translateX(-50%);
+    }
+    100% {
+        transform: translateY(-150%) translateX(-50%);
+    }
+}
+
+@keyframes bottomBoard {
+    0%, 100% {
+        transform: translateY(-150%) translateX(-50%);
+    }
+    100% {
+        transform: translateY(0%) translateX(-50%);
+    }
+}
+
+
 .imageInfoIntro{
     width: 18vw;
     position: absolute;
     bottom: 0;
     left: -10%;
+}
+
+.imageInfoIntroOpacity{
+    width: 18vw;
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .infoOverlay{
@@ -38,6 +105,28 @@
     background: url(../assets/MemoryGameImages/TextOverlay.png) no-repeat center;
     background-size: contain;
     justify-content: center;
+}
+
+.infoOverlayOpacity{
+    width: 20vw;
+    height: 23vw;
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    margin: 0;
+    background: url(../assets/MemoryGameImages/TextOverlay.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    animation: opacityMenu 0.5s forwards;
+}
+
+@keyframes opacityMenu {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 .info{
@@ -63,7 +152,7 @@
     color: red;
     -webkit-text-stroke: 2px black;
     filter: drop-shadow( 0.2vw 0.2vw 0vw black);
-    z-index: 1;
+    z-index: 3;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -86,7 +175,7 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -109,7 +198,7 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 60%;
+    top: 65%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -142,14 +231,15 @@
     font-size: 3vw;
     font-weight: 700;
     text-align: center;
-    color: pink;
+    color: mediumblue;
     -webkit-text-stroke: 1px black;
     position: absolute;
-    margin: 0;
-    top: 5%;
+    top: 30%;
     left: 50%;
+    margin: 0;
     transform: translateX(-50%);
     filter: drop-shadow(0 0 1vw black);
+    z-index: 2;
 }
 
 .timer{
@@ -159,13 +249,13 @@
     font-family: "El MEssiri";
     font-size: 3vw;
     font-weight: 700;
-    color: yellow;
+    color: darkgreen;
     -webkit-text-stroke: 1px black;
 }
 
 .timer p{
     width: 70%;
-    font-size: 1vw;
+    font-size: 1.5vw;
     -webkit-text-stroke: 0px black;
 }
 
@@ -678,7 +768,7 @@
 }
 
 .starCells:hover{
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 .appleCells{
@@ -854,14 +944,14 @@
 }
 
 .buttonRecipe{
-    color: pink;
+    color: darkblue;
     font-size: 4vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 20%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -871,8 +961,8 @@
 }
 
 .buttonRecipe:hover{
-    filter: drop-shadow(0 0 1vw black);
-    color: pink;
+    filter: drop-shadow(0 0 0vw black);
+    color: darkblue;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
@@ -901,7 +991,7 @@
     position: absolute;
     top: 1%;
     left: 50%;
-    color: gold;
+    color: darkblue;
     font-size: 3vw;
     font-weight: 700;
     -webkit-text-stroke: 1px black;
@@ -912,10 +1002,14 @@
     position: absolute;
     top: 10%;
     left: 34%;
-    color: gold;
-    font-size: 1.5vw;
+    color: darkblue;
+    font-size: 1.3vw;
     font-weight: 700;
     margin: 0;
+    padding: 2%;
+    background: gray;
+    border: solid 3px wheat;
+    border-radius: 10px;
 }
 
 .recipeModal span{
@@ -923,10 +1017,15 @@
     position: absolute;
     top: 62.5%;
     left: 34%;
-    color: gold;
+    color: darkblue;
     font-size: 1.25vw;
     font-weight: 700;
     margin: 0;
+    padding: 2%;
+    background: gray;
+    border: solid 3px wheat;
+    border-radius: 10px;
+    
 }
 
 .buttonCloseRecipe{
@@ -971,12 +1070,61 @@
     border-right: none;
 }
 
+.downCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.upCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 1;
+    animation: upBoard 2s forwards;
+}
+
+.bottomCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: bottomBoard 2s forwards;
+}
+
 .imageInfoIntro{
     width: 40vw;
     position: absolute;
     bottom: -15%;
     left: 0%;
-    z-index: 1;
+    z-index: 3;
+}
+
+.imageInfoIntroOpacity{
+    width: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 0%;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .infoOverlay{
@@ -990,7 +1138,22 @@
     background-size: contain;
     justify-content: center;
     transform: rotate(90deg);
-    z-index: 1;
+    z-index: 3;
+}
+
+.infoOverlayOpacity{
+    width: 40vw;
+    height: 53vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin: 0;
+    background: url(../assets/MemoryGameImages/TextOverlay.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    transform: rotate(90deg);
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .info{
@@ -1010,22 +1173,25 @@
 
 .buttonStart{
     font-size: 25vw;
+    position: absolute;
+    top: 40%;
 }
 
 .buttonRestart{
-    color: cornflowerblue;
+    color: cyan;
     font-family: "El Messiri";
     font-size: 8vw;
     font-weight: 700;
     -webkit-text-stroke: 0 black;
     z-index: 2;
     position: absolute;
-    top: 37.5%;
+    top: 33%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .buttonNext{
@@ -1037,12 +1203,13 @@
     -webkit-text-stroke: 0 black;
     z-index: 2;
     position: absolute;
-    top: 50%;
+    top: 43%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .winAndLoseModal{
@@ -1066,11 +1233,11 @@
     font-size: 7vw;
     font-weight: 700;
     text-align: center;
-    color: pink;
+    color: mediumblue;
     -webkit-text-stroke: 0 black;
     position: absolute;
     margin: 0;
-    top: 5%;
+    top: 23%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -1082,7 +1249,7 @@
     font-family: "El MEssiri";
     font-size: 8vw;
     font-weight: 700;
-    color: yellow;
+    color: darkgreen;
     -webkit-text-stroke: 0 black;
     margin: 0;
 }
@@ -1388,7 +1555,8 @@
 }
 
 .buttonRecipe{
-    color: pink;
+    width: 100%;
+    color: darkblue;
     font-size: 8vw;
     font-family: "El Messiri";
     font-weight: 700;
@@ -1401,6 +1569,7 @@
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .recipeModal{
@@ -1431,7 +1600,7 @@
     top: 1%;
     left: 50%;
     transform: translateX(-50%);
-    color: gold;
+    color: darkblue;
     font-size: 7vw;
     font-weight: 700;
     text-align: center;
@@ -1440,13 +1609,18 @@
 }
 
 .recipeModal ol{
+    width: 60%;
     position: absolute;
-    top: 47.5%;
-    left: 0%;
-    color: gold;
+    top: 45.5%;
+    left: 10%;
+    color: darkblue;
     font-size: 2.25vw;
     font-weight: 700;
     margin: 0;
+    padding: 4%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .recipeModal span{
@@ -1454,10 +1628,14 @@
     position: absolute;
     top: 74%;
     left: 10%;
-    color: gold;
+    color: darkblue;
     font-size: 2.25vw;
     font-weight: 700;
     margin: 0;
+    padding: 2%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .buttonCloseRecipe{
@@ -1496,12 +1674,61 @@
     border-right: none;
 }
 
+.downCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.upCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 1;
+    animation: upBoard 2s forwards;
+}
+
+.bottomCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: bottomBoard 2s forwards;
+}
+
 .imageInfoIntro{
     width: 40vw;
     position: absolute;
     bottom: -15%;
     left: 0%;
-    z-index: 1;
+    z-index: 3;
+}
+
+.imageInfoIntroOpacity{
+    width: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 0%;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .infoOverlay{
@@ -1515,7 +1742,22 @@
     background-size: contain;
     justify-content: center;
     transform: rotate(90deg);
+    z-index: 3;
+}
+
+.infoOverlayOpacity{
+    width: 40vw;
+    height: 53vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin: 0;
+    background: url(../assets/MemoryGameImages/TextOverlay.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    transform: rotate(90deg);
     z-index: 1;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .info{
@@ -1538,19 +1780,20 @@
 }
 
 .buttonRestart{
-    color: cornflowerblue;
+    color: cyan;
     font-family: "El Messiri";
     font-size: 6vw;
     font-weight: 700;
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 37.5%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .buttonNext{
@@ -1562,12 +1805,13 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .winAndLoseModal{
@@ -1591,11 +1835,11 @@
     font-size: 7vw;
     font-weight: 700;
     text-align: center;
-    color: pink;
+    color: mediumblue;
     -webkit-text-stroke: 1px black;
     position: absolute;
     margin: 0;
-    top: 5%;
+    top: 30%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -1607,7 +1851,7 @@
     font-family: "El MEssiri";
     font-size: 8vw;
     font-weight: 700;
-    color: yellow;
+    color: darkgreen;
     -webkit-text-stroke: 1px black;
     margin: 0;
 }
@@ -1913,19 +2157,21 @@
 }
 
 .buttonRecipe{
-    color: pink;
+    width: 100%;
+    color: darkblue;
     font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 20%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .recipeModal{
@@ -1956,7 +2202,7 @@
     top: 1%;
     left: 50%;
     transform: translateX(-50%);
-    color: gold;
+    color: darkblue;
     font-size: 6vw;
     font-weight: 700;
     text-align: center;
@@ -1965,24 +2211,33 @@
 }
 
 .recipeModal ol{
+    width: 40%;
     position: absolute;
     top: 55%;
-    left: 0%;
-    color: gold;
-    font-size: 2vw;
+    left: 2%;
+    color: darkblue;
+    font-size: 1.8vw;
     font-weight: 700;
     margin: 0;
+    padding: 4%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .recipeModal span{
-    width: 45%;
+    width: 40%;
     position: absolute;
     top: 55%;
-    left: 52.5%;
-    color: gold;
-    font-size: 2vw;
+    left: 53.5%;
+    color: darkblue;
+    font-size: 1.8vw;
     font-weight: 700;
     margin: 0;
+    padding: 2%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .buttonCloseRecipe{
@@ -2021,12 +2276,61 @@
     border-right: none;
 }
 
+.downCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.upCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 1;
+    animation: upBoard 2s forwards;
+}
+
+.bottomCuttingBoard{
+    width: 100vw;
+    height: 100vw;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MemoryGameImages/CuttingBoard.png) center no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: bottomBoard 2s forwards;
+}
+
 .imageInfoIntro{
     width: 40vw;
     position: absolute;
     bottom: -15%;
     left: 0%;
-    z-index: 1;
+    z-index: 3;
+}
+
+.imageInfoIntroOpacity{
+    width: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 0%;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .infoOverlay{
@@ -2040,7 +2344,22 @@
     background-size: contain;
     justify-content: center;
     transform: rotate(90deg);
-    z-index: 1;
+    z-index: 3;
+}
+
+.infoOverlayOpacity{
+    width: 40vw;
+    height: 53vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    margin: 0;
+    background: url(../assets/MemoryGameImages/TextOverlay.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    transform: rotate(90deg);
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
 }
 
 .info{
@@ -2063,19 +2382,20 @@
 }
 
 .buttonRestart{
-    color: cornflowerblue;
+    color: cyan;
     font-family: "El Messiri";
     font-size: 6vw;
     font-weight: 700;
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 37.5%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .buttonNext{
@@ -2087,12 +2407,13 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .winAndLoseModal{
@@ -2116,11 +2437,11 @@
     font-size: 7vw;
     font-weight: 700;
     text-align: center;
-    color: pink;
+    color: mediumblue;
     -webkit-text-stroke: 1px black;
     position: absolute;
     margin: 0;
-    top: 5%;
+    top: 30%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -2132,7 +2453,7 @@
     font-family: "El MEssiri";
     font-size: 8vw;
     font-weight: 700;
-    color: yellow;
+    color: darkgreen;
     -webkit-text-stroke: 1px black;
     margin: 0;
 }
@@ -2438,19 +2759,21 @@
 }
 
 .buttonRecipe{
-    color: pink;
+    width: 100%;
+    color: darkblue;
     font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 20%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: none;
 }
 
 .recipeModal{
@@ -2481,7 +2804,7 @@
     top: 1%;
     left: 50%;
     transform: translateX(-50%);
-    color: gold;
+    color: darkblue;
     font-size: 6vw;
     font-weight: 700;
     text-align: center;
@@ -2490,24 +2813,33 @@
 }
 
 .recipeModal ol{
+    width: 40%;
     position: absolute;
     top: 55%;
-    left: 0%;
-    color: gold;
-    font-size: 2vw;
+    left: 2%;
+    color: darkblue;
+    font-size: 1.8vw;
     font-weight: 700;
     margin: 0;
+    padding: 4%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .recipeModal span{
-    width: 45%;
+    width: 40%;
     position: absolute;
     top: 55%;
-    left: 52.5%;
-    color: gold;
-    font-size: 2vw;
+    left: 53.5%;
+    color: darkblue;
+    font-size: 1.8vw;
     font-weight: 700;
     margin: 0;
+    padding: 2%;
+    background: gray;
+    border: solid 2px wheat;
+    border-radius: 10px;
 }
 
 .buttonCloseRecipe{

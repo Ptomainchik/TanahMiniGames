@@ -20,7 +20,10 @@ export const GameMemory1lvl = () => {
         showButtonStart: true,
         showButtonsWhenWinning: false,
         showModalInfo: true,
+        showCuttingBoardUp: true,
+        showCuttingBoardDown: false,
     });
+
     const [cells, setCells]: any = useState({
         A1V1H1: {
             name: "",
@@ -233,8 +236,10 @@ export const GameMemory1lvl = () => {
     });
     
     setStart(true);
-    setStates((prev: any) => ({...prev, showButtonStart: prev.showButtonStart === false}));
-    setStates((prev: any) => ({...prev, showModalInfo: prev.showModalInfo === false}));
+    setStates((prev: any) => ({...prev, showButtonStart: false}));
+    setTimeout(() => {
+        setStates((prev: any) => ({...prev, showModalInfo: false, showCuttingBoardUp: false}));
+    }, 1000);
 };
 
 const navigate = useNavigate();
@@ -313,7 +318,7 @@ useEffect(() => {
 useEffect(() => {
     setTimeout(() => {
         if (states.counterOfEliminatedCells === 12) {
-        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true}));
+        setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, showCuttingBoardDown: true}));
     }
     }, 1500);
 }, [states.counterOfEliminatedCells]);// Проверка условия победы и показ победного модального окна
@@ -369,6 +374,7 @@ function handleChoiceCell(cellKey: string) {
             {/* <button onClick={handleWin}>WIN</button> */}
 
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>   
+                {states.showCuttingBoardDown && <div className={states.showButtonsWhenWinning ? classes.bottomCuttingBoard : classes.downCuttingBoard}></div>}
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>Ух ты! Все продукты разложены по полкам. Спасибо тебе за помощь.</p>
                     </div>
@@ -378,6 +384,8 @@ function handleChoiceCell(cellKey: string) {
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
+            
+                
             <div className={classes.blockApple}>
                 <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
                 <p className={classes.numberOfIcons}>Яблоки:{states.cellsApple}/12</p>
@@ -397,11 +405,13 @@ function handleChoiceCell(cellKey: string) {
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
+                {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
+
                 { states.showModalInfo && <div>
-                    <div className={classes.infoOverlay}> 
+                    <div className={start ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                         <p className={classes.info}>Пожалуйста, помоги мне навести порядок на кухне и разложить продукты по полкам.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
+                    <img className={start ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={ElfGirl} alt="ElfGirl" draggable={false}/>
                 </div> }
    
                 <div className={classes.fields}>
