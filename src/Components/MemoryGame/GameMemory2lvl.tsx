@@ -255,9 +255,9 @@ function handleNextLevel() {
     navigate("/memory3");
 };
 
-function handleWin() {
-    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-}
+// function handleWin() {
+//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+// }
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -375,7 +375,7 @@ function handleChoiceCell(cellKey: string) {
     <>
         <div className={classes.gamePage}>
             
-            <button onClick={handleWin}>WIN</button>
+            {/* <button onClick={handleWin}>WIN</button> */}
             
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                 {states.showCuttingBoardDown && <div className={states.showButtonsWhenWinning ? classes.bottomCuttingBoard : classes.downCuttingBoard}></div>}
@@ -411,6 +411,8 @@ function handleChoiceCell(cellKey: string) {
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                <p className={classes.levelPointer}>Уровень 2</p>
 
                 {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
                 

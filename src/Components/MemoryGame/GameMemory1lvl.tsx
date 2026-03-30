@@ -383,8 +383,6 @@ function handleChoiceCell(cellKey: string) {
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
-
-            
                 
             <div className={classes.blockApple}>
                 <img className={states.cellsApple !== 12 ? classes.iconsTransparent : classes.iconsVisible} src={AppleImage} alt="AppleIconTransparent" draggable={false}/> 
@@ -404,6 +402,8 @@ function handleChoiceCell(cellKey: string) {
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                <p className={classes.levelPointer}>Уровень 1</p>
 
                 {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
 

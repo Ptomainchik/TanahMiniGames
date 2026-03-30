@@ -21,6 +21,18 @@
     border-right: solid rgb(67, 58, 38) 3px;
 }
 
+.levelPointer{
+    position: absolute;
+    bottom: 0%;
+    right: 2%;
+    margin: 0;
+    -webkit-text-stroke: 1px black;
+    color: gold;
+    font-family: "El Messiri";
+    font-size: 2vw;
+    font-weight: 600;
+}
+
 .downCuttingBoard{
     width: 50vw;
     height: 50vw;
@@ -1070,6 +1082,17 @@
     border-right: none;
 }
 
+.levelPointer{
+    position: absolute;
+    bottom: 1%;
+    right: 2%;
+    -webkit-text-stroke: 0px black;
+    color: gold;
+    font-family: "El Messiri";
+    font-size: 4vw;
+    font-weight: 600;
+}
+
 .downCuttingBoard{
     width: 100vw;
     height: 100vw;
@@ -1674,6 +1697,17 @@
     border-right: none;
 }
 
+.levelPointer{
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    -webkit-text-stroke: 1px black;
+    color: gold;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 600;
+}
+
 .downCuttingBoard{
     width: 100vw;
     height: 100vw;
@@ -2274,6 +2308,17 @@
     border-bottom: solid rgb(67, 58, 38) 2px;
     border-left: none;
     border-right: none;
+}
+
+.levelPointer{
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    -webkit-text-stroke: 1px black;
+    color: gold;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 600;
 }
 
 .downCuttingBoard{

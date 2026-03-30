@@ -298,9 +298,9 @@ function handleHomePageTranzition() {
     navigate("/");
 };
 
-function handleWin() {
-    setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
-}
+// function handleWin() {
+//     setStates((prev: any) => ({...prev, counterOfEliminatedCells: prev.counterOfEliminatedCells + 12}) )
+// }
 
 useEffect(() => {
     // Проверяем, когда счетчик становится равен 3
@@ -432,7 +432,7 @@ function handleCloseWinModalRecipe() {
     <>
         <div className={classes.gamePage}>
             
-            <button onClick={handleWin}>WIN</button>
+            {/* <button onClick={handleWin}>WIN</button> */}
 
             <div className={classes.timer}>
                 <p>
@@ -529,6 +529,8 @@ function handleCloseWinModalRecipe() {
             <div className={classes.gameField}>
 
                 { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
+
+                <p className={classes.levelPointer}>Уровень 4</p>
 
                 {states.showCuttingBoardUp && <div className={!start ? classes.downCuttingBoard : classes.upCuttingBoard}></div>}
 

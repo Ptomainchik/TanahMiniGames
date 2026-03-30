@@ -83,7 +83,7 @@
     font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
-    -webkit-text-stroke: 1px darkblue;
+    -webkit-text-stroke: 0.5px darkblue;
     cursor: pointer;
 }
 
@@ -101,7 +101,7 @@
     font-size: 6vw;
     font-family: "El Messiri";
     font-weight: 700;
-    -webkit-text-stroke: 1px yellow;
+    -webkit-text-stroke: 0.5px yellow;
     cursor: pointer;
 }
 

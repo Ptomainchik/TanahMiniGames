@@ -569,6 +569,8 @@ export const GameSorting4lvl = () => {
                     <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
                 </div>}
 
+                <p className={classes.levelPointer}>Уровень 4</p>
+
                 { states.showWinModalRecipe && <div className={classes.recipeModal}>
 
                 <img src={Porridge} alt="Porridge" draggable={false}/>

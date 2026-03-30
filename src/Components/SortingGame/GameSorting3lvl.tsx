@@ -520,6 +520,8 @@ export const GameSorting3lvl = () => {
                     <p className={classes.buttonNext} onClick={handleNextLevel}>Следующий уровень</p>
                 </div>}
 
+                <p className={classes.levelPointer}>Уровень 3</p>
+
                 <div className={classes.gameField}>
 
                         { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
