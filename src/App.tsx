@@ -8,6 +8,7 @@ import { GameSorting1lvl } from "./Components/SortingGame/GameSorting1lvl";
 import { GameSorting2lvl } from "./Components/SortingGame/GameSorting2lvl";
 import { GameSorting3lvl } from "./Components/SortingGame/GameSorting3lvl";
 import { GameSorting4lvl } from "./Components/SortingGame/GameSorting4lvl";
+import { GameThree1lvl } from "./Components/MatchThreeGame/GameThree1lv1";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="sort2" element={<GameSorting2lvl/>}/>
           <Route path="sort3" element={<GameSorting3lvl/>}/>
           <Route path="sort4" element={<GameSorting4lvl/>}/>
+          <Route path="three1" element={<GameThree1lvl/>}/>
       </Routes>
     </BrowserRouter>
       

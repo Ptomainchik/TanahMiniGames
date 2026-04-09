@@ -12,12 +12,17 @@ export const HomePage = () => {
         navigate("/sort1");
     };
 
+    function handleTransitionMatchThreePage() {
+        navigate("/three1");
+    };
+
     return (
         <>
         <div className={classes.homePage}>
            <h1>Мини игры</h1>
            <button className={classes.buttonMemoryGame} onClick={handleTransitionMemoryPage}>Игра на память</button>
            <button className={classes.buttonSortingGame} onClick={handleTransitionSortingPage}>Сортировочная игра</button>
+           <button className={classes.buttonMatchThreeGame} onClick={handleTransitionMatchThreePage}>Три в ряд</button>
         </div>
         
         </>

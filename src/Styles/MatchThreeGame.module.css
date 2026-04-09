@@ -1,0 +1,655 @@
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) center no-repeat;
+    background-size: cover;
+}
+
+.gameField{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MatchThreeGameImages/BackgroundFields.jpg) center no-repeat;
+    background-size: cover;
+    border-left: solid rgb(67, 58, 38) 3px;
+    border-right: solid rgb(67, 58, 38) 3px;
+}
+
+.levelPointer{
+    position: absolute;
+    bottom: 2%;
+    right: 1%;
+    margin: 0;
+    color: springgreen;
+    font-family: "El Messiri";
+    font-size: 1.8vw;
+    font-weight: 600;
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.fields{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 2.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timer{
+    position: absolute;
+    top: 1%;
+    left: 0.5%;
+    font-family: "El MEssiri";
+    font-size: 3.3vw;
+    font-weight: 700;
+    color: springgreen;
+    -webkit-text-stroke: 1px black;
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.timer p{
+    width: 50%;
+    font-size: 1.5vw;
+    -webkit-text-stroke: 0px black;
+}
+
+.leftPlateStart{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0;
+    left: 18.5%;
+    background: url(../assets/MatchThreeGameImages/Plate.png) no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    margin: 0;
+    animation: openingLeftPlate 2s forwards;
+}
+
+.leftPlateEnd{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0;
+    left: 18.5%;
+    background: url(../assets/MatchThreeGameImages/Plate.png) no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: closingLeftPlate 2s forwards;
+}
+
+.rightPlateStart{
+    width: 50vw;
+    height: 50vw;
+    position: absolute;
+    top: 0;
+    left: 18.5%;
+    background: url(../assets/MatchThreeGameImages/Plate.png) no-repeat;
+    background-size: cover;
+    margin: 0;
+    z-index: 2;
+    animation: openingRightPlate 2s forwards;
+}
+
+@keyframes openingLeftPlate {
+    0%, 100% {
+        transform: translateX(-190%);
+        
+    }
+    100% {
+        transform: translateX(0%) rotate(120deg);
+    }
+}
+
+@keyframes closingLeftPlate {
+    0%, 100% {
+        transform: translateX(0%) rotate(120deg);
+    }
+    100% {
+        
+        transform: translateX(190%) rotate(240deg);
+    }
+}
+
+@keyframes openingRightPlate {
+    0%, 100% {
+        transform: translateX(190%);
+        
+    }
+    100% {
+        transform: translateX(0%) rotate(-120deg);
+    }
+}
+
+.imageInfoIntro{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+    z-index: 3;
+}
+
+.imageInfoIntroOpacity{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
+}
+
+.infoOverlay{
+    width: 22vw;
+    height: 23vw;
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    margin: 0;
+    background: url(../assets/MatchThreeGameImages/OverlayText.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    z-index: 3;
+}
+
+.infoOverlayOpacity{
+    width: 22vw;
+    height: 23vw;
+    position: absolute;
+    top: 35%;
+    left: 5%;
+    margin: 0;
+    background: url(../assets/SortingGameImages/TextOverlay.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
+}
+
+@keyframes opacityMenu {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.info{
+    width: 65%;
+    font-family: "El Messiri";
+    font-weight: 700;
+    font-size: 1.5vw;
+    text-align: center;
+    color: darkolivegreen;
+    -webkit-text-stroke: 1px black;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.buttonStart{
+    font-family: "El Messiri";
+    font-size: 10vw;
+    font-weight: 700;
+    cursor: pointer;
+    color: deepskyblue;
+    -webkit-text-stroke: 2px black;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    margin: 0;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    z-index: 3;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonStart:hover{
+    filter: drop-shadow(0 0 0 black);
+    color: royalblue;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.buttonRestart{
+    color: cyan;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonRestart:hover{
+    filter: drop-shadow( 0 0 0 black);
+    color: cyan;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.buttonNext{
+    color: chartreuse;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonNext:hover{
+    filter: drop-shadow( 0 0 0 black);
+    color: chartreuse;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.winAndLoseModal{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.winAndLoseModal h3{
+    width: 40%;
+    font-family: "El MEssiri";
+    font-size: 3vw;
+    font-weight: 700;
+    text-align: center;
+    color: plum;
+    -webkit-text-stroke: 1px black;
+    position: absolute;
+    margin: 0;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.fieldH1{
+    width: 70%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.fieldH2{
+    width: 70%;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.fieldH3{
+    width: 70%;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.fieldH4{
+    width: 70%;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.fieldH5{
+    width: 70%;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.fieldH6{
+    width: 70%;
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+}
+
+.cellsLeftSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+    margin-left: 11%;
+}
+
+.cellsCenterSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+}
+
+.cellsRightSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+    margin-right: 11%;
+}
+
+.strawberriesCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellStrawberries.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.strawberriesCells:hover{
+    opacity: 0.8;
+}
+
+.pearCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPear.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.pearCells:hover{
+    opacity: 0.8;
+}
+
+.plumCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPlum.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.plumCells:hover{
+    opacity: 0.8;
+}
+
+.cranberryCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellCranberry.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.cranberryCells:hover{
+    opacity: 0.8;
+}
+
+.seaBuckthornCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellSeaBuckthorn.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.seaBuckthornCells:hover{
+    opacity: 0.8;
+}
+
+.gooseberryCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellGooseberry.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.gooseberryCells:hover{
+    opacity: 0.8;
+}
+
+.emptyCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellEmpty.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.strawberriesCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellStrawberries.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+    
+}
+
+.pearCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPear.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.plumCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPlum.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.cranberryCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellCranberry.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.seaBuckthornCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellSeaBuckthorn.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.gooseberryCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellGooseberry.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.buttonRecipe{
+    color: pink;
+    font-size: 4vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonRecipe:hover{
+    filter: drop-shadow( 0vw 0vw 0vw black);
+    color: pink;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.recipeModal{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../assets/SortingGameImages/BackgroundTexturesSortingGameField.jpg) no-repeat center;
+    background-size: cover;
+    z-index: 3;
+    font-family: "El Messiri";
+}
+
+.recipeModal img{
+    width: 30%;
+    position: absolute;
+    top: 5%;
+    left: 2.5%;
+    border: solid wheat 3px;
+    border-radius: 10px;
+}
+
+.recipeModal h1{ 
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    color: gold;
+    font-size: 3vw;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    margin: 0;
+}
+
+.recipeModal ol{
+    position: absolute;
+    top: 10%;
+    left: 34%;
+    color: gold;
+    font-size: 1.2vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.recipeModal span{
+    width: 60%;
+    position: absolute;
+    top: 60%;
+    left: 34%;
+    color: gold;
+    font-size: 1.1vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.buttonCloseRecipe{
+    color: red;
+    font-size: 2.5vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    bottom: 0%;
+    left: 85%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    margin: 0;
+}
+
+.buttonCloseRecipe:hover{
+    filter: drop-shadow( 0vw 0vw 0vw black);
+    color: red;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+
+@media (max-width: 480px) {
+
+
+
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+
+
+}

@@ -25,7 +25,7 @@
     width: 30vw;
     height: 5vw;
     position: absolute;
-    top: 50%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: blueviolet;
@@ -48,7 +48,7 @@
     width: 30vw;
     height: 5vw;
     position: absolute;
-    top: 70%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: teal;
@@ -65,6 +65,29 @@
 .buttonSortingGame:active{
     filter: drop-shadow( 1vw 1vw 1vw black);
     background: mediumorchid
+}
+
+.buttonMatchThreeGame{
+    width: 30vw;
+    height: 5vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: mediumblue;
+    background: plum;
+    border-radius: 10px;
+    border: solid 5px gold;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
+    cursor: pointer;
+}
+
+.buttonMatchThreeGame:active{
+    filter: drop-shadow( 1vw 1vw 1vw black);
+    background: mediumvioletred;
 }
 
 @media (max-width: 480px) {
@@ -96,6 +119,24 @@
     transform: translate(-50%, -50%);
     color: teal;
     background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 0.5px yellow;
+    cursor: pointer;
+}
+
+.buttonMatchThreeGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: mediumblue;
+    background: plum;
     border-radius: 10px;
     border: solid 2px gold;
     font-size: 6vw;
@@ -144,6 +185,24 @@
     -webkit-text-stroke: 1px yellow;
     cursor: pointer;
 }
+
+.buttonMatchThreeGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: mediumblue;
+    background: plum;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
+    cursor: pointer;
+}
     
 }
 
@@ -176,6 +235,24 @@
     transform: translate(-50%, -50%);
     color: teal;
     background: mediumslateblue;
+    border-radius: 10px;
+    border: solid 2px gold;
+    font-size: 6vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px yellow;
+    cursor: pointer;
+}
+
+.buttonMatchThreeGame{
+    width: 50vw;
+    height: 20vw;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: mediumblue;
+    background: plum;
     border-radius: 10px;
     border: solid 2px gold;
     font-size: 6vw;
