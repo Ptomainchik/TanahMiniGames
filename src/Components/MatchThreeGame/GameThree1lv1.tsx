@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import DwarfWomen from "../../assets/MatchThreeGameImages/DwarfWomen.png";
 import DwarfWomenLose from "../../assets/MatchThreeGameImages/DwarfWomenLose.png";
 
-
 export const GameThree1lvl = () => {
     const [endTime, setEndTime] = useState(null);   
     const [timeLeft, setTimeLeft] = useState("10:00");
@@ -259,49 +258,107 @@ export const GameThree1lvl = () => {
 
     });
 
-    function handleStartGame() {
-        if (states.stateStart) return;
+    // Вспомогательная функция: проверяет одномерный массив цветов (длина 36) на наличие линий 3+
+    function hasAnyMatch(board: string[]): boolean {
+    const rows = 6;
+    const cols = 6;
+    // Превращаем в матрицу 6x6
+    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+    for (let i = 0; i < 36; i++) {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        matrix[row][col] = board[i];
+    }
 
-        const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-        setEndTime(fiveMinutesLater);
-
-        const colors = [
-            ...Array(6).fill(states.cellsStrawberriesName),
-            ...Array(6).fill(states.cellsPearName),
-            ...Array(6).fill(states.cellsPlumName),
-            ...Array(6).fill(states.cellsCranberryName),
-            ...Array(6).fill(states.cellsSeaBuckthornName),
-            ...Array(6).fill(states.cellsGooseberryName)
-        ];
-        
-        for (let i = colors.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [colors[i], colors[j]] = [colors[j], colors[i]];
+    // Проверка горизонталей
+    for (let row = 0; row < rows; row++) {
+        let start = 0;
+        while (start < cols) {
+        const name = matrix[row][start];
+        if (name === "") {
+            start++;
+            continue;
         }
-        
-        setCells((prevCells: any) => { 
-            const keys = Object.keys(prevCells);
-            const newCells: any = {};   
-            
-            keys.forEach((key, index) => {
-                newCells[key] = {
-                    ...prevCells[key],
-                    name: colors[index]
-                };
-            });
-            
-            return newCells;
+        let end = start;
+        while (end + 1 < cols && matrix[row][end + 1] === name) end++;
+        if (end - start + 1 >= 3) return true;
+        start = end + 1;
+        }
+    }
+
+    // Проверка вертикалей
+    for (let col = 0; col < cols; col++) {
+        let start = 0;
+        while (start < rows) {
+        const name = matrix[start][col];
+        if (name === "") {
+            start++;
+            continue;
+        }
+        let end = start;
+        while (end + 1 < rows && matrix[end + 1][col] === name) end++;
+        if (end - start + 1 >= 3) return true;
+        start = end + 1;
+        }
+    }
+    return false;
+    }
+
+    // Генератор чистой доски
+    function generateCleanBoard(colorsArray: string[]): string[] {
+    let attempts = 0;
+    const maxAttempts = 500; // запас
+    while (attempts < maxAttempts) {
+        // Перемешиваем копию исходного массива
+        const shuffled = [...colorsArray];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        if (!hasAnyMatch(shuffled)) {
+        return shuffled;
+        }
+        attempts++;
+    }
+    // Фолбэк: если вдруг не повезло, возвращаем последний перемешанный (редко)
+    console.warn("Не удалось сгенерировать доску без линий с 500 попыток");
+    return colorsArray; // или вернуть что-то заведомо без линий, например, идеально упорядоченную доску
+    }
+
+    function handleStartGame() {
+    if (states.stateStart) return;
+
+    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+    setEndTime(fiveMinutesLater);
+
+    // Исходный набор цветов (6 каждого)
+    const rawColors = [
+        ...Array(6).fill(states.cellsStrawberriesName),
+        ...Array(6).fill(states.cellsPearName),
+        ...Array(6).fill(states.cellsPlumName),
+        ...Array(6).fill(states.cellsCranberryName),
+        ...Array(6).fill(states.cellsSeaBuckthornName),
+        ...Array(6).fill(states.cellsGooseberryName)
+    ];
+
+    // Генерируем раскладку без линий
+    const cleanColors = generateCleanBoard(rawColors);
+
+    setCells((prevCells: any) => { 
+        const keys = Object.keys(prevCells);
+        const newCells: any = {};   
+        keys.forEach((key, index) => {
+        newCells[key] = {
+            ...prevCells[key],
+            name: cleanColors[index]  // ← используем чистую раскладку
+        };
+        });
+        return newCells;
     });
 
     setStates((prev: any) => ({...prev, showButtonStart: false, stateStart: true}));
-    setTimeout(() => {
-        setStates((prev:any) => ({...prev, plate: false}));
-    },2000);
-
-    setTimeout(() => {
-        setStates((prev:any) => ({...prev, showModalInfo: false}));
-    },1500);
-
+    setTimeout(() => setStates((prev:any) => ({...prev, plate: false})), 2000);
+    setTimeout(() => setStates((prev:any) => ({...prev, showModalInfo: false})), 1500);
     };
 
     function handleChoiceCell(cellKey: string) {
@@ -331,9 +388,9 @@ export const GameThree1lvl = () => {
             const selectedCellKey = states.selectedCell;
             const targetCell = cells[cellKey];
             
-            // Проверьте, пуста ли целевая ячейка.
+            // Проверьте, не пуста ли целевая ячейка.
             if (!targetCell.empty) {
-                // Поменяйте местами имя и пустые свойства.
+                // Поменяйте местами имена свойства.
                 setCells((prevCells: any) => ({
                     ...prevCells,
                     [selectedCellKey]: {
@@ -371,26 +428,6 @@ export const GameThree1lvl = () => {
                     ...prevStates, 
                     counterCellsChoices: 0,
                     selectedCell: null
-                }));
-            }
-            // При щелчке по другой непустой ячейке произойдет переключение выделения.
-            else if (!targetCell.empty && !targetCell.choice) {
-                // Отменить выбор текущей ячейки
-                setCells((prevCells: any) => ({
-                    ...prevCells,
-                    [selectedCellKey]: {
-                        ...prevCells[selectedCellKey],
-                        choice: false
-                    },
-                    [cellKey]: {
-                        ...prevCells[cellKey],
-                        choice: true
-                    }
-                }));
-                
-                setStates((prevStates: any) => ({ 
-                    ...prevStates, 
-                    selectedCell: cellKey
                 }));
             }
         }
@@ -436,74 +473,139 @@ export const GameThree1lvl = () => {
         return () => clearInterval(interval); // Чистим, если ушли со страницы
     }, [endTime, states.showButtonsWhenWinning]);
 
+useEffect(() => {
+    // 1. Построим матрицу 6×6 из имён и ключей
+    const rows = 6;
+    const cols = 6;
+    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+    const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+
+    for (let h = 0; h < rows; h++) {        // h = номер горизонтали (H) от 0 до 5
+        for (let v = 0; v < cols; v++) {      // v = номер вертикали (V) от 0 до 5
+        const cellNumber = h * cols + v + 1;
+        const key = `A${cellNumber}V${v + 1}H${h + 1}`;
+        const cell = cells[key];
+        if (cell) {
+            matrix[h][v] = cell.name || "";
+            keyMatrix[h][v] = key;
+        }
+        }
+    }
+
     useEffect(() => {
-  // 1. Построим матрицу 6×6 из имён и ключей
-  const rows = 6;
-  const cols = 6;
-  const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-  const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-
-  for (let h = 0; h < rows; h++) {        // h = номер горизонтали (H) от 0 до 5
-    for (let v = 0; v < cols; v++) {      // v = номер вертикали (V) от 0 до 5
-      const cellNumber = h * cols + v + 1;
-      const key = `A${cellNumber}V${v + 1}H${h + 1}`;
-      const cell = cells[key];
-      if (cell) {
-        matrix[h][v] = cell.name || "";
-        keyMatrix[h][v] = key;
-      }
-    }
-  }
-
-  const toClear = new Set<string>(); // ключи клеток, которые нужно очистить
-
-  // 2. Поиск горизонтальных линий
-  for (let h = 0; h < rows; h++) {
-    let start = 0;
-    while (start < cols) {
-      const currentName = matrix[h][start];
-      if (currentName === "") {
-        start++;
-        continue;
-      }
-      let end = start;
-      while (end + 1 < cols && matrix[h][end + 1] === currentName) {
-        end++;
-      }
-      const length = end - start + 1;
-      if (length >= 3) {
-        for (let v = start; v <= end; v++) {
-          toClear.add(keyMatrix[h][v]);
+        if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
+            // захардженная логика смещения
         }
-      }
-      start = end + 1;
-    }
-  }
-
-  // 3. Поиск вертикальных линий
-  for (let v = 0; v < cols; v++) {
-    let start = 0;
-    while (start < rows) {
-      const currentName = matrix[start][v];
-      if (currentName === "") {
-        start++;
-        continue;
-      }
-      let end = start;
-      while (end + 1 < rows && matrix[end + 1][v] === currentName) {
-        end++;
-      }
-      const length = end - start + 1;
-      if (length >= 3) {
-        for (let h = start; h <= end; h++) {
-          toClear.add(keyMatrix[h][v]);
+        else if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
+            // захардженная логика смещения
         }
-      }
-      start = end + 1;
-    }
-  }
+        else if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A1V1H1.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A7V1H2.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A13V1H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: prev.A13V1H3.name = cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: prev.A7V1H2.name = cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: prev.A1V1H1.name = "А здесь уже просто рандомим универсальной функцией.",
+                    empty: false,    
+            }
+            }));
+        }
+        else if (cells.A19V1H4.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A25V1H5.empty) {
+            // захардженная логика смещения
+        }
+        else if (cells.A31V1H6.empty) {
+            // захардженная логика смещения
+        }// Единичными проверками я контролирую как раз те случаи если вдруг будет собранно по горизонтале. 
+    }, [cells]);
 
-  // 4. Если есть что очищать – обновляем состояние
+    const toClear = new Set<string>(); // ключи клеток, которые нужно очистить
+
+    // 2. Поиск горизонтальных линий
+    for (let h = 0; h < rows; h++) {
+        let start = 0;
+        while (start < cols) {
+        const currentName = matrix[h][start];
+        if (currentName === "") {
+            start++;
+            continue;
+        }
+        let end = start;
+        while (end + 1 < cols && matrix[h][end + 1] === currentName) {
+            end++;
+        }
+        const length = end - start + 1;
+        if (length >= 3) {
+            for (let v = start; v <= end; v++) {
+            toClear.add(keyMatrix[h][v]);
+            }
+        }
+        start = end + 1;
+        
+        }
+        
+    // 3. Поиск вертикальных линий
+    for (let v = 0; v < cols; v++) {
+        let start = 0;
+        while (start < rows) {
+        const currentName = matrix[start][v];
+        if (currentName === "") {
+            start++;
+            continue;
+        }
+        let end = start;
+        while (end + 1 < rows && matrix[end + 1][v] === currentName) {
+            end++;
+        }
+        const length = end - start + 1;
+        if (length >= 3) {
+            for (let h = start; h <= end; h++) {
+            toClear.add(keyMatrix[h][v]);
+            }
+        }
+        start = end + 1;
+        }
+    }
+
+    // 4. Если есть что очищать – обновляем состояние
   if (toClear.size > 0) {
     setCells((prevCells: any) => {
       const newCells = { ...prevCells };
@@ -520,7 +622,7 @@ export const GameThree1lvl = () => {
       return newCells;
     });
   }
-}, [cells]); // Зависимость – меняется при любом обновлении клеток
+}}, [cells]); // Зависимость – меняется при любом обновлении клеток
 
     return (
         <>
@@ -1621,11 +1723,3 @@ export const GameThree1lvl = () => {
         </>
     )
 }
-
-// disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-//                                         || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-//                                         || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-//                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-//                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-//                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-//                                     }
