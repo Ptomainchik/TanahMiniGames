@@ -3,13 +3,27 @@ import classes from "../../Styles/MatchThreeGame.module.css";
 import { useNavigate } from "react-router-dom";
 import DwarfWomen from "../../assets/MatchThreeGameImages/DwarfWomen.png";
 import DwarfWomenLose from "../../assets/MatchThreeGameImages/DwarfWomenLose.png";
+import ImageBoxOfStrawberries from "../../assets/MatchThreeGameImages/BoxOfStrawberries.png";
+import ImageBoxOfPear from "../../assets/MatchThreeGameImages/BoxOfPear.png";
+import ImageBoxOfPlum from "../../assets/MatchThreeGameImages/BoxOfPlum.png";
+import ImageBoxOfCranberry from "../../assets/MatchThreeGameImages/BoxOfCranberry.png";
+import ImageBoxOfSeaBuckthorn from "../../assets/MatchThreeGameImages/BoxOfSeaBuckthorn.png";
+import ImageBoxOfGooseberry from "../../assets/MatchThreeGameImages/BoxOfGooseberry.png";
 
 export const GameThree1lvl = () => {
     const [endTime, setEndTime] = useState(null);   
     const [timeLeft, setTimeLeft] = useState("10:00");
+    const [fruit, setFruit] = useState({
+        numberOfStrawberries: 0, 
+        numberOfPear: 0, 
+        numberOfPlum: 0,  
+        numberOfCranberry: 0, 
+        numberOfSeaBuckthorn: 0, 
+        numberOfGooseberry: 0,  
+    }); 
     const [states, setStates] = useState({
+            matchCheck: false,
             counterCellsChoices: 0,
-            counterOfEliminatedCells: 0,
             cellsStrawberries: 0,
             cellsPear: 0,
             cellsPlum: 0,
@@ -307,7 +321,7 @@ export const GameThree1lvl = () => {
     // Генератор чистой доски
     function generateCleanBoard(colorsArray: string[]): string[] {
     let attempts = 0;
-    const maxAttempts = 500; // запас
+    const maxAttempts = 1000; // запас
     while (attempts < maxAttempts) {
         // Перемешиваем копию исходного массива
         const shuffled = [...colorsArray];
@@ -321,15 +335,15 @@ export const GameThree1lvl = () => {
         attempts++;
     }
     // Фолбэк: если вдруг не повезло, возвращаем последний перемешанный (редко)
-    console.warn("Не удалось сгенерировать доску без линий с 500 попыток");
+    console.warn("Не удалось сгенерировать доску без линий с 1000 попыток");
     return colorsArray; // или вернуть что-то заведомо без линий, например, идеально упорядоченную доску
     }
 
     function handleStartGame() {
     if (states.stateStart) return;
 
-    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-    setEndTime(fiveMinutesLater);
+    const tenMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+    setEndTime(tenMinutesLater);
 
     // Исходный набор цветов (6 каждого)
     const rawColors = [
@@ -389,9 +403,10 @@ export const GameThree1lvl = () => {
             const targetCell = cells[cellKey];
             
             // Проверьте, не пуста ли целевая ячейка.
-            if (!targetCell.empty) {
+            if (!targetCell.empty && !states.matchCheck) {
                 // Поменяйте местами имена свойства.
-                setCells((prevCells: any) => ({
+                setTimeout(() => {
+                    setCells((prevCells: any) => ({
                     ...prevCells,
                     [selectedCellKey]: {
                         ...prevCells[selectedCellKey],
@@ -406,12 +421,60 @@ export const GameThree1lvl = () => {
                         choice: false
                     }
                 }));
+                }, 500);
+                
+                setTimeout(() => {
+                    setCells((prevCells: any) => ({
+                    ...prevCells,
+                    [selectedCellKey]: {
+                        ...prevCells[selectedCellKey],
+                        name: prevCells[cellKey].name,
+                        empty: false,
+                        choice: false
+                    },
+                    [cellKey]: {
+                        ...prevCells[cellKey],
+                        name: prevCells[selectedCellKey].name,
+                        empty: false,
+                        choice: false
+                    }
+                }));
+                }, 1000);
+                
+                
                 
                 // Сбросить состояние выбора
                 setStates((prevStates: any) => ({ 
                     ...prevStates, 
                     counterCellsChoices: 0,
                     selectedCell: null
+                }));
+            }
+            else if (!targetCell.empty && states.matchCheck) {
+                // Поменяйте местами имена свойства.
+                setTimeout(() => {
+                    setCells((prevCells: any) => ({
+                    ...prevCells,
+                    [selectedCellKey]: {
+                        ...prevCells[selectedCellKey],
+                        name: prevCells[cellKey].name,
+                        empty: false,
+                        choice: false
+                    },
+                    [cellKey]: {
+                        ...prevCells[cellKey],
+                        name: prevCells[selectedCellKey].name,
+                        empty: false,
+                        choice: false
+                    }
+                }));
+                }, 500);
+
+                // Сбросить состояние выбора
+                setStates((prevStates: any) => ({ 
+                    ...prevStates, 
+                    counterCellsChoices: 0,
+                    selectedCell: null,
                 }));
             }
             // При щелчке по той же ячейке снимите с нее выделение.
@@ -474,139 +537,122 @@ export const GameThree1lvl = () => {
     }, [endTime, states.showButtonsWhenWinning]);
 
 useEffect(() => {
-    // 1. Построим матрицу 6×6 из имён и ключей
-    const rows = 6;
-    const cols = 6;
-    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-    const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+  // 1. Построим матрицу 6×6 из имён и ключей
+  const rows = 6;
+  const cols = 6;
+  const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+  const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
 
-    for (let h = 0; h < rows; h++) {        // h = номер горизонтали (H) от 0 до 5
-        for (let v = 0; v < cols; v++) {      // v = номер вертикали (V) от 0 до 5
-        const cellNumber = h * cols + v + 1;
-        const key = `A${cellNumber}V${v + 1}H${h + 1}`;
-        const cell = cells[key];
-        if (cell) {
-            matrix[h][v] = cell.name || "";
-            keyMatrix[h][v] = key;
-        }
-        }
-    }
-
-    useEffect(() => {
-        if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A1V1H1.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A7V1H2.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A13V1H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: prev.A13V1H3.name = cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: prev.A7V1H2.name = cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: prev.A1V1H1.name = "А здесь уже просто рандомим универсальной функцией.",
-                    empty: false,    
-            }
-            }));
-        }
-        else if (cells.A19V1H4.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A25V1H5.empty) {
-            // захардженная логика смещения
-        }
-        else if (cells.A31V1H6.empty) {
-            // захардженная логика смещения
-        }// Единичными проверками я контролирую как раз те случаи если вдруг будет собранно по горизонтале. 
-    }, [cells]);
-
-    const toClear = new Set<string>(); // ключи клеток, которые нужно очистить
-
-    // 2. Поиск горизонтальных линий
-    for (let h = 0; h < rows; h++) {
-        let start = 0;
-        while (start < cols) {
-        const currentName = matrix[h][start];
-        if (currentName === "") {
-            start++;
-            continue;
-        }
-        let end = start;
-        while (end + 1 < cols && matrix[h][end + 1] === currentName) {
-            end++;
-        }
-        const length = end - start + 1;
-        if (length >= 3) {
-            for (let v = start; v <= end; v++) {
-            toClear.add(keyMatrix[h][v]);
-            }
-        }
-        start = end + 1;
-        
-        }
-        
-    // 3. Поиск вертикальных линий
+  for (let h = 0; h < rows; h++) {
     for (let v = 0; v < cols; v++) {
-        let start = 0;
-        while (start < rows) {
-        const currentName = matrix[start][v];
-        if (currentName === "") {
-            start++;
-            continue;
+      const cellNumber = h * cols + v + 1;
+      const key = `A${cellNumber}V${v + 1}H${h + 1}`;
+      const cell = cells[key];
+      if (cell) {
+        matrix[h][v] = cell.name || "";
+        keyMatrix[h][v] = key;
+      }
+    }
+  }
+
+  const toClear = new Set<string>();
+
+  // 2. Поиск горизонтальных линий
+  for (let h = 0; h < rows; h++) {
+    let start = 0;
+    while (start < cols) {
+      const currentName = matrix[h][start];
+      if (currentName === "") {
+        start++;
+        continue;
+      }
+      let end = start;
+      while (end + 1 < cols && matrix[h][end + 1] === currentName) {
+        end++;
+      }
+      const length = end - start + 1;
+      if (length >= 3) {
+        for (let v = start; v <= end; v++) {
+          toClear.add(keyMatrix[h][v]);
         }
-        let end = start;
-        while (end + 1 < rows && matrix[end + 1][v] === currentName) {
-            end++;
+      }
+      start = end + 1;
+    }
+  }
+
+  // 3. Поиск вертикальных линий
+  for (let v = 0; v < cols; v++) {
+    let start = 0;
+    while (start < rows) {
+      const currentName = matrix[start][v];
+      if (currentName === "") {
+        start++;
+        continue;
+      }
+      let end = start;
+      while (end + 1 < rows && matrix[end + 1][v] === currentName) {
+        end++;
+      }
+      const length = end - start + 1;
+      if (length >= 3) {
+        for (let h = start; h <= end; h++) {
+          toClear.add(keyMatrix[h][v]);
         }
-        const length = end - start + 1;
-        if (length >= 3) {
-            for (let h = start; h <= end; h++) {
-            toClear.add(keyMatrix[h][v]);
-            }
-        }
-        start = end + 1;
-        }
+      }
+      start = end + 1;
+    }
+  }
+
+  // 4. Если есть что очищать – обновляем состояние и считаем фрукты
+  if (toClear.size > 0) {
+    // Подсчитываем, какие фрукты и сколько удаляем
+    const counts = {
+      numberOfStrawberries: 0,
+      numberOfPear: 0,
+      numberOfPlum: 0,
+      numberOfCranberry: 0,
+      numberOfSeaBuckthorn: 0,
+      numberOfGooseberry: 0,
+    };
+
+    // Проходим по всем ключам в toClear и определяем имя фрукта из текущего состояния cells
+    for (const key of toClear) {
+      const fruitName = cells[key]?.name;
+      switch (fruitName) {
+        case states.cellsStrawberriesName:
+          counts.numberOfStrawberries++;
+          break;
+        case states.cellsPearName:
+          counts.numberOfPear++;
+          break;
+        case states.cellsPlumName:
+          counts.numberOfPlum++;
+          break;
+        case states.cellsCranberryName:
+          counts.numberOfCranberry++;
+          break;
+        case states.cellsSeaBuckthornName:
+          counts.numberOfSeaBuckthorn++;
+          break;
+        case states.cellsGooseberryName:
+          counts.numberOfGooseberry++;
+          break;
+        default:
+          break;
+      }
     }
 
-    // 4. Если есть что очищать – обновляем состояние
-  if (toClear.size > 0) {
+    // Обновляем счётчик фруктов (прибавляем к текущим значениям)
+    setFruit(prev => ({
+      numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
+      numberOfPear: prev.numberOfPear + counts.numberOfPear,
+      numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
+      numberOfCranberry: prev.numberOfCranberry + counts.numberOfCranberry,
+      numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
+      numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
+    }));
+
+    // Очищаем клетки (устанавливаем name: "", empty: true)
     setCells((prevCells: any) => {
       const newCells = { ...prevCells };
       for (const key of toClear) {
@@ -622,12 +668,2497 @@ useEffect(() => {
       return newCells;
     });
   }
-}}, [cells]); // Зависимость – меняется при любом обновлении клеток
+}, [cells]); // Зависимость – меняется при любом обновлении клеток
 
+
+    //Гравитация
+
+    const getRandomFruitName = () => {
+        const fruitNames = Object.entries(states)
+            .filter(([key]) => key.endsWith('Name')) // только ключи с "...Name"
+            .map(([, value]) => value);              // берём только значения
+        const randomIndex = Math.floor(Math.random() * fruitNames.length);
+        return fruitNames[randomIndex];
+    };
+
+    //V1
+    useEffect(() => {
+
+        if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A31V1H6: {
+                    ...prev.A31V1H6,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A31V1H6: {
+                    ...prev.A31V1H6,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A31V1H6: {
+                    ...prev.A31V1H6,
+                    name: cells.A13V1H3.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A1V1H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A7V1H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A13V1H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A19V1H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A13V1H3.name,
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A25V1H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A19V1H4.name,
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A13V1H3.name,
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A31V1H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A31V1H6: {
+                    ...prev.A31V1H6,
+                    name: cells.A25V1H5.name,
+                    empty: false,    
+            },
+                A25V1H5: {
+                    ...prev.A25V1H5,
+                    name: cells.A19V1H4.name,
+                    empty: false,    
+            },
+                A19V1H4: {
+                    ...prev.A19V1H4,
+                    name: cells.A13V1H3.name,
+                    empty: false,    
+            },
+                A13V1H3: {
+                    ...prev.A13V1H3,
+                    name: cells.A7V1H2.name,
+                    empty: false,    
+            },
+                A7V1H2: {
+                    ...prev.A7V1H2,
+                    name: cells.A1V1H1.name,
+                    empty: false,    
+            },
+                A1V1H1: {
+                    ...prev.A1V1H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+
+    //V2
+    useEffect(() => {
+
+        if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A32V2H6: {
+                    ...prev.A32V2H6,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A32V2H6: {
+                    ...prev.A32V2H6,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A32V2H6: {
+                    ...prev.A32V2H6,
+                    name: cells.A14V2H3.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A2V2H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A8V2H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A14V2H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A20V2H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A14V2H3.name,
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A26V2H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A20V2H4.name,
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A14V2H3.name,
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A32V2H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A32V2H6: {
+                    ...prev.A32V2H6,
+                    name: cells.A26V2H5.name,
+                    empty: false,    
+            },
+                A26V2H5: {
+                    ...prev.A26V2H5,
+                    name: cells.A20V2H4.name,
+                    empty: false,    
+            },
+                A20V2H4: {
+                    ...prev.A20V2H4,
+                    name: cells.A14V2H3.name,
+                    empty: false,    
+            },
+                A14V2H3: {
+                    ...prev.A14V2H3,
+                    name: cells.A8V2H2.name,
+                    empty: false,    
+            },
+                A8V2H2: {
+                    ...prev.A8V2H2,
+                    name: cells.A2V2H1.name,
+                    empty: false,    
+            },
+                A2V2H1: {
+                    ...prev.A2V2H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+
+    //V3
+    useEffect(() => {
+
+        if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A33V3H6: {
+                    ...prev.A33V3H6,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A33V3H6: {
+                    ...prev.A33V3H6,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A33V3H6: {
+                    ...prev.A33V3H6,
+                    name: cells.A15V3H3.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A3V3H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A9V3H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A15V3H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A21V3H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A15V3H3.name,
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A27V3H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A21V3H4.name,
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A15V3H3.name,
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A33V3H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A33V3H6: {
+                    ...prev.A33V3H6,
+                    name: cells.A27V3H5.name,
+                    empty: false,    
+            },
+                A27V3H5: {
+                    ...prev.A27V3H5,
+                    name: cells.A21V3H4.name,
+                    empty: false,    
+            },
+                A21V3H4: {
+                    ...prev.A21V3H4,
+                    name: cells.A15V3H3.name,
+                    empty: false,    
+            },
+                A15V3H3: {
+                    ...prev.A15V3H3,
+                    name: cells.A9V3H2.name,
+                    empty: false,    
+            },
+                A9V3H2: {
+                    ...prev.A9V3H2,
+                    name: cells.A3V3H1.name,
+                    empty: false,    
+            },
+                A3V3H1: {
+                    ...prev.A3V3H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+
+    //V4
+    useEffect(() => {
+
+        if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A34V4H6: {
+                    ...prev.A34V4H6,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A34V4H6: {
+                    ...prev.A34V4H6,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A34V4H6: {
+                    ...prev.A34V4H6,
+                    name: cells.A16V4H3.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A4V4H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A10V4H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A16V4H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A22V4H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A16V4H3.name,
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A28V4H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A22V4H4.name,
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A16V4H3.name,
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A34V4H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A34V4H6: {
+                    ...prev.A34V4H6,
+                    name: cells.A28V4H5.name,
+                    empty: false,    
+            },
+                A28V4H5: {
+                    ...prev.A28V4H5,
+                    name: cells.A22V4H4.name,
+                    empty: false,    
+            },
+                A22V4H4: {
+                    ...prev.A22V4H4,
+                    name: cells.A16V4H3.name,
+                    empty: false,    
+            },
+                A16V4H3: {
+                    ...prev.A16V4H3,
+                    name: cells.A10V4H2.name,
+                    empty: false,    
+            },
+                A10V4H2: {
+                    ...prev.A10V4H2,
+                    name: cells.A4V4H1.name,
+                    empty: false,    
+            },
+                A4V4H1: {
+                    ...prev.A4V4H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+
+    //V5
+     useEffect(() => {
+
+        if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A35V5H6: {
+                    ...prev.A35V5H6,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A35V5H6: {
+                    ...prev.A35V5H6,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A35V5H6: {
+                    ...prev.A35V5H6,
+                    name: cells.A17V5H3.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A5V5H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A11V5H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A17V5H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A23V5H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A17V5H3.name,
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A29V5H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A23V5H4.name,
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A17V5H3.name,
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A35V5H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A35V5H6: {
+                    ...prev.A35V5H6,
+                    name: cells.A29V5H5.name,
+                    empty: false,    
+            },
+                A29V5H5: {
+                    ...prev.A29V5H5,
+                    name: cells.A23V5H4.name,
+                    empty: false,    
+            },
+                A23V5H4: {
+                    ...prev.A23V5H4,
+                    name: cells.A17V5H3.name,
+                    empty: false,    
+            },
+                A17V5H3: {
+                    ...prev.A17V5H3,
+                    name: cells.A11V5H2.name,
+                    empty: false,    
+            },
+                A11V5H2: {
+                    ...prev.A11V5H2,
+                    name: cells.A5V5H1.name,
+                    empty: false,    
+            },
+                A5V5H1: {
+                    ...prev.A5V5H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+
+    //V6
+    useEffect(() => {
+
+        if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A36V6H6: {
+                    ...prev.A36V6H6,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A36V6H6: {
+                    ...prev.A36V6H6,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A36V6H6: {
+                    ...prev.A36V6H6,
+                    name: cells.A18V6H3.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A6V6H1.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A12V6H2.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            },
+            }));
+        }
+        else if (states.stateStart && cells.A18V6H3.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A24V6H4.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A18V6H3.name,
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A30V6H5.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A24V6H4.name,
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A18V6H3.name,
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+        else if (states.stateStart && cells.A36V6H6.empty) {
+            setCells((prev: any) => ({
+                ...prev,
+                A36V6H6: {
+                    ...prev.A36V6H6,
+                    name: cells.A30V6H5.name,
+                    empty: false,    
+            },
+                A30V6H5: {
+                    ...prev.A30V6H5,
+                    name: cells.A24V6H4.name,
+                    empty: false,    
+            },
+                A24V6H4: {
+                    ...prev.A24V6H4,
+                    name: cells.A18V6H3.name,
+                    empty: false,    
+            },
+                A18V6H3: {
+                    ...prev.A18V6H3,
+                    name: cells.A12V6H2.name,
+                    empty: false,    
+            },
+                A12V6H2: {
+                    ...prev.A12V6H2,
+                    name: cells.A6V6H1.name,
+                    empty: false,    
+            },
+                A6V6H1: {
+                    ...prev.A6V6H1,
+                    name: getRandomFruitName(),
+                    empty: false,    
+            }
+            }));
+        }
+    }, [cells]);
+ 
     return (
         <>
             <div className={classes.gamePage}>
 
+                <div className={classes.pointers}>
+                    <div className={classes.pointerBoxOfStrawberries}>
+                        <p>Земляника: {fruit.numberOfStrawberries}</p>
+                        <img src={ImageBoxOfStrawberries} alt="ImageBoxOfStrawberries" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfStrawberries}></progress>
+                    </div>
+
+                    <div className={classes.pointerBoxOfPear}>
+                        <p>Груша: {fruit.numberOfPear}</p>
+                        <img src={ImageBoxOfPear} alt="ImageBoxOfPear" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfPear}></progress>
+                    </div>
+
+                    <div className={classes.pointerBoxOfPlum}>
+                        <p>Слива: {fruit.numberOfPlum}</p> 
+                        <img src={ImageBoxOfPlum} alt="ImageBoxOfPlum" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfPlum}></progress>
+                    </div>
+
+                    <div className={classes.pointerBoxOfCranberry}>
+                        <p>Клюква: {fruit.numberOfCranberry}</p> 
+                        <img src={ImageBoxOfCranberry} alt="ImageBoxOfCranberry" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfCranberry}></progress>
+                    </div>
+
+                    <div className={classes.pointerBoxOfSeaBuckthorn}>
+                        <p>Облепиха: {fruit.numberOfSeaBuckthorn}</p>
+                        <img src={ImageBoxOfSeaBuckthorn} alt="ImageBoxOfSeaBuckthorn" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfSeaBuckthorn}></progress>
+                    </div>
+
+                    <div className={classes.pointerBoxOfGooseberry}>
+                        <p>Крыжовник: {fruit.numberOfGooseberry}</p> 
+                        <img src={ImageBoxOfGooseberry} alt="ImageBoxOfGooseberry" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfGooseberry}></progress>
+                    </div>
+                </div>
+                
                 <div className={classes.timer}>
                     <p>
                         Возвращение наставника:

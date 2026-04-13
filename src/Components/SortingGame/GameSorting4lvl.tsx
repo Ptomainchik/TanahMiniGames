@@ -347,8 +347,8 @@ export const GameSorting4lvl = () => {
     function handleStartGame() {
         if (states.stateStart) return;
 
-        const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-        setEndTime(fiveMinutesLater);
+        const tenMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+        setEndTime(tenMinutesLater);
 
 
         const colors = [

@@ -24,7 +24,7 @@
 .levelPointer{
     position: absolute;
     bottom: 2%;
-    right: 1%;
+    left: 0.5%;
     margin: 0;
     color: springgreen;
     font-family: "El Messiri";
@@ -535,6 +535,104 @@
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
+
+.pointers img{
+    width: 4vw;
+    height: 4vw;
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    filter: drop-shadow(0.2vw 0.2vw 0.5vw black);
+}
+
+.pointers p{
+    width: 100%;
+    font-family: "El Messeri";
+    font-size: 1.3vw;
+    font-weight: 700;
+    text-align: center;
+    transform: translateX(-50%);
+    color: springgreen;
+    filter: drop-shadow(0 0 3px black);
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.scales{
+    appearance: none;
+    -webkit-appearance: none;
+    width: 8vw;
+    height: 0.7vw;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: solid 0.1vw black;
+    margin: 0;
+}
+  
+.scales::-webkit-progress-bar {
+    background-color: rgb(189, 189, 189);
+    
+}
+  
+.scales::-webkit-progress-value {
+    background-color: rgb(37, 37, 154);
+}
+
+.pointerBoxOfStrawberries{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+.pointerBoxOfPear{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 15%;
+    right: 0%;
+}
+
+.pointerBoxOfPlum{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 30%;
+    right: 0%;
+}
+
+.pointerBoxOfCranberry{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 45%;
+    right: 0%;
+}
+
+.pointerBoxOfSeaBuckthorn{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 60%;
+    right: 0%;
+}
+
+.pointerBoxOfGooseberry{
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    top: 75%;
+    right: 0%;
+}
+
 
 .buttonRecipe{
     color: pink;

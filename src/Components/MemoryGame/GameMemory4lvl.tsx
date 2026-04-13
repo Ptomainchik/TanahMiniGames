@@ -224,8 +224,8 @@ export const GameMemory4lvl = () => {
     function handleStartGame() {
     if (start) return;
     
-    const fiveMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-    setEndTime(fiveMinutesLater);
+    const tenMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+    setEndTime(tenMinutesLater);
 
     const colors = [
         ...Array(6).fill(states.cellsAppleName),
