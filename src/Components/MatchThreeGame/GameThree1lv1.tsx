@@ -6,7 +6,7 @@ import DwarfWomenLose from "../../assets/MatchThreeGameImages/DwarfWomenLose.png
 import ImageBoxOfStrawberries from "../../assets/MatchThreeGameImages/BoxOfStrawberries.png";
 import ImageBoxOfPear from "../../assets/MatchThreeGameImages/BoxOfPear.png";
 import ImageBoxOfPlum from "../../assets/MatchThreeGameImages/BoxOfPlum.png";
-import ImageBoxOfCranberry from "../../assets/MatchThreeGameImages/BoxOfCranberry.png";
+import ImageBoxOfCurrant from "../../assets/MatchThreeGameImages/BoxOfCurrant.png";
 import ImageBoxOfSeaBuckthorn from "../../assets/MatchThreeGameImages/BoxOfSeaBuckthorn.png";
 import ImageBoxOfGooseberry from "../../assets/MatchThreeGameImages/BoxOfGooseberry.png";
 
@@ -17,34 +17,34 @@ export const GameThree1lvl = () => {
         numberOfStrawberries: 0, 
         numberOfPear: 0, 
         numberOfPlum: 0,  
-        numberOfCranberry: 0, 
+        numberOfCurrant: 0, 
         numberOfSeaBuckthorn: 0, 
         numberOfGooseberry: 0,  
     }); 
     const [states, setStates] = useState({
-            matchCheck: false,
-            counterCellsChoices: 0,
-            cellsStrawberries: 0,
-            cellsPear: 0,
-            cellsPlum: 0,
-            cellsCranberry: 0,
-            cellsSeaBuckthorn: 0,
-            cellsGooseberry: 0,
-            cellsStrawberriesName: "Strawberries",
-            cellsPearName: "Pear",
-            cellsPlumName: "Plum",
-            cellsCranberryName: "Cranberry",
-            cellsSeaBuckthornName: "SeaBuckthorn",
-            cellsGooseberryName: "Gooseberry",
-            stateStart: false,
-            showButtonStart: true,
-            showButtonsWhenWinning: false,
-            showLoseModal: false,
-            showModalInfo: true,
-            showWinModalRecipe: false,
-            plate: true,
-            plateEnding: true,
-            selectedCell: null, 
+        matchCheck: false,
+        counterCellsChoices: 0,
+        cellsStrawberries: 0,
+        cellsPear: 0,
+        cellsPlum: 0,
+        cellsCurrant: 0,
+        cellsSeaBuckthorn: 0,
+        cellsGooseberry: 0,
+        cellsStrawberriesName: "Strawberries",
+        cellsPearName: "Pear",
+        cellsPlumName: "Plum",
+        cellsCurrantName: "Currant",
+        cellsSeaBuckthornName: "SeaBuckthorn",
+        cellsGooseberryName: "Gooseberry",
+        stateStart: false,
+        showButtonStart: true,
+        showButtonsWhenWinning: false,
+        showLoseModal: false,
+        showModalInfo: true,
+        showWinModalRecipe: false,
+        plate: true,
+        plateEnding: true,
+        selectedCell: null, 
     });
 
     const [cells, setCells]: any = useState({
@@ -350,7 +350,7 @@ export const GameThree1lvl = () => {
         ...Array(6).fill(states.cellsStrawberriesName),
         ...Array(6).fill(states.cellsPearName),
         ...Array(6).fill(states.cellsPlumName),
-        ...Array(6).fill(states.cellsCranberryName),
+        ...Array(6).fill(states.cellsCurrantName),
         ...Array(6).fill(states.cellsSeaBuckthornName),
         ...Array(6).fill(states.cellsGooseberryName)
     ];
@@ -375,126 +375,100 @@ export const GameThree1lvl = () => {
     setTimeout(() => setStates((prev:any) => ({...prev, showModalInfo: false})), 1500);
     };
 
-    function handleChoiceCell(cellKey: string) {
-        const selectedCell = cells[cellKey];
-        
-        // Если ячейка еще не выбрана
-        if (states.selectedCell === null) {
-            // Выберите непустую ячейку
-            if (!selectedCell.empty && !selectedCell.choice && states.counterCellsChoices < 1) {
-                setCells((prevCells: any) => ({ 
-                    ...prevCells, 
-                    [cellKey]: {
-                        ...prevCells[cellKey], 
-                        choice: true
-                    }
-                }));
-                
-                setStates((prevStates: any) => ({ 
-                    ...prevStates, 
-                    counterCellsChoices: prevStates.counterCellsChoices + 1,
-                    selectedCell: cellKey
-                }));
-            }
-        } 
-        // Если ячейка уже выбрана
-        else {
-            const selectedCellKey = states.selectedCell;
-            const targetCell = cells[cellKey];
-            
-            // Проверьте, не пуста ли целевая ячейка.
-            if (!targetCell.empty && !states.matchCheck) {
-                // Поменяйте местами имена свойства.
-                setTimeout(() => {
-                    setCells((prevCells: any) => ({
-                    ...prevCells,
-                    [selectedCellKey]: {
-                        ...prevCells[selectedCellKey],
-                        name: prevCells[cellKey].name,
-                        empty: false,
-                        choice: false
-                    },
-                    [cellKey]: {
-                        ...prevCells[cellKey],
-                        name: prevCells[selectedCellKey].name,
-                        empty: false,
-                        choice: false
-                    }
-                }));
-                }, 500);
-                
-                setTimeout(() => {
-                    setCells((prevCells: any) => ({
-                    ...prevCells,
-                    [selectedCellKey]: {
-                        ...prevCells[selectedCellKey],
-                        name: prevCells[cellKey].name,
-                        empty: false,
-                        choice: false
-                    },
-                    [cellKey]: {
-                        ...prevCells[cellKey],
-                        name: prevCells[selectedCellKey].name,
-                        empty: false,
-                        choice: false
-                    }
-                }));
-                }, 1000);
-                
-                
-                
-                // Сбросить состояние выбора
-                setStates((prevStates: any) => ({ 
-                    ...prevStates, 
-                    counterCellsChoices: 0,
-                    selectedCell: null
-                }));
-            }
-            else if (!targetCell.empty && states.matchCheck) {
-                // Поменяйте местами имена свойства.
-                setTimeout(() => {
-                    setCells((prevCells: any) => ({
-                    ...prevCells,
-                    [selectedCellKey]: {
-                        ...prevCells[selectedCellKey],
-                        name: prevCells[cellKey].name,
-                        empty: false,
-                        choice: false
-                    },
-                    [cellKey]: {
-                        ...prevCells[cellKey],
-                        name: prevCells[selectedCellKey].name,
-                        empty: false,
-                        choice: false
-                    }
-                }));
-                }, 500);
+    const willItMatch = (cellsState: any) => {
+        const rows = 6;
+        const cols = 6;
+        const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
 
-                // Сбросить состояние выбора
-                setStates((prevStates: any) => ({ 
-                    ...prevStates, 
-                    counterCellsChoices: 0,
-                    selectedCell: null,
-                }));
-            }
-            // При щелчке по той же ячейке снимите с нее выделение.
-            else if (selectedCellKey === cellKey) {
-                setCells((prevCells: any) => ({
-                    ...prevCells,
-                    [cellKey]: {
-                        ...prevCells[cellKey],
-                        choice: false
-                    }
-                }));
-                
-                setStates((prevStates: any) => ({ 
-                    ...prevStates, 
-                    counterCellsChoices: 0,
-                    selectedCell: null
-                }));
+        // 1. Собираем виртуальную матрицу
+        for (let h = 0; h < rows; h++) {
+            for (let v = 0; v < cols; v++) {
+                const cellNumber = h * cols + v + 1;
+                const key = `A${cellNumber}V${v + 1}H${h + 1}`;
+                matrix[h][v] = cellsState[key]?.name || "";
             }
         }
+
+        // 2. Проверяем горизонтали (есть ли 3 в ряд)
+        for (let h = 0; h < rows; h++) {
+            for (let v = 0; v < cols - 2; v++) {
+                if (matrix[h][v] !== "" && matrix[h][v] === matrix[h][v+1] && matrix[h][v] === matrix[h][v+2]) return true;
+            }
+        }
+
+        // 3. Проверяем вертикали (есть ли 3 в ряд)
+        for (let v = 0; v < cols; v++) {
+            for (let h = 0; h < rows - 2; h++) {
+                if (matrix[h][v] !== "" && matrix[h][v] === matrix[h+1][v] && matrix[h][v] === matrix[h+2][v]) return true;
+            }
+        }
+
+        return false; // Если ничего не нашли
     };
+    
+    function handleChoiceCell(cellKey: string) {
+    const currentCell = cells[cellKey];
+
+    // Функция для самого процесса обмена (свопа) в стейте
+    const performSwap = (key1: string, key2: string) => {
+        setCells((prev: any) => ({
+            ...prev,
+            [key1]: { ...prev[key1], name: prev[key2].name, choice: false, empty: false },
+            [key2]: { ...prev[key2], name: prev[key1].name, choice: false, empty: false }
+        }));
+    };
+
+    // --- ЛОГИКА ВЫБОРА ---
+    
+    // Если еще ничего не выбрано
+    if (states.selectedCell === null) {
+        if (!currentCell.empty && !currentCell.choice && states.counterCellsChoices < 1) {
+            setCells((prev: any) => ({ ...prev, [cellKey]: { ...prev[cellKey], choice: true } }));
+            setStates((prev: any) => ({ ...prev, counterCellsChoices: 1, selectedCell: cellKey }));
+        }
+    } 
+    // Если уже есть выбранная клетка
+    else {
+        const selectedKey = states.selectedCell;
+
+        // Если кликнули по той же самой — отменяем выбор
+        if (selectedKey === cellKey) {
+            setCells((prev: any) => ({ ...prev, [cellKey]: { ...prev[cellKey], choice: false } }));
+            setStates((prev: any) => ({ ...prev, counterCellsChoices: 0, selectedCell: null }));
+            return;
+        }
+
+        // Если кликнули по другой непустой клетке — пытаемся сделать ход
+        if (!currentCell.empty) {
+            // Создаем "черновик" будущего состояния
+            const futureCells = {
+                ...cells,
+                [selectedKey]: { ...cells[selectedKey], name: cells[cellKey].name },
+                [cellKey]: { ...cells[cellKey], name: cells[selectedKey].name }
+            };
+
+            const matchWillHappen = willItMatch(futureCells);
+
+            if (matchWillHappen) {
+                // ВАРИАНТ: ЕСТЬ СОВПАДЕНИЕ
+                setTimeout(() => {
+                    performSwap(selectedKey, cellKey);
+                }, 500);
+            } else {
+                // ВАРИАНТ: НЕТ СОВПАДЕНИЯ (делаем "туда-обратно")
+                setTimeout(() => {
+                    performSwap(selectedKey, cellKey); // Своп туда
+                    setTimeout(() => {
+                        performSwap(selectedKey, cellKey); // Своп обратно
+                    }, 1000);
+                }, 1000);
+            }
+
+            // Сбрасываем выбор в стейте, чтобы заблокировать клики на время анимации
+            setStates((prev: any) => ({ ...prev, counterCellsChoices: 0, selectedCell: null }));
+        }
+    }
+}
 
     const navigate = useNavigate();
 
@@ -536,139 +510,139 @@ export const GameThree1lvl = () => {
         return () => clearInterval(interval); // Чистим, если ушли со страницы
     }, [endTime, states.showButtonsWhenWinning]);
 
-useEffect(() => {
-  // 1. Построим матрицу 6×6 из имён и ключей
-  const rows = 6;
-  const cols = 6;
-  const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-  const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+    useEffect(() => {
+    // 1. Построим матрицу 6×6 из имён и ключей
+    const rows = 6;
+    const cols = 6;
+    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+    const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
 
-  for (let h = 0; h < rows; h++) {
+    for (let h = 0; h < rows; h++) {
+        for (let v = 0; v < cols; v++) {
+        const cellNumber = h * cols + v + 1;
+        const key = `A${cellNumber}V${v + 1}H${h + 1}`;
+        const cell = cells[key];
+        if (cell) {
+            matrix[h][v] = cell.name || "";
+            keyMatrix[h][v] = key;
+        }
+        }
+    }
+
+    const toClear = new Set<string>();
+
+    // 2. Поиск горизонтальных линий
+    for (let h = 0; h < rows; h++) {
+        let start = 0;
+        while (start < cols) {
+        const currentName = matrix[h][start];
+        if (currentName === "") {
+            start++;
+            continue;
+        }
+        let end = start;
+        while (end + 1 < cols && matrix[h][end + 1] === currentName) {
+            end++;
+        }
+        const length = end - start + 1;
+        if (length >= 3) {
+            for (let v = start; v <= end; v++) {
+            toClear.add(keyMatrix[h][v]);
+            }
+        }
+        start = end + 1;
+        }
+    }
+
+    // 3. Поиск вертикальных линий
     for (let v = 0; v < cols; v++) {
-      const cellNumber = h * cols + v + 1;
-      const key = `A${cellNumber}V${v + 1}H${h + 1}`;
-      const cell = cells[key];
-      if (cell) {
-        matrix[h][v] = cell.name || "";
-        keyMatrix[h][v] = key;
-      }
-    }
-  }
-
-  const toClear = new Set<string>();
-
-  // 2. Поиск горизонтальных линий
-  for (let h = 0; h < rows; h++) {
-    let start = 0;
-    while (start < cols) {
-      const currentName = matrix[h][start];
-      if (currentName === "") {
-        start++;
-        continue;
-      }
-      let end = start;
-      while (end + 1 < cols && matrix[h][end + 1] === currentName) {
-        end++;
-      }
-      const length = end - start + 1;
-      if (length >= 3) {
-        for (let v = start; v <= end; v++) {
-          toClear.add(keyMatrix[h][v]);
+        let start = 0;
+        while (start < rows) {
+        const currentName = matrix[start][v];
+        if (currentName === "") {
+            start++;
+            continue;
         }
-      }
-      start = end + 1;
-    }
-  }
-
-  // 3. Поиск вертикальных линий
-  for (let v = 0; v < cols; v++) {
-    let start = 0;
-    while (start < rows) {
-      const currentName = matrix[start][v];
-      if (currentName === "") {
-        start++;
-        continue;
-      }
-      let end = start;
-      while (end + 1 < rows && matrix[end + 1][v] === currentName) {
-        end++;
-      }
-      const length = end - start + 1;
-      if (length >= 3) {
-        for (let h = start; h <= end; h++) {
-          toClear.add(keyMatrix[h][v]);
+        let end = start;
+        while (end + 1 < rows && matrix[end + 1][v] === currentName) {
+            end++;
         }
-      }
-      start = end + 1;
-    }
-  }
-
-  // 4. Если есть что очищать – обновляем состояние и считаем фрукты
-  if (toClear.size > 0) {
-    // Подсчитываем, какие фрукты и сколько удаляем
-    const counts = {
-      numberOfStrawberries: 0,
-      numberOfPear: 0,
-      numberOfPlum: 0,
-      numberOfCranberry: 0,
-      numberOfSeaBuckthorn: 0,
-      numberOfGooseberry: 0,
-    };
-
-    // Проходим по всем ключам в toClear и определяем имя фрукта из текущего состояния cells
-    for (const key of toClear) {
-      const fruitName = cells[key]?.name;
-      switch (fruitName) {
-        case states.cellsStrawberriesName:
-          counts.numberOfStrawberries++;
-          break;
-        case states.cellsPearName:
-          counts.numberOfPear++;
-          break;
-        case states.cellsPlumName:
-          counts.numberOfPlum++;
-          break;
-        case states.cellsCranberryName:
-          counts.numberOfCranberry++;
-          break;
-        case states.cellsSeaBuckthornName:
-          counts.numberOfSeaBuckthorn++;
-          break;
-        case states.cellsGooseberryName:
-          counts.numberOfGooseberry++;
-          break;
-        default:
-          break;
-      }
-    }
-
-    // Обновляем счётчик фруктов (прибавляем к текущим значениям)
-    setFruit(prev => ({
-      numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
-      numberOfPear: prev.numberOfPear + counts.numberOfPear,
-      numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
-      numberOfCranberry: prev.numberOfCranberry + counts.numberOfCranberry,
-      numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
-      numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
-    }));
-
-    // Очищаем клетки (устанавливаем name: "", empty: true)
-    setCells((prevCells: any) => {
-      const newCells = { ...prevCells };
-      for (const key of toClear) {
-        if (newCells[key]) {
-          newCells[key] = {
-            ...newCells[key],
-            name: "",
-            empty: true,
-            choice: false,
-          };
+        const length = end - start + 1;
+        if (length >= 3) {
+            for (let h = start; h <= end; h++) {
+            toClear.add(keyMatrix[h][v]);
+            }
         }
-      }
-      return newCells;
-    });
-  }
-}, [cells]); // Зависимость – меняется при любом обновлении клеток
+        start = end + 1;
+        }
+    }
+
+    // 4. Если есть что очищать – обновляем состояние и считаем фрукты
+    if (toClear.size > 0) {
+        // Подсчитываем, какие фрукты и сколько удаляем
+        const counts = {
+        numberOfStrawberries: 0,
+        numberOfPear: 0,
+        numberOfPlum: 0,
+        numberOfCurrant: 0,
+        numberOfSeaBuckthorn: 0,
+        numberOfGooseberry: 0,
+        };
+
+        // Проходим по всем ключам в toClear и определяем имя фрукта из текущего состояния cells
+        for (const key of toClear) {
+        const fruitName = cells[key]?.name;
+        switch (fruitName) {
+            case states.cellsStrawberriesName:
+            counts.numberOfStrawberries++;
+            break;
+            case states.cellsPearName:
+            counts.numberOfPear++;
+            break;
+            case states.cellsPlumName:
+            counts.numberOfPlum++;
+            break;
+            case states.cellsCurrantName:
+            counts.numberOfCurrant++;
+            break;
+            case states.cellsSeaBuckthornName:
+            counts.numberOfSeaBuckthorn++;
+            break;
+            case states.cellsGooseberryName:
+            counts.numberOfGooseberry++;
+            break;
+            default:
+            break;
+        }
+        }
+
+        // Обновляем счётчик фруктов (прибавляем к текущим значениям)
+        setFruit(prev => ({
+        numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
+        numberOfPear: prev.numberOfPear + counts.numberOfPear,
+        numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
+        numberOfCurrant: prev.numberOfCurrant + counts.numberOfCurrant,
+        numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
+        numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
+        }));
+
+        // Очищаем клетки (устанавливаем name: "", empty: true)
+        setCells((prevCells: any) => {
+        const newCells = { ...prevCells };
+        for (const key of toClear) {
+            if (newCells[key]) {
+            newCells[key] = {
+                ...newCells[key],
+                name: "",
+                empty: true,
+                choice: false,
+            };
+            }
+        }
+        return newCells;
+        });
+    }
+    }, [cells]); // Зависимость – меняется при любом обновлении клеток
 
 
     //Гравитация
@@ -3140,10 +3114,10 @@ useEffect(() => {
                         <progress className={classes.scales} max="100" value={fruit.numberOfPlum}></progress>
                     </div>
 
-                    <div className={classes.pointerBoxOfCranberry}>
-                        <p>Клюква: {fruit.numberOfCranberry}</p> 
-                        <img src={ImageBoxOfCranberry} alt="ImageBoxOfCranberry" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfCranberry}></progress>
+                    <div className={classes.pointerBoxOfCurrant}>
+                        <p>Смородина: {fruit.numberOfCurrant}</p> 
+                        <img src={ImageBoxOfCurrant} alt="ImageBoxOfCurrant" draggable={false}/> 
+                        <progress className={classes.scales} max="100" value={fruit.numberOfCurrant}></progress>
                     </div>
 
                     <div className={classes.pointerBoxOfSeaBuckthorn}>
@@ -3170,8 +3144,6 @@ useEffect(() => {
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>Вот это сноровка! Вот тебе секретный рецепт наставника в награду.</p>
                     </div>
-                    <div className={classes.leftDoorClosing}></div>
-                    <div className={classes.rightDoorClosing}></div>
                     <img className={classes.imageInfoIntro} src={DwarfWomen} alt="DwarfWomen" draggable={false}/> 
                     <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
@@ -3184,8 +3156,6 @@ useEffect(() => {
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>(Шаги у дверей) О нет! Это наставник. Ну и влетит же мне.</p>
                     </div>
-                    <div className={classes.leftDoorClosing}></div>
-                    <div className={classes.rightDoorClosing}></div>
                     <img className={classes.imageInfoIntro} src={DwarfWomenLose} alt="DwarfWomenLose" draggable={false}/> 
                     <h3>Время вышло, попробуете ещё раз?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
@@ -3216,13 +3186,13 @@ useEffect(() => {
                                         cells.A1V1H1.name === "Strawberries" && cells.A1V1H1.choice === false ? classes.strawberriesCells :
                                         cells.A1V1H1.name === "Pear" && cells.A1V1H1.choice === false ? classes.pearCells :
                                         cells.A1V1H1.name === "Plum" && cells.A1V1H1.choice === false ? classes.plumCells :
-                                        cells.A1V1H1.name === "Cranberry" && cells.A1V1H1.choice === false ? classes.cranberryCells :
+                                        cells.A1V1H1.name === "Currant" && cells.A1V1H1.choice === false ? classes.currantCells :
                                         cells.A1V1H1.name === "SeaBuckthorn" && cells.A1V1H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A1V1H1.name === "Gooseberry" && cells.A1V1H1.choice === false ? classes.gooseberryCells :
                                         cells.A1V1H1.name === "Strawberries" && cells.A1V1H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A1V1H1.name === "Pear" && cells.A1V1H1.choice === true ? classes.pearCellsChoice :
                                         cells.A1V1H1.name === "Plum" && cells.A1V1H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A1V1H1.name === "Cranberry" && cells.A1V1H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A1V1H1.name === "Currant" && cells.A1V1H1.choice === true ? classes.currantCellsChoice :
                                         cells.A1V1H1.name === "SeaBuckthorn" && cells.A1V1H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A1V1H1.name === "Gooseberry" && cells.A1V1H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3244,13 +3214,13 @@ useEffect(() => {
                                         cells.A2V2H1.name === "Strawberries" && cells.A2V2H1.choice === false ? classes.strawberriesCells :
                                         cells.A2V2H1.name === "Pear" && cells.A2V2H1.choice === false ? classes.pearCells :
                                         cells.A2V2H1.name === "Plum" && cells.A2V2H1.choice === false ? classes.plumCells :
-                                        cells.A2V2H1.name === "Cranberry" && cells.A2V2H1.choice === false ? classes.cranberryCells :
+                                        cells.A2V2H1.name === "Currant" && cells.A2V2H1.choice === false ? classes.currantCells :
                                         cells.A2V2H1.name === "SeaBuckthorn" && cells.A2V2H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A2V2H1.name === "Gooseberry" && cells.A2V2H1.choice === false ? classes.gooseberryCells :
                                         cells.A2V2H1.name === "Strawberries" && cells.A2V2H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A2V2H1.name === "Pear" && cells.A2V2H1.choice === true ? classes.pearCellsChoice :
                                         cells.A2V2H1.name === "Plum" && cells.A2V2H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A2V2H1.name === "Cranberry" && cells.A2V2H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A2V2H1.name === "Currant" && cells.A2V2H1.choice === true ? classes.currantCellsChoice :
                                         cells.A2V2H1.name === "SeaBuckthorn" && cells.A2V2H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A2V2H1.name === "Gooseberry" && cells.A2V2H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3272,13 +3242,13 @@ useEffect(() => {
                                         cells.A3V3H1.name === "Strawberries" && cells.A3V3H1.choice === false ? classes.strawberriesCells :
                                         cells.A3V3H1.name === "Pear" && cells.A3V3H1.choice === false ? classes.pearCells :
                                         cells.A3V3H1.name === "Plum" && cells.A3V3H1.choice === false ? classes.plumCells :
-                                        cells.A3V3H1.name === "Cranberry" && cells.A3V3H1.choice === false ? classes.cranberryCells :
+                                        cells.A3V3H1.name === "Currant" && cells.A3V3H1.choice === false ? classes.currantCells :
                                         cells.A3V3H1.name === "SeaBuckthorn" && cells.A3V3H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A3V3H1.name === "Gooseberry" && cells.A3V3H1.choice === false ? classes.gooseberryCells :
                                         cells.A3V3H1.name === "Strawberries" && cells.A3V3H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A3V3H1.name === "Pear" && cells.A3V3H1.choice === true ? classes.pearCellsChoice :
                                         cells.A3V3H1.name === "Plum" && cells.A3V3H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A3V3H1.name === "Cranberry" && cells.A3V3H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A3V3H1.name === "Currant" && cells.A3V3H1.choice === true ? classes.currantCellsChoice :
                                         cells.A3V3H1.name === "SeaBuckthorn" && cells.A3V3H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A3V3H1.name === "Gooseberry" && cells.A3V3H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3300,13 +3270,13 @@ useEffect(() => {
                                         cells.A4V4H1.name === "Strawberries" && cells.A4V4H1.choice === false ? classes.strawberriesCells :
                                         cells.A4V4H1.name === "Pear" && cells.A4V4H1.choice === false ? classes.pearCells :
                                         cells.A4V4H1.name === "Plum" && cells.A4V4H1.choice === false ? classes.plumCells :
-                                        cells.A4V4H1.name === "Cranberry" && cells.A4V4H1.choice === false ? classes.cranberryCells :
+                                        cells.A4V4H1.name === "Currant" && cells.A4V4H1.choice === false ? classes.currantCells :
                                         cells.A4V4H1.name === "SeaBuckthorn" && cells.A4V4H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A4V4H1.name === "Gooseberry" && cells.A4V4H1.choice === false ? classes.gooseberryCells :
                                         cells.A4V4H1.name === "Strawberries" && cells.A4V4H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A4V4H1.name === "Pear" && cells.A4V4H1.choice === true ? classes.pearCellsChoice :
                                         cells.A4V4H1.name === "Plum" && cells.A4V4H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A4V4H1.name === "Cranberry" && cells.A4V4H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A4V4H1.name === "Currant" && cells.A4V4H1.choice === true ? classes.currantCellsChoice :
                                         cells.A4V4H1.name === "SeaBuckthorn" && cells.A4V4H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A4V4H1.name === "Gooseberry" && cells.A4V4H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3328,13 +3298,13 @@ useEffect(() => {
                                         cells.A5V5H1.name === "Strawberries" && cells.A5V5H1.choice === false ? classes.strawberriesCells :
                                         cells.A5V5H1.name === "Pear" && cells.A5V5H1.choice === false ? classes.pearCells :
                                         cells.A5V5H1.name === "Plum" && cells.A5V5H1.choice === false ? classes.plumCells :
-                                        cells.A5V5H1.name === "Cranberry" && cells.A5V5H1.choice === false ? classes.cranberryCells :
+                                        cells.A5V5H1.name === "Currant" && cells.A5V5H1.choice === false ? classes.currantCells :
                                         cells.A5V5H1.name === "SeaBuckthorn" && cells.A5V5H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A5V5H1.name === "Gooseberry" && cells.A5V5H1.choice === false ? classes.gooseberryCells :
                                         cells.A5V5H1.name === "Strawberries" && cells.A5V5H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A5V5H1.name === "Pear" && cells.A5V5H1.choice === true ? classes.pearCellsChoice :
                                         cells.A5V5H1.name === "Plum" && cells.A5V5H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A5V5H1.name === "Cranberry" && cells.A5V5H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A5V5H1.name === "Currant" && cells.A5V5H1.choice === true ? classes.currantCellsChoice :
                                         cells.A5V5H1.name === "SeaBuckthorn" && cells.A5V5H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A5V5H1.name === "Gooseberry" && cells.A5V5H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3356,13 +3326,13 @@ useEffect(() => {
                                         cells.A6V6H1.name === "Strawberries" && cells.A6V6H1.choice === false ? classes.strawberriesCells :
                                         cells.A6V6H1.name === "Pear" && cells.A6V6H1.choice === false ? classes.pearCells :
                                         cells.A6V6H1.name === "Plum" && cells.A6V6H1.choice === false ? classes.plumCells :
-                                        cells.A6V6H1.name === "Cranberry" && cells.A6V6H1.choice === false ? classes.cranberryCells :
+                                        cells.A6V6H1.name === "Currant" && cells.A6V6H1.choice === false ? classes.currantCells :
                                         cells.A6V6H1.name === "SeaBuckthorn" && cells.A6V6H1.choice === false ? classes.seaBuckthornCells :
                                         cells.A6V6H1.name === "Gooseberry" && cells.A6V6H1.choice === false ? classes.gooseberryCells :
                                         cells.A6V6H1.name === "Strawberries" && cells.A6V6H1.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A6V6H1.name === "Pear" && cells.A6V6H1.choice === true ? classes.pearCellsChoice :
                                         cells.A6V6H1.name === "Plum" && cells.A6V6H1.choice === true ? classes.plumCellsChoice :
-                                        cells.A6V6H1.name === "Cranberry" && cells.A6V6H1.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A6V6H1.name === "Currant" && cells.A6V6H1.choice === true ? classes.currantCellsChoice :
                                         cells.A6V6H1.name === "SeaBuckthorn" && cells.A6V6H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A6V6H1.name === "Gooseberry" && cells.A6V6H1.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3389,13 +3359,13 @@ useEffect(() => {
                                         cells.A7V1H2.name === "Strawberries" && cells.A7V1H2.choice === false ? classes.strawberriesCells :
                                         cells.A7V1H2.name === "Pear" && cells.A7V1H2.choice === false ? classes.pearCells :
                                         cells.A7V1H2.name === "Plum" && cells.A7V1H2.choice === false ? classes.plumCells :
-                                        cells.A7V1H2.name === "Cranberry" && cells.A7V1H2.choice === false ? classes.cranberryCells :
+                                        cells.A7V1H2.name === "Currant" && cells.A7V1H2.choice === false ? classes.currantCells :
                                         cells.A7V1H2.name === "SeaBuckthorn" && cells.A7V1H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A7V1H2.name === "Gooseberry" && cells.A7V1H2.choice === false ? classes.gooseberryCells :
                                         cells.A7V1H2.name === "Strawberries" && cells.A7V1H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A7V1H2.name === "Pear" && cells.A7V1H2.choice === true ? classes.pearCellsChoice :
                                         cells.A7V1H2.name === "Plum" && cells.A7V1H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A7V1H2.name === "Cranberry" && cells.A7V1H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A7V1H2.name === "Currant" && cells.A7V1H2.choice === true ? classes.currantCellsChoice :
                                         cells.A7V1H2.name === "SeaBuckthorn" && cells.A7V1H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A7V1H2.name === "Gooseberry" && cells.A7V1H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3417,13 +3387,13 @@ useEffect(() => {
                                         cells.A8V2H2.name === "Strawberries" && cells.A8V2H2.choice === false ? classes.strawberriesCells :
                                         cells.A8V2H2.name === "Pear" && cells.A8V2H2.choice === false ? classes.pearCells :
                                         cells.A8V2H2.name === "Plum" && cells.A8V2H2.choice === false ? classes.plumCells :
-                                        cells.A8V2H2.name === "Cranberry" && cells.A8V2H2.choice === false ? classes.cranberryCells :
+                                        cells.A8V2H2.name === "Currant" && cells.A8V2H2.choice === false ? classes.currantCells :
                                         cells.A8V2H2.name === "SeaBuckthorn" && cells.A8V2H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A8V2H2.name === "Gooseberry" && cells.A8V2H2.choice === false ? classes.gooseberryCells :
                                         cells.A8V2H2.name === "Strawberries" && cells.A8V2H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A8V2H2.name === "Pear" && cells.A8V2H2.choice === true ? classes.pearCellsChoice :
                                         cells.A8V2H2.name === "Plum" && cells.A8V2H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A8V2H2.name === "Cranberry" && cells.A8V2H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A8V2H2.name === "Currant" && cells.A8V2H2.choice === true ? classes.currantCellsChoice :
                                         cells.A8V2H2.name === "SeaBuckthorn" && cells.A8V2H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A8V2H2.name === "Gooseberry" && cells.A8V2H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3445,13 +3415,13 @@ useEffect(() => {
                                         cells.A9V3H2.name === "Strawberries" && cells.A9V3H2.choice === false ? classes.strawberriesCells :
                                         cells.A9V3H2.name === "Pear" && cells.A9V3H2.choice === false ? classes.pearCells :
                                         cells.A9V3H2.name === "Plum" && cells.A9V3H2.choice === false ? classes.plumCells :
-                                        cells.A9V3H2.name === "Cranberry" && cells.A9V3H2.choice === false ? classes.cranberryCells :
+                                        cells.A9V3H2.name === "Currant" && cells.A9V3H2.choice === false ? classes.currantCells :
                                         cells.A9V3H2.name === "SeaBuckthorn" && cells.A9V3H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A9V3H2.name === "Gooseberry" && cells.A9V3H2.choice === false ? classes.gooseberryCells :
                                         cells.A9V3H2.name === "Strawberries" && cells.A9V3H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A9V3H2.name === "Pear" && cells.A9V3H2.choice === true ? classes.pearCellsChoice :
                                         cells.A9V3H2.name === "Plum" && cells.A9V3H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A9V3H2.name === "Cranberry" && cells.A9V3H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A9V3H2.name === "Currant" && cells.A9V3H2.choice === true ? classes.currantCellsChoice :
                                         cells.A9V3H2.name === "SeaBuckthorn" && cells.A9V3H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A9V3H2.name === "Gooseberry" && cells.A9V3H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3473,13 +3443,13 @@ useEffect(() => {
                                         cells.A10V4H2.name === "Strawberries" && cells.A10V4H2.choice === false ? classes.strawberriesCells :
                                         cells.A10V4H2.name === "Pear" && cells.A10V4H2.choice === false ? classes.pearCells :
                                         cells.A10V4H2.name === "Plum" && cells.A10V4H2.choice === false ? classes.plumCells :
-                                        cells.A10V4H2.name === "Cranberry" && cells.A10V4H2.choice === false ? classes.cranberryCells :
+                                        cells.A10V4H2.name === "Currant" && cells.A10V4H2.choice === false ? classes.currantCells :
                                         cells.A10V4H2.name === "SeaBuckthorn" && cells.A10V4H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A10V4H2.name === "Gooseberry" && cells.A10V4H2.choice === false ? classes.gooseberryCells :
                                         cells.A10V4H2.name === "Strawberries" && cells.A10V4H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A10V4H2.name === "Pear" && cells.A10V4H2.choice === true ? classes.pearCellsChoice :
                                         cells.A10V4H2.name === "Plum" && cells.A10V4H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A10V4H2.name === "Cranberry" && cells.A10V4H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A10V4H2.name === "Currant" && cells.A10V4H2.choice === true ? classes.currantCellsChoice :
                                         cells.A10V4H2.name === "SeaBuckthorn" && cells.A10V4H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A10V4H2.name === "Gooseberry" && cells.A10V4H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3501,13 +3471,13 @@ useEffect(() => {
                                         cells.A11V5H2.name === "Strawberries" && cells.A11V5H2.choice === false ? classes.strawberriesCells :
                                         cells.A11V5H2.name === "Pear" && cells.A11V5H2.choice === false ? classes.pearCells :
                                         cells.A11V5H2.name === "Plum" && cells.A11V5H2.choice === false ? classes.plumCells :
-                                        cells.A11V5H2.name === "Cranberry" && cells.A11V5H2.choice === false ? classes.cranberryCells :
+                                        cells.A11V5H2.name === "Currant" && cells.A11V5H2.choice === false ? classes.currantCells :
                                         cells.A11V5H2.name === "SeaBuckthorn" && cells.A11V5H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A11V5H2.name === "Gooseberry" && cells.A11V5H2.choice === false ? classes.gooseberryCells :
                                         cells.A11V5H2.name === "Strawberries" && cells.A11V5H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A11V5H2.name === "Pear" && cells.A11V5H2.choice === true ? classes.pearCellsChoice :
                                         cells.A11V5H2.name === "Plum" && cells.A11V5H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A11V5H2.name === "Cranberry" && cells.A11V5H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A11V5H2.name === "Currant" && cells.A11V5H2.choice === true ? classes.currantCellsChoice :
                                         cells.A11V5H2.name === "SeaBuckthorn" && cells.A11V5H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A11V5H2.name === "Gooseberry" && cells.A11V5H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3529,13 +3499,13 @@ useEffect(() => {
                                         cells.A12V6H2.name === "Strawberries" && cells.A12V6H2.choice === false ? classes.strawberriesCells :
                                         cells.A12V6H2.name === "Pear" && cells.A12V6H2.choice === false ? classes.pearCells :
                                         cells.A12V6H2.name === "Plum" && cells.A12V6H2.choice === false ? classes.plumCells :
-                                        cells.A12V6H2.name === "Cranberry" && cells.A12V6H2.choice === false ? classes.cranberryCells :
+                                        cells.A12V6H2.name === "Currant" && cells.A12V6H2.choice === false ? classes.currantCells :
                                         cells.A12V6H2.name === "SeaBuckthorn" && cells.A12V6H2.choice === false ? classes.seaBuckthornCells :
                                         cells.A12V6H2.name === "Gooseberry" && cells.A12V6H2.choice === false ? classes.gooseberryCells :
                                         cells.A12V6H2.name === "Strawberries" && cells.A12V6H2.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A12V6H2.name === "Pear" && cells.A12V6H2.choice === true ? classes.pearCellsChoice :
                                         cells.A12V6H2.name === "Plum" && cells.A12V6H2.choice === true ? classes.plumCellsChoice :
-                                        cells.A12V6H2.name === "Cranberry" && cells.A12V6H2.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A12V6H2.name === "Currant" && cells.A12V6H2.choice === true ? classes.currantCellsChoice :
                                         cells.A12V6H2.name === "SeaBuckthorn" && cells.A12V6H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A12V6H2.name === "Gooseberry" && cells.A12V6H2.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3562,13 +3532,13 @@ useEffect(() => {
                                         cells.A13V1H3.name === "Strawberries" && cells.A13V1H3.choice === false ? classes.strawberriesCells :
                                         cells.A13V1H3.name === "Pear" && cells.A13V1H3.choice === false ? classes.pearCells :
                                         cells.A13V1H3.name === "Plum" && cells.A13V1H3.choice === false ? classes.plumCells :
-                                        cells.A13V1H3.name === "Cranberry" && cells.A13V1H3.choice === false ? classes.cranberryCells :
+                                        cells.A13V1H3.name === "Currant" && cells.A13V1H3.choice === false ? classes.currantCells :
                                         cells.A13V1H3.name === "SeaBuckthorn" && cells.A13V1H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A13V1H3.name === "Gooseberry" && cells.A13V1H3.choice === false ? classes.gooseberryCells :
                                         cells.A13V1H3.name === "Strawberries" && cells.A13V1H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A13V1H3.name === "Pear" && cells.A13V1H3.choice === true ? classes.pearCellsChoice :
                                         cells.A13V1H3.name === "Plum" && cells.A13V1H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A13V1H3.name === "Cranberry" && cells.A13V1H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A13V1H3.name === "Currant" && cells.A13V1H3.choice === true ? classes.currantCellsChoice :
                                         cells.A13V1H3.name === "SeaBuckthorn" && cells.A13V1H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A13V1H3.name === "Gooseberry" && cells.A13V1H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3590,13 +3560,13 @@ useEffect(() => {
                                         cells.A14V2H3.name === "Strawberries" && cells.A14V2H3.choice === false ? classes.strawberriesCells :
                                         cells.A14V2H3.name === "Pear" && cells.A14V2H3.choice === false ? classes.pearCells :
                                         cells.A14V2H3.name === "Plum" && cells.A14V2H3.choice === false ? classes.plumCells :
-                                        cells.A14V2H3.name === "Cranberry" && cells.A14V2H3.choice === false ? classes.cranberryCells :
+                                        cells.A14V2H3.name === "Currant" && cells.A14V2H3.choice === false ? classes.currantCells :
                                         cells.A14V2H3.name === "SeaBuckthorn" && cells.A14V2H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A14V2H3.name === "Gooseberry" && cells.A14V2H3.choice === false ? classes.gooseberryCells :
                                         cells.A14V2H3.name === "Strawberries" && cells.A14V2H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A14V2H3.name === "Pear" && cells.A14V2H3.choice === true ? classes.pearCellsChoice :
                                         cells.A14V2H3.name === "Plum" && cells.A14V2H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A14V2H3.name === "Cranberry" && cells.A14V2H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A14V2H3.name === "Currant" && cells.A14V2H3.choice === true ? classes.currantCellsChoice :
                                         cells.A14V2H3.name === "SeaBuckthorn" && cells.A14V2H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A14V2H3.name === "Gooseberry" && cells.A14V2H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3618,13 +3588,13 @@ useEffect(() => {
                                         cells.A15V3H3.name === "Strawberries" && cells.A15V3H3.choice === false ? classes.strawberriesCells :
                                         cells.A15V3H3.name === "Pear" && cells.A15V3H3.choice === false ? classes.pearCells :
                                         cells.A15V3H3.name === "Plum" && cells.A15V3H3.choice === false ? classes.plumCells :
-                                        cells.A15V3H3.name === "Cranberry" && cells.A15V3H3.choice === false ? classes.cranberryCells :
+                                        cells.A15V3H3.name === "Currant" && cells.A15V3H3.choice === false ? classes.currantCells :
                                         cells.A15V3H3.name === "SeaBuckthorn" && cells.A15V3H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A15V3H3.name === "Gooseberry" && cells.A15V3H3.choice === false ? classes.gooseberryCells :
                                         cells.A15V3H3.name === "Strawberries" && cells.A15V3H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A15V3H3.name === "Pear" && cells.A15V3H3.choice === true ? classes.pearCellsChoice :
                                         cells.A15V3H3.name === "Plum" && cells.A15V3H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A15V3H3.name === "Cranberry" && cells.A15V3H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A15V3H3.name === "Currant" && cells.A15V3H3.choice === true ? classes.currantCellsChoice :
                                         cells.A15V3H3.name === "SeaBuckthorn" && cells.A15V3H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A15V3H3.name === "Gooseberry" && cells.A15V3H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3646,13 +3616,13 @@ useEffect(() => {
                                         cells.A16V4H3.name === "Strawberries" && cells.A16V4H3.choice === false ? classes.strawberriesCells :
                                         cells.A16V4H3.name === "Pear" && cells.A16V4H3.choice === false ? classes.pearCells :
                                         cells.A16V4H3.name === "Plum" && cells.A16V4H3.choice === false ? classes.plumCells :
-                                        cells.A16V4H3.name === "Cranberry" && cells.A16V4H3.choice === false ? classes.cranberryCells :
+                                        cells.A16V4H3.name === "Currant" && cells.A16V4H3.choice === false ? classes.currantCells :
                                         cells.A16V4H3.name === "SeaBuckthorn" && cells.A16V4H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A16V4H3.name === "Gooseberry" && cells.A16V4H3.choice === false ? classes.gooseberryCells :
                                         cells.A16V4H3.name === "Strawberries" && cells.A16V4H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A16V4H3.name === "Pear" && cells.A16V4H3.choice === true ? classes.pearCellsChoice :
                                         cells.A16V4H3.name === "Plum" && cells.A16V4H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A16V4H3.name === "Cranberry" && cells.A16V4H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A16V4H3.name === "Currant" && cells.A16V4H3.choice === true ? classes.currantCellsChoice :
                                         cells.A16V4H3.name === "SeaBuckthorn" && cells.A16V4H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A16V4H3.name === "Gooseberry" && cells.A16V4H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3674,13 +3644,13 @@ useEffect(() => {
                                         cells.A17V5H3.name === "Strawberries" && cells.A17V5H3.choice === false ? classes.strawberriesCells :
                                         cells.A17V5H3.name === "Pear" && cells.A17V5H3.choice === false ? classes.pearCells :
                                         cells.A17V5H3.name === "Plum" && cells.A17V5H3.choice === false ? classes.plumCells :
-                                        cells.A17V5H3.name === "Cranberry" && cells.A17V5H3.choice === false ? classes.cranberryCells :
+                                        cells.A17V5H3.name === "Currant" && cells.A17V5H3.choice === false ? classes.currantCells :
                                         cells.A17V5H3.name === "SeaBuckthorn" && cells.A17V5H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A17V5H3.name === "Gooseberry" && cells.A17V5H3.choice === false ? classes.gooseberryCells :
                                         cells.A17V5H3.name === "Strawberries" && cells.A17V5H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A17V5H3.name === "Pear" && cells.A17V5H3.choice === true ? classes.pearCellsChoice :
                                         cells.A17V5H3.name === "Plum" && cells.A17V5H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A17V5H3.name === "Cranberry" && cells.A17V5H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A17V5H3.name === "Currant" && cells.A17V5H3.choice === true ? classes.currantCellsChoice :
                                         cells.A17V5H3.name === "SeaBuckthorn" && cells.A17V5H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A17V5H3.name === "Gooseberry" && cells.A17V5H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3702,13 +3672,13 @@ useEffect(() => {
                                         cells.A18V6H3.name === "Strawberries" && cells.A18V6H3.choice === false ? classes.strawberriesCells :
                                         cells.A18V6H3.name === "Pear" && cells.A18V6H3.choice === false ? classes.pearCells :
                                         cells.A18V6H3.name === "Plum" && cells.A18V6H3.choice === false ? classes.plumCells :
-                                        cells.A18V6H3.name === "Cranberry" && cells.A18V6H3.choice === false ? classes.cranberryCells :
+                                        cells.A18V6H3.name === "Currant" && cells.A18V6H3.choice === false ? classes.currantCells :
                                         cells.A18V6H3.name === "SeaBuckthorn" && cells.A18V6H3.choice === false ? classes.seaBuckthornCells :
                                         cells.A18V6H3.name === "Gooseberry" && cells.A18V6H3.choice === false ? classes.gooseberryCells :
                                         cells.A18V6H3.name === "Strawberries" && cells.A18V6H3.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A18V6H3.name === "Pear" && cells.A18V6H3.choice === true ? classes.pearCellsChoice :
                                         cells.A18V6H3.name === "Plum" && cells.A18V6H3.choice === true ? classes.plumCellsChoice :
-                                        cells.A18V6H3.name === "Cranberry" && cells.A18V6H3.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A18V6H3.name === "Currant" && cells.A18V6H3.choice === true ? classes.currantCellsChoice :
                                         cells.A18V6H3.name === "SeaBuckthorn" && cells.A18V6H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A18V6H3.name === "Gooseberry" && cells.A18V6H3.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3735,13 +3705,13 @@ useEffect(() => {
                                         cells.A19V1H4.name === "Strawberries" && cells.A19V1H4.choice === false ? classes.strawberriesCells :
                                         cells.A19V1H4.name === "Pear" && cells.A19V1H4.choice === false ? classes.pearCells :
                                         cells.A19V1H4.name === "Plum" && cells.A19V1H4.choice === false ? classes.plumCells :
-                                        cells.A19V1H4.name === "Cranberry" && cells.A19V1H4.choice === false ? classes.cranberryCells :
+                                        cells.A19V1H4.name === "Currant" && cells.A19V1H4.choice === false ? classes.currantCells :
                                         cells.A19V1H4.name === "SeaBuckthorn" && cells.A19V1H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A19V1H4.name === "Gooseberry" && cells.A19V1H4.choice === false ? classes.gooseberryCells :
                                         cells.A19V1H4.name === "Strawberries" && cells.A19V1H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A19V1H4.name === "Pear" && cells.A19V1H4.choice === true ? classes.pearCellsChoice :
                                         cells.A19V1H4.name === "Plum" && cells.A19V1H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A19V1H4.name === "Cranberry" && cells.A19V1H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A19V1H4.name === "Currant" && cells.A19V1H4.choice === true ? classes.currantCellsChoice :
                                         cells.A19V1H4.name === "SeaBuckthorn" && cells.A19V1H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A19V1H4.name === "Gooseberry" && cells.A19V1H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3763,13 +3733,13 @@ useEffect(() => {
                                         cells.A20V2H4.name === "Strawberries" && cells.A20V2H4.choice === false ? classes.strawberriesCells :
                                         cells.A20V2H4.name === "Pear" && cells.A20V2H4.choice === false ? classes.pearCells :
                                         cells.A20V2H4.name === "Plum" && cells.A20V2H4.choice === false ? classes.plumCells :
-                                        cells.A20V2H4.name === "Cranberry" && cells.A20V2H4.choice === false ? classes.cranberryCells :
+                                        cells.A20V2H4.name === "Currant" && cells.A20V2H4.choice === false ? classes.currantCells :
                                         cells.A20V2H4.name === "SeaBuckthorn" && cells.A20V2H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A20V2H4.name === "Gooseberry" && cells.A20V2H4.choice === false ? classes.gooseberryCells :
                                         cells.A20V2H4.name === "Strawberries" && cells.A20V2H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A20V2H4.name === "Pear" && cells.A20V2H4.choice === true ? classes.pearCellsChoice :
                                         cells.A20V2H4.name === "Plum" && cells.A20V2H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A20V2H4.name === "Cranberry" && cells.A20V2H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A20V2H4.name === "Currant" && cells.A20V2H4.choice === true ? classes.currantCellsChoice :
                                         cells.A20V2H4.name === "SeaBuckthorn" && cells.A20V2H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A20V2H4.name === "Gooseberry" && cells.A20V2H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3791,13 +3761,13 @@ useEffect(() => {
                                         cells.A21V3H4.name === "Strawberries" && cells.A21V3H4.choice === false ? classes.strawberriesCells :
                                         cells.A21V3H4.name === "Pear" && cells.A21V3H4.choice === false ? classes.pearCells :
                                         cells.A21V3H4.name === "Plum" && cells.A21V3H4.choice === false ? classes.plumCells :
-                                        cells.A21V3H4.name === "Cranberry" && cells.A21V3H4.choice === false ? classes.cranberryCells :
+                                        cells.A21V3H4.name === "Currant" && cells.A21V3H4.choice === false ? classes.currantCells :
                                         cells.A21V3H4.name === "SeaBuckthorn" && cells.A21V3H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A21V3H4.name === "Gooseberry" && cells.A21V3H4.choice === false ? classes.gooseberryCells :
                                         cells.A21V3H4.name === "Strawberries" && cells.A21V3H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A21V3H4.name === "Pear" && cells.A21V3H4.choice === true ? classes.pearCellsChoice :
                                         cells.A21V3H4.name === "Plum" && cells.A21V3H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A21V3H4.name === "Cranberry" && cells.A21V3H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A21V3H4.name === "Currant" && cells.A21V3H4.choice === true ? classes.currantCellsChoice :
                                         cells.A21V3H4.name === "SeaBuckthorn" && cells.A21V3H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A21V3H4.name === "Gooseberry" && cells.A21V3H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3819,13 +3789,13 @@ useEffect(() => {
                                         cells.A22V4H4.name === "Strawberries" && cells.A22V4H4.choice === false ? classes.strawberriesCells :
                                         cells.A22V4H4.name === "Pear" && cells.A22V4H4.choice === false ? classes.pearCells :
                                         cells.A22V4H4.name === "Plum" && cells.A22V4H4.choice === false ? classes.plumCells :
-                                        cells.A22V4H4.name === "Cranberry" && cells.A22V4H4.choice === false ? classes.cranberryCells :
+                                        cells.A22V4H4.name === "Currant" && cells.A22V4H4.choice === false ? classes.currantCells :
                                         cells.A22V4H4.name === "SeaBuckthorn" && cells.A22V4H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A22V4H4.name === "Gooseberry" && cells.A22V4H4.choice === false ? classes.gooseberryCells :
                                         cells.A22V4H4.name === "Strawberries" && cells.A22V4H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A22V4H4.name === "Pear" && cells.A22V4H4.choice === true ? classes.pearCellsChoice :
                                         cells.A22V4H4.name === "Plum" && cells.A22V4H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A22V4H4.name === "Cranberry" && cells.A22V4H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A22V4H4.name === "Currant" && cells.A22V4H4.choice === true ? classes.currantCellsChoice :
                                         cells.A22V4H4.name === "SeaBuckthorn" && cells.A22V4H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A22V4H4.name === "Gooseberry" && cells.A22V4H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3847,13 +3817,13 @@ useEffect(() => {
                                         cells.A23V5H4.name === "Strawberries" && cells.A23V5H4.choice === false ? classes.strawberriesCells :
                                         cells.A23V5H4.name === "Pear" && cells.A23V5H4.choice === false ? classes.pearCells :
                                         cells.A23V5H4.name === "Plum" && cells.A23V5H4.choice === false ? classes.plumCells :
-                                        cells.A23V5H4.name === "Cranberry" && cells.A23V5H4.choice === false ? classes.cranberryCells :
+                                        cells.A23V5H4.name === "Currant" && cells.A23V5H4.choice === false ? classes.currantCells :
                                         cells.A23V5H4.name === "SeaBuckthorn" && cells.A23V5H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A23V5H4.name === "Gooseberry" && cells.A23V5H4.choice === false ? classes.gooseberryCells :
                                         cells.A23V5H4.name === "Strawberries" && cells.A23V5H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A23V5H4.name === "Pear" && cells.A23V5H4.choice === true ? classes.pearCellsChoice :
                                         cells.A23V5H4.name === "Plum" && cells.A23V5H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A23V5H4.name === "Cranberry" && cells.A23V5H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A23V5H4.name === "Currant" && cells.A23V5H4.choice === true ? classes.currantCellsChoice :
                                         cells.A23V5H4.name === "SeaBuckthorn" && cells.A23V5H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A23V5H4.name === "Gooseberry" && cells.A23V5H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3875,13 +3845,13 @@ useEffect(() => {
                                         cells.A24V6H4.name === "Strawberries" && cells.A24V6H4.choice === false ? classes.strawberriesCells :
                                         cells.A24V6H4.name === "Pear" && cells.A24V6H4.choice === false ? classes.pearCells :
                                         cells.A24V6H4.name === "Plum" && cells.A24V6H4.choice === false ? classes.plumCells :
-                                        cells.A24V6H4.name === "Cranberry" && cells.A24V6H4.choice === false ? classes.cranberryCells :
+                                        cells.A24V6H4.name === "Currant" && cells.A24V6H4.choice === false ? classes.currantCells :
                                         cells.A24V6H4.name === "SeaBuckthorn" && cells.A24V6H4.choice === false ? classes.seaBuckthornCells :
                                         cells.A24V6H4.name === "Gooseberry" && cells.A24V6H4.choice === false ? classes.gooseberryCells :
                                         cells.A24V6H4.name === "Strawberries" && cells.A24V6H4.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A24V6H4.name === "Pear" && cells.A24V6H4.choice === true ? classes.pearCellsChoice :
                                         cells.A24V6H4.name === "Plum" && cells.A24V6H4.choice === true ? classes.plumCellsChoice :
-                                        cells.A24V6H4.name === "Cranberry" && cells.A24V6H4.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A24V6H4.name === "Currant" && cells.A24V6H4.choice === true ? classes.currantCellsChoice :
                                         cells.A24V6H4.name === "SeaBuckthorn" && cells.A24V6H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A24V6H4.name === "Gooseberry" && cells.A24V6H4.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3908,13 +3878,13 @@ useEffect(() => {
                                         cells.A25V1H5.name === "Strawberries" && cells.A25V1H5.choice === false ? classes.strawberriesCells :
                                         cells.A25V1H5.name === "Pear" && cells.A25V1H5.choice === false ? classes.pearCells :
                                         cells.A25V1H5.name === "Plum" && cells.A25V1H5.choice === false ? classes.plumCells :
-                                        cells.A25V1H5.name === "Cranberry" && cells.A25V1H5.choice === false ? classes.cranberryCells :
+                                        cells.A25V1H5.name === "Currant" && cells.A25V1H5.choice === false ? classes.currantCells :
                                         cells.A25V1H5.name === "SeaBuckthorn" && cells.A25V1H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A25V1H5.name === "Gooseberry" && cells.A25V1H5.choice === false ? classes.gooseberryCells :
                                         cells.A25V1H5.name === "Strawberries" && cells.A25V1H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A25V1H5.name === "Pear" && cells.A25V1H5.choice === true ? classes.pearCellsChoice :
                                         cells.A25V1H5.name === "Plum" && cells.A25V1H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A25V1H5.name === "Cranberry" && cells.A25V1H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A25V1H5.name === "Currant" && cells.A25V1H5.choice === true ? classes.currantCellsChoice :
                                         cells.A25V1H5.name === "SeaBuckthorn" && cells.A25V1H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A25V1H5.name === "Gooseberry" && cells.A25V1H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3936,13 +3906,13 @@ useEffect(() => {
                                         cells.A26V2H5.name === "Strawberries" && cells.A26V2H5.choice === false ? classes.strawberriesCells :
                                         cells.A26V2H5.name === "Pear" && cells.A26V2H5.choice === false ? classes.pearCells :
                                         cells.A26V2H5.name === "Plum" && cells.A26V2H5.choice === false ? classes.plumCells :
-                                        cells.A26V2H5.name === "Cranberry" && cells.A26V2H5.choice === false ? classes.cranberryCells :
+                                        cells.A26V2H5.name === "Currant" && cells.A26V2H5.choice === false ? classes.currantCells :
                                         cells.A26V2H5.name === "SeaBuckthorn" && cells.A26V2H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A26V2H5.name === "Gooseberry" && cells.A26V2H5.choice === false ? classes.gooseberryCells :
                                         cells.A26V2H5.name === "Strawberries" && cells.A26V2H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A26V2H5.name === "Pear" && cells.A26V2H5.choice === true ? classes.pearCellsChoice :
                                         cells.A26V2H5.name === "Plum" && cells.A26V2H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A26V2H5.name === "Cranberry" && cells.A26V2H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A26V2H5.name === "Currant" && cells.A26V2H5.choice === true ? classes.currantCellsChoice :
                                         cells.A26V2H5.name === "SeaBuckthorn" && cells.A26V2H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A26V2H5.name === "Gooseberry" && cells.A26V2H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3964,13 +3934,13 @@ useEffect(() => {
                                         cells.A27V3H5.name === "Strawberries" && cells.A27V3H5.choice === false ? classes.strawberriesCells :
                                         cells.A27V3H5.name === "Pear" && cells.A27V3H5.choice === false ? classes.pearCells :
                                         cells.A27V3H5.name === "Plum" && cells.A27V3H5.choice === false ? classes.plumCells :
-                                        cells.A27V3H5.name === "Cranberry" && cells.A27V3H5.choice === false ? classes.cranberryCells :
+                                        cells.A27V3H5.name === "Currant" && cells.A27V3H5.choice === false ? classes.currantCells :
                                         cells.A27V3H5.name === "SeaBuckthorn" && cells.A27V3H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A27V3H5.name === "Gooseberry" && cells.A27V3H5.choice === false ? classes.gooseberryCells :
                                         cells.A27V3H5.name === "Strawberries" && cells.A27V3H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A27V3H5.name === "Pear" && cells.A27V3H5.choice === true ? classes.pearCellsChoice :
                                         cells.A27V3H5.name === "Plum" && cells.A27V3H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A27V3H5.name === "Cranberry" && cells.A27V3H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A27V3H5.name === "Currant" && cells.A27V3H5.choice === true ? classes.currantCellsChoice :
                                         cells.A27V3H5.name === "SeaBuckthorn" && cells.A27V3H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A27V3H5.name === "Gooseberry" && cells.A27V3H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -3992,13 +3962,13 @@ useEffect(() => {
                                         cells.A28V4H5.name === "Strawberries" && cells.A28V4H5.choice === false ? classes.strawberriesCells :
                                         cells.A28V4H5.name === "Pear" && cells.A28V4H5.choice === false ? classes.pearCells :
                                         cells.A28V4H5.name === "Plum" && cells.A28V4H5.choice === false ? classes.plumCells :
-                                        cells.A28V4H5.name === "Cranberry" && cells.A28V4H5.choice === false ? classes.cranberryCells :
+                                        cells.A28V4H5.name === "Currant" && cells.A28V4H5.choice === false ? classes.currantCells :
                                         cells.A28V4H5.name === "SeaBuckthorn" && cells.A28V4H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A28V4H5.name === "Gooseberry" && cells.A28V4H5.choice === false ? classes.gooseberryCells :
                                         cells.A28V4H5.name === "Strawberries" && cells.A28V4H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A28V4H5.name === "Pear" && cells.A28V4H5.choice === true ? classes.pearCellsChoice :
                                         cells.A28V4H5.name === "Plum" && cells.A28V4H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A28V4H5.name === "Cranberry" && cells.A28V4H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A28V4H5.name === "Currant" && cells.A28V4H5.choice === true ? classes.currantCellsChoice :
                                         cells.A28V4H5.name === "SeaBuckthorn" && cells.A28V4H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A28V4H5.name === "Gooseberry" && cells.A28V4H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4020,13 +3990,13 @@ useEffect(() => {
                                         cells.A29V5H5.name === "Strawberries" && cells.A29V5H5.choice === false ? classes.strawberriesCells :
                                         cells.A29V5H5.name === "Pear" && cells.A29V5H5.choice === false ? classes.pearCells :
                                         cells.A29V5H5.name === "Plum" && cells.A29V5H5.choice === false ? classes.plumCells :
-                                        cells.A29V5H5.name === "Cranberry" && cells.A29V5H5.choice === false ? classes.cranberryCells :
+                                        cells.A29V5H5.name === "Currant" && cells.A29V5H5.choice === false ? classes.currantCells :
                                         cells.A29V5H5.name === "SeaBuckthorn" && cells.A29V5H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A29V5H5.name === "Gooseberry" && cells.A29V5H5.choice === false ? classes.gooseberryCells :
                                         cells.A29V5H5.name === "Strawberries" && cells.A29V5H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A29V5H5.name === "Pear" && cells.A29V5H5.choice === true ? classes.pearCellsChoice :
                                         cells.A29V5H5.name === "Plum" && cells.A29V5H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A29V5H5.name === "Cranberry" && cells.A29V5H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A29V5H5.name === "Currant" && cells.A29V5H5.choice === true ? classes.currantCellsChoice :
                                         cells.A29V5H5.name === "SeaBuckthorn" && cells.A29V5H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A29V5H5.name === "Gooseberry" && cells.A29V5H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4048,13 +4018,13 @@ useEffect(() => {
                                         cells.A30V6H5.name === "Strawberries" && cells.A30V6H5.choice === false ? classes.strawberriesCells :
                                         cells.A30V6H5.name === "Pear" && cells.A30V6H5.choice === false ? classes.pearCells :
                                         cells.A30V6H5.name === "Plum" && cells.A30V6H5.choice === false ? classes.plumCells :
-                                        cells.A30V6H5.name === "Cranberry" && cells.A30V6H5.choice === false ? classes.cranberryCells :
+                                        cells.A30V6H5.name === "Currant" && cells.A30V6H5.choice === false ? classes.currantCells :
                                         cells.A30V6H5.name === "SeaBuckthorn" && cells.A30V6H5.choice === false ? classes.seaBuckthornCells :
                                         cells.A30V6H5.name === "Gooseberry" && cells.A30V6H5.choice === false ? classes.gooseberryCells :
                                         cells.A30V6H5.name === "Strawberries" && cells.A30V6H5.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A30V6H5.name === "Pear" && cells.A30V6H5.choice === true ? classes.pearCellsChoice :
                                         cells.A30V6H5.name === "Plum" && cells.A30V6H5.choice === true ? classes.plumCellsChoice :
-                                        cells.A30V6H5.name === "Cranberry" && cells.A30V6H5.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A30V6H5.name === "Currant" && cells.A30V6H5.choice === true ? classes.currantCellsChoice :
                                         cells.A30V6H5.name === "SeaBuckthorn" && cells.A30V6H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A30V6H5.name === "Gooseberry" && cells.A30V6H5.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4081,13 +4051,13 @@ useEffect(() => {
                                         cells.A31V1H6.name === "Strawberries" && cells.A31V1H6.choice === false ? classes.strawberriesCells :
                                         cells.A31V1H6.name === "Pear" && cells.A31V1H6.choice === false ? classes.pearCells :
                                         cells.A31V1H6.name === "Plum" && cells.A31V1H6.choice === false ? classes.plumCells :
-                                        cells.A31V1H6.name === "Cranberry" && cells.A31V1H6.choice === false ? classes.cranberryCells :
+                                        cells.A31V1H6.name === "Currant" && cells.A31V1H6.choice === false ? classes.currantCells :
                                         cells.A31V1H6.name === "SeaBuckthorn" && cells.A31V1H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A31V1H6.name === "Gooseberry" && cells.A31V1H6.choice === false ? classes.gooseberryCells :
                                         cells.A31V1H6.name === "Strawberries" && cells.A31V1H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A31V1H6.name === "Pear" && cells.A31V1H6.choice === true ? classes.pearCellsChoice :
                                         cells.A31V1H6.name === "Plum" && cells.A31V1H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A31V1H6.name === "Cranberry" && cells.A31V1H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A31V1H6.name === "Currant" && cells.A31V1H6.choice === true ? classes.currantCellsChoice :
                                         cells.A31V1H6.name === "SeaBuckthorn" && cells.A31V1H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A31V1H6.name === "Gooseberry" && cells.A31V1H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4109,13 +4079,13 @@ useEffect(() => {
                                         cells.A32V2H6.name === "Strawberries" && cells.A32V2H6.choice === false ? classes.strawberriesCells :
                                         cells.A32V2H6.name === "Pear" && cells.A32V2H6.choice === false ? classes.pearCells :
                                         cells.A32V2H6.name === "Plum" && cells.A32V2H6.choice === false ? classes.plumCells :
-                                        cells.A32V2H6.name === "Cranberry" && cells.A32V2H6.choice === false ? classes.cranberryCells :
+                                        cells.A32V2H6.name === "Currant" && cells.A32V2H6.choice === false ? classes.currantCells :
                                         cells.A32V2H6.name === "SeaBuckthorn" && cells.A32V2H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A32V2H6.name === "Gooseberry" && cells.A32V2H6.choice === false ? classes.gooseberryCells :
                                         cells.A32V2H6.name === "Strawberries" && cells.A32V2H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A32V2H6.name === "Pear" && cells.A32V2H6.choice === true ? classes.pearCellsChoice :
                                         cells.A32V2H6.name === "Plum" && cells.A32V2H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A32V2H6.name === "Cranberry" && cells.A32V2H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A32V2H6.name === "Currant" && cells.A32V2H6.choice === true ? classes.currantCellsChoice :
                                         cells.A32V2H6.name === "SeaBuckthorn" && cells.A32V2H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A32V2H6.name === "Gooseberry" && cells.A32V2H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4137,13 +4107,13 @@ useEffect(() => {
                                         cells.A33V3H6.name === "Strawberries" && cells.A33V3H6.choice === false ? classes.strawberriesCells :
                                         cells.A33V3H6.name === "Pear" && cells.A33V3H6.choice === false ? classes.pearCells :
                                         cells.A33V3H6.name === "Plum" && cells.A33V3H6.choice === false ? classes.plumCells :
-                                        cells.A33V3H6.name === "Cranberry" && cells.A33V3H6.choice === false ? classes.cranberryCells :
+                                        cells.A33V3H6.name === "Currant" && cells.A33V3H6.choice === false ? classes.currantCells :
                                         cells.A33V3H6.name === "SeaBuckthorn" && cells.A33V3H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A33V3H6.name === "Gooseberry" && cells.A33V3H6.choice === false ? classes.gooseberryCells :
                                         cells.A33V3H6.name === "Strawberries" && cells.A33V3H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A33V3H6.name === "Pear" && cells.A33V3H6.choice === true ? classes.pearCellsChoice :
                                         cells.A33V3H6.name === "Plum" && cells.A33V3H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A33V3H6.name === "Cranberry" && cells.A33V3H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A33V3H6.name === "Currant" && cells.A33V3H6.choice === true ? classes.currantCellsChoice :
                                         cells.A33V3H6.name === "SeaBuckthorn" && cells.A33V3H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A33V3H6.name === "Gooseberry" && cells.A33V3H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4165,13 +4135,13 @@ useEffect(() => {
                                         cells.A34V4H6.name === "Strawberries" && cells.A34V4H6.choice === false ? classes.strawberriesCells :
                                         cells.A34V4H6.name === "Pear" && cells.A34V4H6.choice === false ? classes.pearCells :
                                         cells.A34V4H6.name === "Plum" && cells.A34V4H6.choice === false ? classes.plumCells :
-                                        cells.A34V4H6.name === "Cranberry" && cells.A34V4H6.choice === false ? classes.cranberryCells :
+                                        cells.A34V4H6.name === "Currant" && cells.A34V4H6.choice === false ? classes.currantCells :
                                         cells.A34V4H6.name === "SeaBuckthorn" && cells.A34V4H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A34V4H6.name === "Gooseberry" && cells.A34V4H6.choice === false ? classes.gooseberryCells :
                                         cells.A34V4H6.name === "Strawberries" && cells.A34V4H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A34V4H6.name === "Pear" && cells.A34V4H6.choice === true ? classes.pearCellsChoice :
                                         cells.A34V4H6.name === "Plum" && cells.A34V4H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A34V4H6.name === "Cranberry" && cells.A34V4H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A34V4H6.name === "Currant" && cells.A34V4H6.choice === true ? classes.currantCellsChoice :
                                         cells.A34V4H6.name === "SeaBuckthorn" && cells.A34V4H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A34V4H6.name === "Gooseberry" && cells.A34V4H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4193,13 +4163,13 @@ useEffect(() => {
                                         cells.A35V5H6.name === "Strawberries" && cells.A35V5H6.choice === false ? classes.strawberriesCells :
                                         cells.A35V5H6.name === "Pear" && cells.A35V5H6.choice === false ? classes.pearCells :
                                         cells.A35V5H6.name === "Plum" && cells.A35V5H6.choice === false ? classes.plumCells :
-                                        cells.A35V5H6.name === "Cranberry" && cells.A35V5H6.choice === false ? classes.cranberryCells :
+                                        cells.A35V5H6.name === "Currant" && cells.A35V5H6.choice === false ? classes.currantCells :
                                         cells.A35V5H6.name === "SeaBuckthorn" && cells.A35V5H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A35V5H6.name === "Gooseberry" && cells.A35V5H6.choice === false ? classes.gooseberryCells :
                                         cells.A35V5H6.name === "Strawberries" && cells.A35V5H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A35V5H6.name === "Pear" && cells.A35V5H6.choice === true ? classes.pearCellsChoice :
                                         cells.A35V5H6.name === "Plum" && cells.A35V5H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A35V5H6.name === "Cranberry" && cells.A35V5H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A35V5H6.name === "Currant" && cells.A35V5H6.choice === true ? classes.currantCellsChoice :
                                         cells.A35V5H6.name === "SeaBuckthorn" && cells.A35V5H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A35V5H6.name === "Gooseberry" && cells.A35V5H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
@@ -4221,13 +4191,13 @@ useEffect(() => {
                                         cells.A36V6H6.name === "Strawberries" && cells.A36V6H6.choice === false ? classes.strawberriesCells :
                                         cells.A36V6H6.name === "Pear" && cells.A36V6H6.choice === false ? classes.pearCells :
                                         cells.A36V6H6.name === "Plum" && cells.A36V6H6.choice === false ? classes.plumCells :
-                                        cells.A36V6H6.name === "Cranberry" && cells.A36V6H6.choice === false ? classes.cranberryCells :
+                                        cells.A36V6H6.name === "Currant" && cells.A36V6H6.choice === false ? classes.currantCells :
                                         cells.A36V6H6.name === "SeaBuckthorn" && cells.A36V6H6.choice === false ? classes.seaBuckthornCells :
                                         cells.A36V6H6.name === "Gooseberry" && cells.A36V6H6.choice === false ? classes.gooseberryCells :
                                         cells.A36V6H6.name === "Strawberries" && cells.A36V6H6.choice === true ? classes.strawberriesCellsChoice :
                                         cells.A36V6H6.name === "Pear" && cells.A36V6H6.choice === true ? classes.pearCellsChoice :
                                         cells.A36V6H6.name === "Plum" && cells.A36V6H6.choice === true ? classes.plumCellsChoice :
-                                        cells.A36V6H6.name === "Cranberry" && cells.A36V6H6.choice === true ? classes.cranberryCellsChoice :
+                                        cells.A36V6H6.name === "Currant" && cells.A36V6H6.choice === true ? classes.currantCellsChoice :
                                         cells.A36V6H6.name === "SeaBuckthorn" && cells.A36V6H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A36V6H6.name === "Gooseberry" && cells.A36V6H6.choice === true ? classes.gooseberryCellsChoice :
                                         classes.emptyCells
