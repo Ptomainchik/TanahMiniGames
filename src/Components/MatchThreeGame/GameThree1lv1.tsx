@@ -468,7 +468,7 @@ export const GameThree1lvl = () => {
             setStates((prev: any) => ({ ...prev, counterCellsChoices: 0, selectedCell: null }));
         }
     }
-}
+    }
 
     const navigate = useNavigate();
 
