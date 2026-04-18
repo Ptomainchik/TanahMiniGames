@@ -2,17 +2,12 @@ import { useEffect, useState } from "react";
 import classes from "../../Styles/MatchThreeGame.module.css";
 import { useNavigate } from "react-router-dom";
 import DwarfWomen from "../../assets/MatchThreeGameImages/DwarfWomen.png";
-import DwarfWomenLose from "../../assets/MatchThreeGameImages/DwarfWomenLose.png";
 import ImageBoxOfStrawberries from "../../assets/MatchThreeGameImages/BoxOfStrawberries.png";
 import ImageBoxOfPear from "../../assets/MatchThreeGameImages/BoxOfPear.png";
 import ImageBoxOfPlum from "../../assets/MatchThreeGameImages/BoxOfPlum.png";
-import ImageBoxOfCurrant from "../../assets/MatchThreeGameImages/BoxOfCurrant.png";
-import ImageBoxOfSeaBuckthorn from "../../assets/MatchThreeGameImages/BoxOfSeaBuckthorn.png";
-import ImageBoxOfGooseberry from "../../assets/MatchThreeGameImages/BoxOfGooseberry.png";
+import ArrowShuffle from "../../assets/MatchThreeGameImages/Arrow.png";
 
 export const GameThree1lvl = () => {
-    const [endTime, setEndTime] = useState(null);   
-    const [timeLeft, setTimeLeft] = useState("10:00");
     const [fruit, setFruit] = useState({
         numberOfStrawberries: 0, 
         numberOfPear: 0, 
@@ -22,7 +17,7 @@ export const GameThree1lvl = () => {
         numberOfGooseberry: 0,  
     }); 
     const [states, setStates] = useState({
-        matchCheck: false,
+        blockingDuringRecalculation: false,
         counterCellsChoices: 0,
         cellsStrawberries: 0,
         cellsPear: 0,
@@ -42,8 +37,10 @@ export const GameThree1lvl = () => {
         showLoseModal: false,
         showModalInfo: true,
         showWinModalRecipe: false,
+        showShuffleButton: false,
         plate: true,
         plateEnding: true,
+        plateEndingWin: false,
         selectedCell: null, 
     });
 
@@ -274,48 +271,48 @@ export const GameThree1lvl = () => {
 
     // Вспомогательная функция: проверяет одномерный массив цветов (длина 36) на наличие линий 3+
     function hasAnyMatch(board: string[]): boolean {
-    const rows = 6;
-    const cols = 6;
-    // Превращаем в матрицу 6x6
-    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-    for (let i = 0; i < 36; i++) {
-        const row = Math.floor(i / cols);
-        const col = i % cols;
-        matrix[row][col] = board[i];
+        const rows = 6;
+        const cols = 6;
+        // Превращаем в матрицу 6x6
+        const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+        for (let i = 0; i < 36; i++) {
+            const row = Math.floor(i / cols);
+            const col = i % cols;
+            matrix[row][col] = board[i];
+        }
+
+        // Проверка горизонталей
+        for (let row = 0; row < rows; row++) {
+            let start = 0;
+            while (start < cols) {
+            const name = matrix[row][start];
+            if (name === "") {
+                start++;
+                continue;
+            }
+            let end = start;
+            while (end + 1 < cols && matrix[row][end + 1] === name) end++;
+            if (end - start + 1 >= 3) return true;
+            start = end + 1;
+        }
     }
 
-    // Проверка горизонталей
-    for (let row = 0; row < rows; row++) {
-        let start = 0;
-        while (start < cols) {
-        const name = matrix[row][start];
-        if (name === "") {
-            start++;
-            continue;
+        // Проверка вертикалей
+        for (let col = 0; col < cols; col++) {
+            let start = 0;
+            while (start < rows) {
+            const name = matrix[start][col];
+            if (name === "") {
+                start++;
+                continue;
+            }
+            let end = start;
+            while (end + 1 < rows && matrix[end + 1][col] === name) end++;
+            if (end - start + 1 >= 3) return true;
+            start = end + 1;
+            }
         }
-        let end = start;
-        while (end + 1 < cols && matrix[row][end + 1] === name) end++;
-        if (end - start + 1 >= 3) return true;
-        start = end + 1;
-        }
-    }
-
-    // Проверка вертикалей
-    for (let col = 0; col < cols; col++) {
-        let start = 0;
-        while (start < rows) {
-        const name = matrix[start][col];
-        if (name === "") {
-            start++;
-            continue;
-        }
-        let end = start;
-        while (end + 1 < rows && matrix[end + 1][col] === name) end++;
-        if (end - start + 1 >= 3) return true;
-        start = end + 1;
-        }
-    }
-    return false;
+        return false;
     }
 
     // Генератор чистой доски
@@ -341,9 +338,6 @@ export const GameThree1lvl = () => {
 
     function handleStartGame() {
     if (states.stateStart) return;
-
-    const tenMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
-    setEndTime(tenMinutesLater);
 
     // Исходный набор цветов (6 каждого)
     const rawColors = [
@@ -407,6 +401,7 @@ export const GameThree1lvl = () => {
     };
     
     function handleChoiceCell(cellKey: string) {
+        
     const currentCell = cells[cellKey];
 
     // Функция для самого процесса обмена (свопа) в стейте
@@ -440,6 +435,7 @@ export const GameThree1lvl = () => {
 
         // Если кликнули по другой непустой клетке — пытаемся сделать ход
         if (!currentCell.empty) {
+            setStates((prev: any) => ({...prev, blockingDuringRecalculation: true}))
             // Создаем "черновик" будущего состояния
             const futureCells = {
                 ...cells,
@@ -460,55 +456,105 @@ export const GameThree1lvl = () => {
                     performSwap(selectedKey, cellKey); // Своп туда
                     setTimeout(() => {
                         performSwap(selectedKey, cellKey); // Своп обратно
-                    }, 1000);
-                }, 1000);
+                    }, 500);
+                }, 500);
             }
 
             // Сбрасываем выбор в стейте, чтобы заблокировать клики на время анимации
             setStates((prev: any) => ({ ...prev, counterCellsChoices: 0, selectedCell: null }));
+            setTimeout(() => {
+                    setStates((prev: any) => ({ ...prev, blockingDuringRecalculation: false }));;
+                }, 1000);
         }
     }
-    }
+    };
+
+    useEffect(() => {
+        const rows = 6;
+        const cols = 6;
+
+        // Функция для проверки: есть ли вообще хоть один ход на поле?
+        const canMoveSomewhere = () => {
+            for (let h = 1; h <= rows; h++) {
+                for (let v = 1; v <= cols; v++) {
+                    // Текущая клетка
+                    const cellNumber = (h - 1) * cols + v;
+                    const currentKey = `A${cellNumber}V${v}H${h}`;
+
+                    // Проверяем соседа справа и соседа снизу
+                    const neighbors = [
+                        { v: v + 1, h: h }, // Сосед справа
+                        { v: v, h: h + 1 }  // Сосед снизу
+                    ];
+
+                    for (const neighbor of neighbors) {
+                        if (neighbor.v <= cols && neighbor.h <= rows) {
+                            const nNumber = (neighbor.h - 1) * cols + neighbor.v;
+                            const neighborKey = `A${nNumber}V${neighbor.v}H${neighbor.h}`;
+
+                            // Симулируем обмен
+                            const futureCells = {
+                                ...cells,
+                                [currentKey]: { ...cells[currentKey], name: cells[neighborKey]?.name },
+                                [neighborKey]: { ...cells[neighborKey], name: cells[currentKey]?.name }
+                            };
+
+                            // Если этот обмен создаёт ряд — значит ход есть!
+                            if (willItMatch(futureCells)) return true;
+                        }
+                    }
+                }
+            }
+            return false; // Если перебрали всё и ни одного совпадения
+        };// Проверка на возможность хода
+
+        // Если ходов нет — показываем кнопку перемешки
+        const possible = canMoveSomewhere();
+        setStates(prev => ({ ...prev, showShuffleButton: !possible }));
+
+    }, [cells]); // Следим за клетками
+
+    function handleShuffle() {
+        setCells((prevCells: any) => {
+            // 1. Извлекаем все имена из текущих клеток
+            const allNames = Object.values(prevCells).map((cell: any) => cell.name);
+
+            // 2. Перемешиваем массив имён (Fisher-Yates shuffle)
+            for (let i = allNames.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allNames[i], allNames[j]] = [allNames[j], allNames[i]];
+            }
+
+            // 3. Создаем новый объект состояния
+            const newCells = { ...prevCells };
+            const keys = Object.keys(newCells);
+
+            // 4. Раскладываем перемешанные имена обратно по ключам
+            keys.forEach((key, index) => {
+                newCells[key] = {
+                    ...newCells[key],
+                    name: allNames[index],
+                    choice: false, // На всякий случай сбрасываем выделение
+                    empty: allNames[index] === "" // Если были пустые, помечаем их
+                };
+            });
+
+            return newCells;
+        });
+
+        // Скрываем кнопку после перемешки
+        setStates((prev: any) => ({ ...prev, showShuffleButton: false }));
+    };//Перемешивание клеток в случае если нет ни одного совпадения в поле.
 
     const navigate = useNavigate();
+
+    function handleTranzitionNextLevel() {
+        navigate("/three2");
+    };
 
     function handleRestart() {
         navigate(0);
     };
-
-    function handleHomePageTranzition() {
-        navigate("/");
-    };
-
-    function handleOpenWinModalRecipe() {
-        setStates((prev: any) => ({...prev, showWinModalRecipe: true}));
-    }
-
-    useEffect(() => {
-        if (!endTime) return;
-    
-        const interval = setInterval(() => {
-            const now = Date.now();
-            const diff = endTime - now;
-    
-            if (states.showButtonsWhenWinning) return;
-    
-            if (diff <= 0 && states.stateStart) {
-                clearInterval(interval);
-                setTimeLeft("00:00");
-                // ТВОЕ ДЕЙСТВИЕ: вызов модалки
-                setStates(prev => ({ ...prev, showLoseModal: true, plateEnding: true })); 
-                return;
-            }
-    
-            // Форматируем остаток
-            const mins = Math.floor(diff / 1000 / 60);
-            const secs = Math.floor((diff / 1000) % 60);
-            setTimeLeft(`${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
-        }, 1000);
-    
-        return () => clearInterval(interval); // Чистим, если ушли со страницы
-    }, [endTime, states.showButtonsWhenWinning]);
 
     useEffect(() => {
     // 1. Построим матрицу 6×6 из имён и ключей
@@ -644,7 +690,6 @@ export const GameThree1lvl = () => {
     }
     }, [cells]); // Зависимость – меняется при любом обновлении клеток
 
-
     //Гравитация
 
     const getRandomFruitName = () => {
@@ -657,8 +702,8 @@ export const GameThree1lvl = () => {
 
     //V1
     useEffect(() => {
-
-        if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
+        setTimeout(() => {
+            if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A1V1H1: {
@@ -1059,12 +1104,13 @@ export const GameThree1lvl = () => {
             }
             }));
         }
+        }, 1000);
     }, [cells]);
 
     //V2
     useEffect(() => {
-
-        if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty) {
+        setTimeout(() => {
+                    if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A2V2H1: {
@@ -1465,12 +1511,13 @@ export const GameThree1lvl = () => {
             }
             }));
         }
+        }, 1000);
     }, [cells]);
 
     //V3
     useEffect(() => {
-
-        if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty) {
+        setTimeout(() => {
+           if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A3V3H1: {
@@ -1870,13 +1917,14 @@ export const GameThree1lvl = () => {
                     empty: false,    
             }
             }));
-        }
+        } 
+        }, 1000);
     }, [cells]);
 
     //V4
     useEffect(() => {
-
-        if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty) {
+        setTimeout(() => {
+            if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A4V4H1: {
@@ -2277,12 +2325,13 @@ export const GameThree1lvl = () => {
             }
             }));
         }
+        }, 1000);
     }, [cells]);
 
     //V5
-     useEffect(() => {
-
-        if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty) {
+    useEffect(() => {
+        setTimeout(() => {
+            if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A5V5H1: {
@@ -2683,12 +2732,13 @@ export const GameThree1lvl = () => {
             }
             }));
         }
+        }, 1000);
     }, [cells]);
 
     //V6
     useEffect(() => {
-
-        if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty) {
+        setTimeout(() => {
+           if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty) {
             setCells((prev: any) => ({
                 ...prev,
                 A6V6H1: {
@@ -3088,78 +3138,61 @@ export const GameThree1lvl = () => {
                     empty: false,    
             }
             }));
-        }
+        } 
+        }, 1000);
     }, [cells]);
+
+    function handleWin() {
+        setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
+    };
+
+    useEffect(() => {
+        if (fruit.numberOfStrawberries >= 20 && fruit.numberOfPear >= 20 && fruit.numberOfPlum >= 20) {
+            setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, plateEndingWin: true}));
+        }
+    }, [fruit]);
  
     return (
         <>
             <div className={classes.gamePage}>
-
+                <button onClick={handleWin}>WIN</button>
+                { states.showShuffleButton && states.stateStart && <div className={classes.shuffleButton}>
+                    <button onClick={handleShuffle}></button>
+                    <p>Перемешать</p>
+                    <img src={ArrowShuffle} alt="ArrowShuffle" draggable={false}/>
+                </div> }
                 <div className={classes.pointers}>
                     <div className={classes.pointerBoxOfStrawberries}>
                         <p>Земляника: {fruit.numberOfStrawberries}</p>
                         <img src={ImageBoxOfStrawberries} alt="ImageBoxOfStrawberries" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfStrawberries}></progress>
+                        <progress className={classes.scales} max="20" value={fruit.numberOfStrawberries}></progress>
                     </div>
 
                     <div className={classes.pointerBoxOfPear}>
                         <p>Груша: {fruit.numberOfPear}</p>
                         <img src={ImageBoxOfPear} alt="ImageBoxOfPear" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfPear}></progress>
+                        <progress className={classes.scales} max="20" value={fruit.numberOfPear}></progress>
                     </div>
 
                     <div className={classes.pointerBoxOfPlum}>
                         <p>Слива: {fruit.numberOfPlum}</p> 
                         <img src={ImageBoxOfPlum} alt="ImageBoxOfPlum" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfPlum}></progress>
+                        <progress className={classes.scales} max="20" value={fruit.numberOfPlum}></progress>
                     </div>
 
-                    <div className={classes.pointerBoxOfCurrant}>
-                        <p>Смородина: {fruit.numberOfCurrant}</p> 
-                        <img src={ImageBoxOfCurrant} alt="ImageBoxOfCurrant" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfCurrant}></progress>
-                    </div>
-
-                    <div className={classes.pointerBoxOfSeaBuckthorn}>
-                        <p>Облепиха: {fruit.numberOfSeaBuckthorn}</p>
-                        <img src={ImageBoxOfSeaBuckthorn} alt="ImageBoxOfSeaBuckthorn" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfSeaBuckthorn}></progress>
-                    </div>
-
-                    <div className={classes.pointerBoxOfGooseberry}>
-                        <p>Крыжовник: {fruit.numberOfGooseberry}</p> 
-                        <img src={ImageBoxOfGooseberry} alt="ImageBoxOfGooseberry" draggable={false}/> 
-                        <progress className={classes.scales} max="100" value={fruit.numberOfGooseberry}></progress>
-                    </div>
-                </div>
-                
-                <div className={classes.timer}>
-                    <p>
-                        Возвращение наставника:
-                    </p>
-                    {timeLeft}
                 </div>
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Вот это сноровка! Вот тебе секретный рецепт наставника в награду.</p>
+                        <p className={classes.info}>Молодец! Получилось здорово. Заново или следующий.</p>
                     </div>
-                    <img className={classes.imageInfoIntro} src={DwarfWomen} alt="DwarfWomen" draggable={false}/> 
-                    <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
+                    <h3>Снова или следующий?</h3>
+                    <img className={classes.imageInfoEnding} src={DwarfWomen} alt="DwarfWomen" draggable={false}/> 
+                    <p className={classes.buttonNextAndHome} onClick={handleTranzitionNextLevel}>Следующий уровень</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
-                    <p className={classes.buttonNext} onClick={handleHomePageTranzition}>На главную</p>
                 </div>}
 
-                <p className={classes.levelPointer}>Уровень 4</p>
-
-                { states.showLoseModal && <div className={classes.winAndLoseModal}>
-                    <div className={classes.infoOverlay}>
-                        <p className={classes.info}>(Шаги у дверей) О нет! Это наставник. Ну и влетит же мне.</p>
-                    </div>
-                    <img className={classes.imageInfoIntro} src={DwarfWomenLose} alt="DwarfWomenLose" draggable={false}/> 
-                    <h3>Время вышло, попробуете ещё раз?</h3>
-                    <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
-                </div> }
+                <p className={classes.levelPointer}>Уровень 1</p>
 
                 <div className={classes.gameField}>
 
@@ -3172,9 +3205,11 @@ export const GameThree1lvl = () => {
                                 <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={DwarfWomen} alt="DwarfWomen" draggable={false}/>
                         </div> }
 
-                        {states.plate && <div className={states.stateStart ? classes.leftPlateEnd : !states.stateStart ? classes.leftPlateStart : classes.plate}></div>}
+                        { states.plate && <div className={states.stateStart ? classes.leftPlateEnd : !states.stateStart ? classes.leftPlateStart : classes.plate}></div>}
 
-                        {states.plateEnding && <div className={states.showLoseModal ? classes.rightPlateStart : classes.plate}></div>}
+                        { states.plateEnding && <div className={states.showLoseModal ? classes.rightPlateStart : classes.plate}></div>}
+
+                        { states.plateEndingWin && <div className={states.showButtonsWhenWinning ? classes.rightPlateStart : classes.plate}></div>}
 
                     <div className={classes.fields}>
                         {/* HORIZONT 1 */}
@@ -3195,6 +3230,7 @@ export const GameThree1lvl = () => {
                                         cells.A1V1H1.name === "Currant" && cells.A1V1H1.choice === true ? classes.currantCellsChoice :
                                         cells.A1V1H1.name === "SeaBuckthorn" && cells.A1V1H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A1V1H1.name === "Gooseberry" && cells.A1V1H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A1V1H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A1V1H1")}
@@ -3204,6 +3240,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3223,6 +3260,7 @@ export const GameThree1lvl = () => {
                                         cells.A2V2H1.name === "Currant" && cells.A2V2H1.choice === true ? classes.currantCellsChoice :
                                         cells.A2V2H1.name === "SeaBuckthorn" && cells.A2V2H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A2V2H1.name === "Gooseberry" && cells.A2V2H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A2V2H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A2V2H1")}
@@ -3232,6 +3270,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3251,6 +3290,7 @@ export const GameThree1lvl = () => {
                                         cells.A3V3H1.name === "Currant" && cells.A3V3H1.choice === true ? classes.currantCellsChoice :
                                         cells.A3V3H1.name === "SeaBuckthorn" && cells.A3V3H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A3V3H1.name === "Gooseberry" && cells.A3V3H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A3V3H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A3V3H1")}
@@ -3260,6 +3300,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3279,6 +3320,7 @@ export const GameThree1lvl = () => {
                                         cells.A4V4H1.name === "Currant" && cells.A4V4H1.choice === true ? classes.currantCellsChoice :
                                         cells.A4V4H1.name === "SeaBuckthorn" && cells.A4V4H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A4V4H1.name === "Gooseberry" && cells.A4V4H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A4V4H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A4V4H1")}
@@ -3288,6 +3330,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3307,6 +3350,7 @@ export const GameThree1lvl = () => {
                                         cells.A5V5H1.name === "Currant" && cells.A5V5H1.choice === true ? classes.currantCellsChoice :
                                         cells.A5V5H1.name === "SeaBuckthorn" && cells.A5V5H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A5V5H1.name === "Gooseberry" && cells.A5V5H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A5V5H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A5V5H1")}
@@ -3316,6 +3360,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3335,6 +3380,7 @@ export const GameThree1lvl = () => {
                                         cells.A6V6H1.name === "Currant" && cells.A6V6H1.choice === true ? classes.currantCellsChoice :
                                         cells.A6V6H1.name === "SeaBuckthorn" && cells.A6V6H1.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A6V6H1.name === "Gooseberry" && cells.A6V6H1.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A6V6H1.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A6V6H1")}
@@ -3344,6 +3390,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3368,6 +3415,7 @@ export const GameThree1lvl = () => {
                                         cells.A7V1H2.name === "Currant" && cells.A7V1H2.choice === true ? classes.currantCellsChoice :
                                         cells.A7V1H2.name === "SeaBuckthorn" && cells.A7V1H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A7V1H2.name === "Gooseberry" && cells.A7V1H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A7V1H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A7V1H2")}
@@ -3377,6 +3425,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3396,6 +3445,7 @@ export const GameThree1lvl = () => {
                                         cells.A8V2H2.name === "Currant" && cells.A8V2H2.choice === true ? classes.currantCellsChoice :
                                         cells.A8V2H2.name === "SeaBuckthorn" && cells.A8V2H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A8V2H2.name === "Gooseberry" && cells.A8V2H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A8V2H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A8V2H2")}
@@ -3405,6 +3455,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3424,6 +3475,7 @@ export const GameThree1lvl = () => {
                                         cells.A9V3H2.name === "Currant" && cells.A9V3H2.choice === true ? classes.currantCellsChoice :
                                         cells.A9V3H2.name === "SeaBuckthorn" && cells.A9V3H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A9V3H2.name === "Gooseberry" && cells.A9V3H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A9V3H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A9V3H2")}
@@ -3433,6 +3485,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3452,6 +3505,7 @@ export const GameThree1lvl = () => {
                                         cells.A10V4H2.name === "Currant" && cells.A10V4H2.choice === true ? classes.currantCellsChoice :
                                         cells.A10V4H2.name === "SeaBuckthorn" && cells.A10V4H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A10V4H2.name === "Gooseberry" && cells.A10V4H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A10V4H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A10V4H2")}
@@ -3461,6 +3515,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3480,6 +3535,7 @@ export const GameThree1lvl = () => {
                                         cells.A11V5H2.name === "Currant" && cells.A11V5H2.choice === true ? classes.currantCellsChoice :
                                         cells.A11V5H2.name === "SeaBuckthorn" && cells.A11V5H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A11V5H2.name === "Gooseberry" && cells.A11V5H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A11V5H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A11V5H2")}
@@ -3489,6 +3545,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3508,6 +3565,7 @@ export const GameThree1lvl = () => {
                                         cells.A12V6H2.name === "Currant" && cells.A12V6H2.choice === true ? classes.currantCellsChoice :
                                         cells.A12V6H2.name === "SeaBuckthorn" && cells.A12V6H2.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A12V6H2.name === "Gooseberry" && cells.A12V6H2.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A12V6H2.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A12V6H2")}
@@ -3517,6 +3575,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3541,6 +3600,7 @@ export const GameThree1lvl = () => {
                                         cells.A13V1H3.name === "Currant" && cells.A13V1H3.choice === true ? classes.currantCellsChoice :
                                         cells.A13V1H3.name === "SeaBuckthorn" && cells.A13V1H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A13V1H3.name === "Gooseberry" && cells.A13V1H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A13V1H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A13V1H3")}
@@ -3550,6 +3610,7 @@ export const GameThree1lvl = () => {
                                         || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3569,6 +3630,7 @@ export const GameThree1lvl = () => {
                                         cells.A14V2H3.name === "Currant" && cells.A14V2H3.choice === true ? classes.currantCellsChoice :
                                         cells.A14V2H3.name === "SeaBuckthorn" && cells.A14V2H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A14V2H3.name === "Gooseberry" && cells.A14V2H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A14V2H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A14V2H3")}
@@ -3578,6 +3640,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3597,6 +3660,7 @@ export const GameThree1lvl = () => {
                                         cells.A15V3H3.name === "Currant" && cells.A15V3H3.choice === true ? classes.currantCellsChoice :
                                         cells.A15V3H3.name === "SeaBuckthorn" && cells.A15V3H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A15V3H3.name === "Gooseberry" && cells.A15V3H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A15V3H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A15V3H3")}
@@ -3606,6 +3670,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3625,6 +3690,7 @@ export const GameThree1lvl = () => {
                                         cells.A16V4H3.name === "Currant" && cells.A16V4H3.choice === true ? classes.currantCellsChoice :
                                         cells.A16V4H3.name === "SeaBuckthorn" && cells.A16V4H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A16V4H3.name === "Gooseberry" && cells.A16V4H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A16V4H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A16V4H3")}
@@ -3634,6 +3700,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3653,6 +3720,7 @@ export const GameThree1lvl = () => {
                                         cells.A17V5H3.name === "Currant" && cells.A17V5H3.choice === true ? classes.currantCellsChoice :
                                         cells.A17V5H3.name === "SeaBuckthorn" && cells.A17V5H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A17V5H3.name === "Gooseberry" && cells.A17V5H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A17V5H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A17V5H3")}
@@ -3662,6 +3730,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3681,6 +3750,7 @@ export const GameThree1lvl = () => {
                                         cells.A18V6H3.name === "Currant" && cells.A18V6H3.choice === true ? classes.currantCellsChoice :
                                         cells.A18V6H3.name === "SeaBuckthorn" && cells.A18V6H3.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A18V6H3.name === "Gooseberry" && cells.A18V6H3.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A18V6H3.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A18V6H3")}
@@ -3690,6 +3760,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3714,6 +3785,7 @@ export const GameThree1lvl = () => {
                                         cells.A19V1H4.name === "Currant" && cells.A19V1H4.choice === true ? classes.currantCellsChoice :
                                         cells.A19V1H4.name === "SeaBuckthorn" && cells.A19V1H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A19V1H4.name === "Gooseberry" && cells.A19V1H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A19V1H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A19V1H4")}
@@ -3723,6 +3795,7 @@ export const GameThree1lvl = () => {
                                         || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3742,6 +3815,7 @@ export const GameThree1lvl = () => {
                                         cells.A20V2H4.name === "Currant" && cells.A20V2H4.choice === true ? classes.currantCellsChoice :
                                         cells.A20V2H4.name === "SeaBuckthorn" && cells.A20V2H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A20V2H4.name === "Gooseberry" && cells.A20V2H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A20V2H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A20V2H4")}
@@ -3751,6 +3825,7 @@ export const GameThree1lvl = () => {
                                         || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3770,6 +3845,7 @@ export const GameThree1lvl = () => {
                                         cells.A21V3H4.name === "Currant" && cells.A21V3H4.choice === true ? classes.currantCellsChoice :
                                         cells.A21V3H4.name === "SeaBuckthorn" && cells.A21V3H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A21V3H4.name === "Gooseberry" && cells.A21V3H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A21V3H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A21V3H4")}
@@ -3779,6 +3855,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3798,6 +3875,7 @@ export const GameThree1lvl = () => {
                                         cells.A22V4H4.name === "Currant" && cells.A22V4H4.choice === true ? classes.currantCellsChoice :
                                         cells.A22V4H4.name === "SeaBuckthorn" && cells.A22V4H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A22V4H4.name === "Gooseberry" && cells.A22V4H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A22V4H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A22V4H4")}
@@ -3807,6 +3885,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3826,6 +3905,7 @@ export const GameThree1lvl = () => {
                                         cells.A23V5H4.name === "Currant" && cells.A23V5H4.choice === true ? classes.currantCellsChoice :
                                         cells.A23V5H4.name === "SeaBuckthorn" && cells.A23V5H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A23V5H4.name === "Gooseberry" && cells.A23V5H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A23V5H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A23V5H4")}
@@ -3835,6 +3915,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3854,6 +3935,7 @@ export const GameThree1lvl = () => {
                                         cells.A24V6H4.name === "Currant" && cells.A24V6H4.choice === true ? classes.currantCellsChoice :
                                         cells.A24V6H4.name === "SeaBuckthorn" && cells.A24V6H4.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A24V6H4.name === "Gooseberry" && cells.A24V6H4.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A24V6H4.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A24V6H4")}
@@ -3863,6 +3945,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3887,6 +3970,7 @@ export const GameThree1lvl = () => {
                                         cells.A25V1H5.name === "Currant" && cells.A25V1H5.choice === true ? classes.currantCellsChoice :
                                         cells.A25V1H5.name === "SeaBuckthorn" && cells.A25V1H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A25V1H5.name === "Gooseberry" && cells.A25V1H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A25V1H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A25V1H5")}
@@ -3896,6 +3980,7 @@ export const GameThree1lvl = () => {
                                         || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3915,6 +4000,7 @@ export const GameThree1lvl = () => {
                                         cells.A26V2H5.name === "Currant" && cells.A26V2H5.choice === true ? classes.currantCellsChoice :
                                         cells.A26V2H5.name === "SeaBuckthorn" && cells.A26V2H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A26V2H5.name === "Gooseberry" && cells.A26V2H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A26V2H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A26V2H5")}
@@ -3924,6 +4010,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3943,6 +4030,7 @@ export const GameThree1lvl = () => {
                                         cells.A27V3H5.name === "Currant" && cells.A27V3H5.choice === true ? classes.currantCellsChoice :
                                         cells.A27V3H5.name === "SeaBuckthorn" && cells.A27V3H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A27V3H5.name === "Gooseberry" && cells.A27V3H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A27V3H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A27V3H5")}
@@ -3952,6 +4040,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3971,6 +4060,7 @@ export const GameThree1lvl = () => {
                                         cells.A28V4H5.name === "Currant" && cells.A28V4H5.choice === true ? classes.currantCellsChoice :
                                         cells.A28V4H5.name === "SeaBuckthorn" && cells.A28V4H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A28V4H5.name === "Gooseberry" && cells.A28V4H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A28V4H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A28V4H5")}
@@ -3980,6 +4070,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -3999,6 +4090,7 @@ export const GameThree1lvl = () => {
                                         cells.A29V5H5.name === "Currant" && cells.A29V5H5.choice === true ? classes.currantCellsChoice :
                                         cells.A29V5H5.name === "SeaBuckthorn" && cells.A29V5H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A29V5H5.name === "Gooseberry" && cells.A29V5H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A29V5H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A29V5H5")}
@@ -4008,6 +4100,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4027,6 +4120,7 @@ export const GameThree1lvl = () => {
                                         cells.A30V6H5.name === "Currant" && cells.A30V6H5.choice === true ? classes.currantCellsChoice :
                                         cells.A30V6H5.name === "SeaBuckthorn" && cells.A30V6H5.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A30V6H5.name === "Gooseberry" && cells.A30V6H5.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A30V6H5.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A30V6H5")}
@@ -4036,6 +4130,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice 
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4060,6 +4155,7 @@ export const GameThree1lvl = () => {
                                         cells.A31V1H6.name === "Currant" && cells.A31V1H6.choice === true ? classes.currantCellsChoice :
                                         cells.A31V1H6.name === "SeaBuckthorn" && cells.A31V1H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A31V1H6.name === "Gooseberry" && cells.A31V1H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A31V1H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A31V1H6")}
@@ -4069,6 +4165,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4088,6 +4185,7 @@ export const GameThree1lvl = () => {
                                         cells.A32V2H6.name === "Currant" && cells.A32V2H6.choice === true ? classes.currantCellsChoice :
                                         cells.A32V2H6.name === "SeaBuckthorn" && cells.A32V2H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A32V2H6.name === "Gooseberry" && cells.A32V2H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A32V2H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A32V2H6")}
@@ -4097,6 +4195,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4116,6 +4215,7 @@ export const GameThree1lvl = () => {
                                         cells.A33V3H6.name === "Currant" && cells.A33V3H6.choice === true ? classes.currantCellsChoice :
                                         cells.A33V3H6.name === "SeaBuckthorn" && cells.A33V3H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A33V3H6.name === "Gooseberry" && cells.A33V3H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A33V3H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A33V3H6")}
@@ -4125,6 +4225,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4144,6 +4245,7 @@ export const GameThree1lvl = () => {
                                         cells.A34V4H6.name === "Currant" && cells.A34V4H6.choice === true ? classes.currantCellsChoice :
                                         cells.A34V4H6.name === "SeaBuckthorn" && cells.A34V4H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A34V4H6.name === "Gooseberry" && cells.A34V4H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A34V4H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A34V4H6")}
@@ -4153,6 +4255,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4172,6 +4275,7 @@ export const GameThree1lvl = () => {
                                         cells.A35V5H6.name === "Currant" && cells.A35V5H6.choice === true ? classes.currantCellsChoice :
                                         cells.A35V5H6.name === "SeaBuckthorn" && cells.A35V5H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A35V5H6.name === "Gooseberry" && cells.A35V5H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A35V5H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A35V5H6")}
@@ -4181,6 +4285,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}
@@ -4200,6 +4305,7 @@ export const GameThree1lvl = () => {
                                         cells.A36V6H6.name === "Currant" && cells.A36V6H6.choice === true ? classes.currantCellsChoice :
                                         cells.A36V6H6.name === "SeaBuckthorn" && cells.A36V6H6.choice === true ? classes.seaBuckthornCellsChoice :
                                         cells.A36V6H6.name === "Gooseberry" && cells.A36V6H6.choice === true ? classes.gooseberryCellsChoice :
+                                        cells.A36V6H6.name === "" ? classes.cellMatching :
                                         classes.emptyCells
                                     }
                                     onClick={() => handleChoiceCell("A36V6H6")}
@@ -4209,6 +4315,7 @@ export const GameThree1lvl = () => {
                                         || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
                                         || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice 
                                         || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice 
+                                        || states.blockingDuringRecalculation
                                     }
                                 ></button>
                             </div>}

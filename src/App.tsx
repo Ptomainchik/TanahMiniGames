@@ -8,7 +8,10 @@ import { GameSorting1lvl } from "./Components/SortingGame/GameSorting1lvl";
 import { GameSorting2lvl } from "./Components/SortingGame/GameSorting2lvl";
 import { GameSorting3lvl } from "./Components/SortingGame/GameSorting3lvl";
 import { GameSorting4lvl } from "./Components/SortingGame/GameSorting4lvl";
-import { GameThree1lvl } from "./Components/MatchThreeGame/GameThree1lv1";
+import { GameThree1lvl } from "./Components/MatchThreeGame/GameThree1lvl";
+import { GameThree2lvl } from "./Components/MatchThreeGame/GameThree2lvl";
+import { GameThree3lvl } from "./Components/MatchThreeGame/GameThree3lvl";
+import { GameThree4lvl } from "./Components/MatchThreeGame/GameThree4lvl";
 
 function App() {
 
@@ -27,6 +30,9 @@ function App() {
           <Route path="sort3" element={<GameSorting3lvl/>}/>
           <Route path="sort4" element={<GameSorting4lvl/>}/>
           <Route path="three1" element={<GameThree1lvl/>}/>
+          <Route path="three2" element={<GameThree2lvl/>}/>
+          <Route path="three3" element={<GameThree3lvl/>}/>
+          <Route path="three4" element={<GameThree4lvl/>}/>
       </Routes>
     </BrowserRouter>
       

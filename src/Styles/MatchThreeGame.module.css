@@ -138,6 +138,15 @@
     z-index: 3;
 }
 
+.imageInfoEnding{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    left: -10%;
+    z-index: 3;
+    animation: opacityShuffleAndEnding 0.5s forwards;
+}
+
 .imageInfoIntroOpacity{
     width: 21vw;
     position: absolute;
@@ -230,7 +239,7 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 60%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -245,7 +254,7 @@
     transform: translate(-50%, -50%) scale(1.1);
 }
 
-.buttonNext{
+.buttonNextAndHome{
     color: chartreuse;
     font-size: 3vw;
     font-family: "El Messiri";
@@ -253,7 +262,7 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 80%;
+    top: 70%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -262,10 +271,80 @@
     filter: drop-shadow(0 0 1vw black);
 }
 
-.buttonNext:hover{
+.buttonNextAndHome:hover{
     filter: drop-shadow( 0 0 0 black);
     color: chartreuse;
     transform: translate(-50%, -50%) scale(1.1);
+}
+
+.shuffleButton{
+    width: 8vw;
+    height: 10vw;
+    position: absolute;
+    top: 30%;
+    left: 1%;
+    animation: opacityShuffleAndEnding 2.5s forwards;
+}
+
+@keyframes opacityShuffleAndEnding {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.shuffleButton button{
+    width: 8vw;
+    height: 8vw;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MatchThreeGameImages/ShuffleArrows.png) no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    filter: drop-shadow( 0 0 3px black);
+    border: none;
+}
+
+.shuffleButton button:hover{
+    filter: drop-shadow( 0 0 6px black);
+}
+
+.shuffleButton p{
+    font-family: "El Messeri";
+    font-size: 1.5vw;
+    font-weight: 700;
+    color: springgreen;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.shuffleButton img {
+    width: 6vw;
+    height: 10vw;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: twitching 1s infinite;
+}
+
+@keyframes twitching {
+    0%, 50%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    50% {
+        transform: translateY(30%) translateX(-50%);
+    }
+    100% {
+        transform: translateY(0) translateX(-50%);
+    }
 }
 
 .winAndLoseModal{
@@ -393,6 +472,36 @@
 
 .strawberriesCells:hover{
     opacity: 0.8;
+}
+
+.cellMatching{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellFruits.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    animation: 1s Shine forwards;
+}
+
+@keyframes Shine {
+    0%, 10%, 50%, 100% {
+        filter: drop-shadow(0vw 0.4vw 0.2vw black);
+        opacity: 0.2;
+
+    }
+    10% {
+        filter: drop-shadow(0vw 0vw 0.2vw gold);
+        opacity: 0.2;
+    }
+    50% {
+        filter: drop-shadow(0vw 0vw 1vw gold);
+        opacity: 1;
+    }
+    100% {
+        filter: drop-shadow(0vw 0.4vw 0.2vw gold);
+        opacity: 0;
+    }
 }
 
 .pearCells{
@@ -540,7 +649,7 @@
     width: 4vw;
     height: 4vw;
     position: absolute;
-    top: 26%;
+    top: 10%;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
@@ -557,7 +666,7 @@
     color: springgreen;
     filter: drop-shadow(0 0 3px black);
     position: absolute;
-    top: 10%;
+    top: 62%;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
@@ -569,7 +678,7 @@
     width: 8vw;
     height: 0.7vw;
     position: absolute;
-    bottom: 25%;
+    bottom: 38%;
     left: 50%;
     transform: translateX(-50%);
     border: solid 0.1vw black;
@@ -633,8 +742,8 @@
     right: 0%;
 }
 
-
 .buttonRecipe{
+    width: 30%;
     color: pink;
     font-size: 4vw;
     font-family: "El Messiri";
@@ -642,7 +751,7 @@
     -webkit-text-stroke: 1px black;
     z-index: 2;
     position: absolute;
-    top: 5%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%) scale(1);
     cursor: pointer;
@@ -663,9 +772,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/SortingGameImages/BackgroundTexturesSortingGameField.jpg) no-repeat center;
+    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) no-repeat center;
     background-size: cover;
-    z-index: 3;
+    z-index: 4;
     font-family: "El Messiri";
 }
 
