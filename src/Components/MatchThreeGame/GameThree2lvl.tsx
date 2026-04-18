@@ -3142,9 +3142,9 @@ export const GameThree2lvl = () => {
         }, 1000);
     }, [cells]);
 
-    function handleWin() {
-        setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
-    };
+    // function handleWin() {
+    //     setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
+    // };
 
     useEffect(() => {
         if (fruit.numberOfCurrant >= 30 && fruit.numberOfSeaBuckthorn >= 30 && fruit.numberOfGooseberry >= 30) {
@@ -3155,7 +3155,7 @@ export const GameThree2lvl = () => {
     return (
         <>
             <div className={classes.gamePage}>
-                <button onClick={handleWin}>WIN</button>
+                {/* <button onClick={handleWin}>WIN</button> */}
                 { states.showShuffleButton && states.stateStart && <div className={classes.shuffleButton}>
                     <button onClick={handleShuffle}></button>
                     <p>Перемешать</p>
@@ -3164,19 +3164,19 @@ export const GameThree2lvl = () => {
                 <div className={classes.pointers}>
 
                     <div className={classes.pointerBoxOfCurrant}>
-                        <p>Смородина: {fruit.numberOfCurrant}</p> 
+                        <p>Смородина</p> 
                         <img src={ImageBoxOfCurrant} alt="ImageBoxOfCurrant" draggable={false}/> 
                         <progress className={classes.scales} max="30" value={fruit.numberOfCurrant}></progress>
                     </div>
 
                     <div className={classes.pointerBoxOfSeaBuckthorn}>
-                        <p>Облепиха: {fruit.numberOfSeaBuckthorn}</p>
+                        <p>Облепиха</p>
                         <img src={ImageBoxOfSeaBuckthorn} alt="ImageBoxOfSeaBuckthorn" draggable={false}/> 
                         <progress className={classes.scales} max="30" value={fruit.numberOfSeaBuckthorn}></progress>
                     </div>
 
                     <div className={classes.pointerBoxOfGooseberry}>
-                        <p>Крыжовник: {fruit.numberOfGooseberry}</p> 
+                        <p>Крыжовник</p> 
                         <img src={ImageBoxOfGooseberry} alt="ImageBoxOfGooseberry" draggable={false}/> 
                         <progress className={classes.scales} max="30" value={fruit.numberOfGooseberry}></progress>
                     </div>
