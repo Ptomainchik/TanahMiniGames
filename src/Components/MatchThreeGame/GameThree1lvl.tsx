@@ -783,9 +783,9 @@ export const GameThree1lvl = () => {
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Молодец! Получилось здорово. Заново или следующий.</p>
+                        <p className={classes.info}>Мы всё собрали. Как здорово у тебя это получается, спасибо за помощь.</p>
                     </div>
-                    <h3>Снова или следующий?</h3>
+                    <h3>Повторить или дальше?</h3>
                     <img className={classes.imageInfoEnding} src={DwarfWomen} alt="DwarfWomen" draggable={false}/> 
                     <p className={classes.buttonNextAndHome} onClick={handleTranzitionNextLevel}>Следующий уровень</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
@@ -820,7 +820,7 @@ export const GameThree1lvl = () => {
 
                         { states.showModalInfo && <div>
                             <div className={states.stateStart ? classes.infoOverlayOpacity : classes.infoOverlay}> 
-                                <p className={classes.info}>Спаси! Нам нужно успеть навести порядок до прихода наставника.</p>
+                                <p className={classes.info}>Привет! Пожалуйста, помоги мне собрать фрукты и ягоды в саду.</p>
                             </div>
                                 <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={DwarfWomen} alt="DwarfWomen" draggable={false}/>
                         </div> }

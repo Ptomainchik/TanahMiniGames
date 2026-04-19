@@ -10,6 +10,7 @@ import ImageBoxOfCurrant from "../../assets/MatchThreeGameImages/BoxOfCurrant.pn
 import ImageBoxOfSeaBuckthorn from "../../assets/MatchThreeGameImages/BoxOfSeaBuckthorn.png";
 import ImageBoxOfGooseberry from "../../assets/MatchThreeGameImages/BoxOfGooseberry.png";
 import ArrowShuffle from "../../assets/MatchThreeGameImages/Arrow.png";
+import ImageCake from "../../assets/MatchThreeGameImages/ImageCake.jpg";
 
 export const GameThree4lvl = () => {
     const [endTime, setEndTime] = useState(null);   
@@ -834,40 +835,40 @@ export const GameThree4lvl = () => {
 
                 { states.showWinModalRecipe && <div className={classes.recipeModal}>
         
-                    <img src={ImageBoxOfStrawberries} alt="ImageBoxOfStrawberries" draggable={false}/>
+                    <img src={ImageCake} alt="ImageCake" draggable={false}/>
     
-                    <h1>Чернолесский плов</h1>
+                    <h1>Торт «Заначка гнома»</h1>
     
                     <div>
     
                         <ol>
     
-                            <li>Полба — 300 г</li>
-                            <li>Квашеная капуста с морковью — 400 г</li>
-                            <li>1 рубленая курица без грудки</li> 
-                            <li>Шампиньоны свежие — 200 г</li>
-                            <li>Лук — 1 большая луковица</li>   
-                            <li>Масло сливочное — кусочек для обжарки</li>
-                            <li>Чеснок — 3 зубчика</li>
-                            <li>Барбарис сушёный — две столовые ложки</li>
-                            <li>Имбирь молотый — полчайной ложки</li>
-                            <li>Зира — полчайной ложки</li>
-                            <li>Два лавровых листочка</li>
-                            <li>Чёрный молотый перец — щепоть</li>
-                            <li>Соль — по вкусу</li>
-    
+                            <li>Сушки — 500 г</li>
+                            <li>Масло сливочное — 250 г</li>
+                            <li>Яйцо куриное — 1 шт.</li> 
+                            <li>Сливки 20% — 50 мл</li>
+                            <li>Мёд — 3 ст. л.</li>   
+                            <li>Творожная масса — 500 г</li>
+                            <li>Сахар демерара — 150г</li>
+                            <li>Голубика — 100г</li>
+                            <li>Клубника — 150г</li>
+                            <li>Два банана</li>
+                            <li>Какао-порошок — 20 г</li>
+                            <li>Шоколад горький 99% — 1 плитка</li>
+                            <li>Молоко — 100 мл</li>
                             
                         </ol>
     
                         <span>
-                            Разделите курицу (без грудки) на части: окорочка и крылья разрежьте по суставам, остальное порубите на средние куски. 
-                            В разогретом казане растопите сливочное масло и обжарьте мясо с добавлением чеснока до золотистой корочки.
-                            Залейте курицу водой и тушите 5 минут. Затем всыпьте полбу и добавьте воды так, чтобы её уровень был на два пальца выше крупы. 
-                            Накройте крышкой и томите на слабом огне. Через 5 минут перемешайте, добавьте барбарис, имбирь, зиру, лавровый лист, перец и соль по вкусу. 
-                            Снова накройте и оставьте ещё на 10 минут.
-                            Параллельно обжарьте на сковороде нарезанные лук с шампиньонами на сливочном масле до легкого румянца. 
-                            Добавьте зажарку и квашеную капусту в казан к полбе, перемешайте (если нужно, подлейте немного воды) и отправьте в духовку на полчаса при 150 градусах.
-                            Готовый казан достаньте из духовки и, не открывая крышки, укутайте в теплое одеяло на 30 минут — так блюдо окончательно «дойдёт» и станет максимально ароматным.
+                            Сушки хорошо размять или прокрутить в мясорубке. В получившуюся крошку влить 150 г растопленного сливочного масла, вбить яйцо, добавить сливки и мёд. Всё тщательно перемешать до однородности. 
+                            Выложить массу в глубокую металлическую форму, застеленную пергаментом, и распределить пальцами или ложкой, формируя основу с бортиками (как корзинку). Поставить в разогретую духовку на 20 минут при температуре 150 °C.
+                            Пока корж запекается, в творожную массу добавить 100 г мягкого сливочного масла, сахар и тщательно перемешать. 
+                            Разделить массу на две равные порции, в одну из них добавить какао и еще раз перемешать.
+                            Готовый корж достать из духовки и дать ему остыть, не вынимая из формы. Затем на дно коржа выложить нарезанные бананы и ягоды. 
+                            Сверху распределить слой творога без какао, а следом — слой творожной массы с какао.
+                            На водяной бане растопить шоколад в молоке до состояния однородной глазури, постоянно помешивая. 
+                            Аккуратно покрыть торт глазурью. Убрать десерт в форме в холодильник на 1 час. 
+                            После этого аккуратно извлечь из формы — и можно подавать к столу. 
                         </span>
                         
                     </div>
@@ -876,7 +877,7 @@ export const GameThree4lvl = () => {
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>Вот это сноровка! Вот тебе секретный рецепт наставника в награду.</p>
+                        <p className={classes.info}>Если бы не ты, я потеряла бы огромную прибыль. Вот любимый рецепт моего мужа.</p>
                     </div>
                     <img className={classes.imageInfoEnding} src={DwarfWomen} alt="DwarfWomen" draggable={false}/> 
                     <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
@@ -888,10 +889,10 @@ export const GameThree4lvl = () => {
 
                 { states.showLoseModal && <div className={classes.winAndLoseModal}>
                     <div className={classes.infoOverlay}>
-                        <p className={classes.info}>(Шаги у дверей) О нет! Это наставник. Ну и влетит же мне.</p>
+                        <p className={classes.info}>(Звон колокола на площади) Эх, жалко мы не успели, ярмарка уже началась.</p>
                     </div>
                     <img className={classes.imageInfoEnding} src={DwarfWomenLose} alt="DwarfWomenLose" draggable={false}/> 
-                    <h3>Время вышло, попробуете ещё раз?</h3>
+                    <h3>Вы не успели, попробуете ещё раз?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                 </div> }
 
@@ -939,7 +940,7 @@ export const GameThree4lvl = () => {
 
                         { states.showModalInfo && <div>
                             <div className={states.stateStart ? classes.infoOverlayOpacity : classes.infoOverlay}> 
-                                <p className={classes.info}>Спаси! Нам нужно успеть навести порядок до прихода наставника.</p>
+                                <p className={classes.info}>Выручай! Скоро на площади начнётся ярмарка, а мне нечего выложить на прилавок.</p>
                             </div>
                                 <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={DwarfWomen} alt="DwarfWomen" draggable={false}/>
                         </div> }

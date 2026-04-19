@@ -243,7 +243,7 @@
 }
 
 .info{
-    width: 65%;
+    width: 75%;
     font-family: "El Messiri";
     font-weight: 700;
     font-size: 1.5vw;
@@ -798,10 +798,10 @@
 
 .recipeModal ol{
     position: absolute;
-    top: 10%;
-    left: 34%;
+    top: 12%;
+    left: 33%;
     color: gold;
-    font-size: 1.2vw;
+    font-size: 1vw;
     font-weight: 700;
     margin: 0;
 }
@@ -812,7 +812,7 @@
     top: 60%;
     left: 34%;
     color: gold;
-    font-size: 1.1vw;
+    font-size: 1vw;
     font-weight: 700;
     margin: 0;
 }
@@ -1001,7 +1001,7 @@
 }
 
 .info{
-    width: 75%;
+    width: 80%;
     font-size: 4vw;
     position: absolute;
     top: 15%;
@@ -1429,7 +1429,7 @@
 }
 
 .info{
-    width: 75%;
+    width: 80%;
     font-size: 3vw;
     position: absolute;
     top: 15%;
@@ -1857,7 +1857,7 @@
 }
 
 .info{
-    width: 75%;
+    width: 80%;
     font-size: 3vw;
     position: absolute;
     top: 15%;
@@ -2054,7 +2054,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/SortingGameImages/BackgroundTexturesSortingGameField.jpg) no-repeat center;
+    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
