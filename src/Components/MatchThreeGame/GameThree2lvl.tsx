@@ -779,26 +779,6 @@ export const GameThree2lvl = () => {
                     <p>Перемешать</p>
                     <img src={ArrowShuffle} alt="ArrowShuffle" draggable={false}/>
                 </div> }
-                <div className={classes.pointers}>
-
-                    <div className={classes.pointerBoxOfCurrant}>
-                        <p>Смородина</p> 
-                        <img src={ImageBoxOfCurrant} alt="ImageBoxOfCurrant" draggable={false}/> 
-                        <progress className={classes.scales} max="30" value={fruit.numberOfCurrant}></progress>
-                    </div>
-
-                    <div className={classes.pointerBoxOfSeaBuckthorn}>
-                        <p>Облепиха</p>
-                        <img src={ImageBoxOfSeaBuckthorn} alt="ImageBoxOfSeaBuckthorn" draggable={false}/> 
-                        <progress className={classes.scales} max="30" value={fruit.numberOfSeaBuckthorn}></progress>
-                    </div>
-
-                    <div className={classes.pointerBoxOfGooseberry}>
-                        <p>Крыжовник</p> 
-                        <img src={ImageBoxOfGooseberry} alt="ImageBoxOfGooseberry" draggable={false}/> 
-                        <progress className={classes.scales} max="30" value={fruit.numberOfGooseberry}></progress>
-                    </div>
-                </div>
 
                 { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
                     <div className={classes.infoOverlay}>
@@ -813,6 +793,26 @@ export const GameThree2lvl = () => {
                 <p className={classes.levelPointer}>Уровень 2</p>
 
                 <div className={classes.gameField}>
+
+                        <div className={classes.pointers}>
+                            <div className={classes.pointerBoxOfCurrant}>
+                                <p>Смородина</p> 
+                                <img src={ImageBoxOfCurrant} alt="ImageBoxOfCurrant" draggable={false}/> 
+                                <progress className={classes.scales} max="30" value={fruit.numberOfCurrant}></progress>
+                            </div>
+
+                            <div className={classes.pointerBoxOfSeaBuckthorn}>
+                                <p>Облепиха</p>
+                                <img src={ImageBoxOfSeaBuckthorn} alt="ImageBoxOfSeaBuckthorn" draggable={false}/> 
+                                <progress className={classes.scales} max="30" value={fruit.numberOfSeaBuckthorn}></progress>
+                            </div>
+
+                            <div className={classes.pointerBoxOfGooseberry}>
+                                <p>Крыжовник</p> 
+                                <img src={ImageBoxOfGooseberry} alt="ImageBoxOfGooseberry" draggable={false}/> 
+                                <progress className={classes.scales} max="30" value={fruit.numberOfGooseberry}></progress>
+                            </div>
+                        </div>
 
                         { states.showButtonStart && <p className={classes.buttonStart} onClick={handleStartGame}>Старт</p>}
 
