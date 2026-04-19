@@ -18,6 +18,7 @@ export const GameThree2lvl = () => {
     }); 
     const [states, setStates] = useState({
         blockingDuringRecalculation: false,
+        animationInProgress: false,
         counterCellsChoices: 0,
         cellsStrawberries: 0,
         cellsPear: 0,
@@ -43,7 +44,6 @@ export const GameThree2lvl = () => {
         plateEndingWin: false,
         selectedCell: null, 
     });
-
     const [cells, setCells]: any = useState({
         A1V1H1: {
             name: "",
@@ -556,2591 +556,179 @@ export const GameThree2lvl = () => {
         navigate(0);
     };
 
-    useEffect(() => {
-    // 1. Построим матрицу 6×6 из имён и ключей
-    const rows = 6;
-    const cols = 6;
-    const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-    const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
-
-    for (let h = 0; h < rows; h++) {
-        for (let v = 0; v < cols; v++) {
-        const cellNumber = h * cols + v + 1;
-        const key = `A${cellNumber}V${v + 1}H${h + 1}`;
-        const cell = cells[key];
-        if (cell) {
-            matrix[h][v] = cell.name || "";
-            keyMatrix[h][v] = key;
-        }
-        }
-    }
-
-    const toClear = new Set<string>();
-
-    // 2. Поиск горизонтальных линий
-    for (let h = 0; h < rows; h++) {
-        let start = 0;
-        while (start < cols) {
-        const currentName = matrix[h][start];
-        if (currentName === "") {
-            start++;
-            continue;
-        }
-        let end = start;
-        while (end + 1 < cols && matrix[h][end + 1] === currentName) {
-            end++;
-        }
-        const length = end - start + 1;
-        if (length >= 3) {
-            for (let v = start; v <= end; v++) {
-            toClear.add(keyMatrix[h][v]);
-            }
-        }
-        start = end + 1;
-        }
-    }
-
-    // 3. Поиск вертикальных линий
-    for (let v = 0; v < cols; v++) {
-        let start = 0;
-        while (start < rows) {
-        const currentName = matrix[start][v];
-        if (currentName === "") {
-            start++;
-            continue;
-        }
-        let end = start;
-        while (end + 1 < rows && matrix[end + 1][v] === currentName) {
-            end++;
-        }
-        const length = end - start + 1;
-        if (length >= 3) {
-            for (let h = start; h <= end; h++) {
-            toClear.add(keyMatrix[h][v]);
-            }
-        }
-        start = end + 1;
-        }
-    }
-
-    // 4. Если есть что очищать – обновляем состояние и считаем фрукты
-    if (toClear.size > 0) {
-        // Подсчитываем, какие фрукты и сколько удаляем
-        const counts = {
-        numberOfStrawberries: 0,
-        numberOfPear: 0,
-        numberOfPlum: 0,
-        numberOfCurrant: 0,
-        numberOfSeaBuckthorn: 0,
-        numberOfGooseberry: 0,
-        };
-
-        // Проходим по всем ключам в toClear и определяем имя фрукта из текущего состояния cells
-        for (const key of toClear) {
-        const fruitName = cells[key]?.name;
-        switch (fruitName) {
-            case states.cellsStrawberriesName:
-            counts.numberOfStrawberries++;
-            break;
-            case states.cellsPearName:
-            counts.numberOfPear++;
-            break;
-            case states.cellsPlumName:
-            counts.numberOfPlum++;
-            break;
-            case states.cellsCurrantName:
-            counts.numberOfCurrant++;
-            break;
-            case states.cellsSeaBuckthornName:
-            counts.numberOfSeaBuckthorn++;
-            break;
-            case states.cellsGooseberryName:
-            counts.numberOfGooseberry++;
-            break;
-            default:
-            break;
-        }
-        }
-
-        // Обновляем счётчик фруктов (прибавляем к текущим значениям)
-        setFruit(prev => ({
-        numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
-        numberOfPear: prev.numberOfPear + counts.numberOfPear,
-        numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
-        numberOfCurrant: prev.numberOfCurrant + counts.numberOfCurrant,
-        numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
-        numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
-        }));
-
-        // Очищаем клетки (устанавливаем name: "", empty: true)
-        setCells((prevCells: any) => {
-        const newCells = { ...prevCells };
-        for (const key of toClear) {
-            if (newCells[key]) {
-            newCells[key] = {
-                ...newCells[key],
-                name: "",
-                empty: true,
-                choice: false,
-            };
-            }
-        }
-        return newCells;
-        });
-    }
-    }, [cells]); // Зависимость – меняется при любом обновлении клеток
-
     //Гравитация
 
-    const getRandomFruitName = () => {
-        const fruitNames = Object.entries(states)
-            .filter(([key]) => key.endsWith('Name')) // только ключи с "...Name"
-            .map(([, value]) => value);              // берём только значения
-        const randomIndex = Math.floor(Math.random() * fruitNames.length);
-        return fruitNames[randomIndex];
-    };
-
-    //V1
     useEffect(() => {
-        setTimeout(() => {
-            if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A1V1H1.empty && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A31V1H6: {
-                    ...prev.A31V1H6,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A7V1H2.empty && cells.A13V1H3.empty && cells.A19V1H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A31V1H6: {
-                    ...prev.A31V1H6,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A13V1H3.empty && cells.A19V1H4.empty && cells.A25V1H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A19V1H4.empty && cells.A25V1H5.empty && cells.A31V1H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A31V1H6: {
-                    ...prev.A31V1H6,
-                    name: cells.A13V1H3.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A1V1H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A7V1H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A13V1H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A19V1H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A13V1H3.name,
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A25V1H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A19V1H4.name,
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A13V1H3.name,
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A31V1H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A31V1H6: {
-                    ...prev.A31V1H6,
-                    name: cells.A25V1H5.name,
-                    empty: false,    
-            },
-                A25V1H5: {
-                    ...prev.A25V1H5,
-                    name: cells.A19V1H4.name,
-                    empty: false,    
-            },
-                A19V1H4: {
-                    ...prev.A19V1H4,
-                    name: cells.A13V1H3.name,
-                    empty: false,    
-            },
-                A13V1H3: {
-                    ...prev.A13V1H3,
-                    name: cells.A7V1H2.name,
-                    empty: false,    
-            },
-                A7V1H2: {
-                    ...prev.A7V1H2,
-                    name: cells.A1V1H1.name,
-                    empty: false,    
-            },
-                A1V1H1: {
-                    ...prev.A1V1H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        }, 1000);
-    }, [cells]);
+        const rows = 6;
+        const cols = 6;
 
-    //V2
-    useEffect(() => {
-        setTimeout(() => {
-                    if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A2V2H1.empty && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A32V2H6: {
-                    ...prev.A32V2H6,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A8V2H2.empty && cells.A14V2H3.empty && cells.A20V2H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A32V2H6: {
-                    ...prev.A32V2H6,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A14V2H3.empty && cells.A20V2H4.empty && cells.A26V2H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A20V2H4.empty && cells.A26V2H5.empty && cells.A32V2H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A32V2H6: {
-                    ...prev.A32V2H6,
-                    name: cells.A14V2H3.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A2V2H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A8V2H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A14V2H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A20V2H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A14V2H3.name,
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A26V2H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A20V2H4.name,
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A14V2H3.name,
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A32V2H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A32V2H6: {
-                    ...prev.A32V2H6,
-                    name: cells.A26V2H5.name,
-                    empty: false,    
-            },
-                A26V2H5: {
-                    ...prev.A26V2H5,
-                    name: cells.A20V2H4.name,
-                    empty: false,    
-            },
-                A20V2H4: {
-                    ...prev.A20V2H4,
-                    name: cells.A14V2H3.name,
-                    empty: false,    
-            },
-                A14V2H3: {
-                    ...prev.A14V2H3,
-                    name: cells.A8V2H2.name,
-                    empty: false,    
-            },
-                A8V2H2: {
-                    ...prev.A8V2H2,
-                    name: cells.A2V2H1.name,
-                    empty: false,    
-            },
-                A2V2H1: {
-                    ...prev.A2V2H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        }, 1000);
-    }, [cells]);
+        // Если анимация уже идёт – не запускаем новую
+        if (states.animationInProgress) return;
 
-    //V3
-    useEffect(() => {
-        setTimeout(() => {
-           if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A3V3H1.empty && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A33V3H6: {
-                    ...prev.A33V3H6,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A9V3H2.empty && cells.A15V3H3.empty && cells.A21V3H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A33V3H6: {
-                    ...prev.A33V3H6,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A15V3H3.empty && cells.A21V3H4.empty && cells.A27V3H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A21V3H4.empty && cells.A27V3H5.empty && cells.A33V3H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A33V3H6: {
-                    ...prev.A33V3H6,
-                    name: cells.A15V3H3.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A3V3H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A9V3H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A15V3H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A21V3H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A15V3H3.name,
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A27V3H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A21V3H4.name,
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A15V3H3.name,
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A33V3H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A33V3H6: {
-                    ...prev.A33V3H6,
-                    name: cells.A27V3H5.name,
-                    empty: false,    
-            },
-                A27V3H5: {
-                    ...prev.A27V3H5,
-                    name: cells.A21V3H4.name,
-                    empty: false,    
-            },
-                A21V3H4: {
-                    ...prev.A21V3H4,
-                    name: cells.A15V3H3.name,
-                    empty: false,    
-            },
-                A15V3H3: {
-                    ...prev.A15V3H3,
-                    name: cells.A9V3H2.name,
-                    empty: false,    
-            },
-                A9V3H2: {
-                    ...prev.A9V3H2,
-                    name: cells.A3V3H1.name,
-                    empty: false,    
-            },
-                A3V3H1: {
-                    ...prev.A3V3H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        } 
-        }, 1000);
-    }, [cells]);
+        // 1. Построим матрицу имён и ключей
+        const matrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
+        const keyMatrix: string[][] = Array(rows).fill(null).map(() => Array(cols).fill(""));
 
-    //V4
-    useEffect(() => {
-        setTimeout(() => {
-            if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
+        for (let h = 0; h < rows; h++) {
+            for (let v = 0; v < cols; v++) {
+            const cellNumber = h * cols + v + 1;
+            const key = `A${cellNumber}V${v + 1}H${h + 1}`;
+            const cell = cells[key];
+            if (cell) {
+                matrix[h][v] = cell.name || "";
+                keyMatrix[h][v] = key;
             }
-            }));
-        }
-        else if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
             }
-            }));
         }
-        else if (states.stateStart && cells.A4V4H1.empty && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A34V4H6: {
-                    ...prev.A34V4H6,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A10V4H2.empty && cells.A16V4H3.empty && cells.A22V4H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A34V4H6: {
-                    ...prev.A34V4H6,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A16V4H3.empty && cells.A22V4H4.empty && cells.A28V4H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A22V4H4.empty && cells.A28V4H5.empty && cells.A34V4H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A34V4H6: {
-                    ...prev.A34V4H6,
-                    name: cells.A16V4H3.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A4V4H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A10V4H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A16V4H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A22V4H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A16V4H3.name,
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A28V4H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A22V4H4.name,
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A16V4H3.name,
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A34V4H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A34V4H6: {
-                    ...prev.A34V4H6,
-                    name: cells.A28V4H5.name,
-                    empty: false,    
-            },
-                A28V4H5: {
-                    ...prev.A28V4H5,
-                    name: cells.A22V4H4.name,
-                    empty: false,    
-            },
-                A22V4H4: {
-                    ...prev.A22V4H4,
-                    name: cells.A16V4H3.name,
-                    empty: false,    
-            },
-                A16V4H3: {
-                    ...prev.A16V4H3,
-                    name: cells.A10V4H2.name,
-                    empty: false,    
-            },
-                A10V4H2: {
-                    ...prev.A10V4H2,
-                    name: cells.A4V4H1.name,
-                    empty: false,    
-            },
-                A4V4H1: {
-                    ...prev.A4V4H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        }, 1000);
-    }, [cells]);
 
-    //V5
-    useEffect(() => {
-        setTimeout(() => {
-            if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A5V5H1.empty && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A35V5H6: {
-                    ...prev.A35V5H6,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A11V5H2.empty && cells.A17V5H3.empty && cells.A23V5H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A35V5H6: {
-                    ...prev.A35V5H6,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A17V5H3.empty && cells.A23V5H4.empty && cells.A29V5H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A23V5H4.empty && cells.A29V5H5.empty && cells.A35V5H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A35V5H6: {
-                    ...prev.A35V5H6,
-                    name: cells.A17V5H3.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A5V5H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A11V5H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A17V5H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A23V5H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A17V5H3.name,
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A29V5H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A23V5H4.name,
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A17V5H3.name,
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A35V5H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A35V5H6: {
-                    ...prev.A35V5H6,
-                    name: cells.A29V5H5.name,
-                    empty: false,    
-            },
-                A29V5H5: {
-                    ...prev.A29V5H5,
-                    name: cells.A23V5H4.name,
-                    empty: false,    
-            },
-                A23V5H4: {
-                    ...prev.A23V5H4,
-                    name: cells.A17V5H3.name,
-                    empty: false,    
-            },
-                A17V5H3: {
-                    ...prev.A17V5H3,
-                    name: cells.A11V5H2.name,
-                    empty: false,    
-            },
-                A11V5H2: {
-                    ...prev.A11V5H2,
-                    name: cells.A5V5H1.name,
-                    empty: false,    
-            },
-                A5V5H1: {
-                    ...prev.A5V5H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        }, 1000);
-    }, [cells]);
+        // 2. Поиск линий
+        const toClear = new Set<string>();
 
-    //V6
-    useEffect(() => {
+        // Горизонтали
+        for (let h = 0; h < rows; h++) {
+            let start = 0;
+            while (start < cols) {
+            const currentName = matrix[h][start];
+            if (currentName === "") {
+                start++;
+                continue;
+            }
+            let end = start;
+            while (end + 1 < cols && matrix[h][end + 1] === currentName) end++;
+            if (end - start + 1 >= 3) {
+                for (let v = start; v <= end; v++) toClear.add(keyMatrix[h][v]);
+            }
+            start = end + 1;
+            }
+        }
+
+        // Вертикали
+        for (let v = 0; v < cols; v++) {
+            let start = 0;
+            while (start < rows) {
+            const currentName = matrix[start][v];
+            if (currentName === "") {
+                start++;
+                continue;
+            }
+            let end = start;
+            while (end + 1 < rows && matrix[end + 1][v] === currentName) end++;
+            if (end - start + 1 >= 3) {
+                for (let h = start; h <= end; h++) toClear.add(keyMatrix[h][v]);
+            }
+            start = end + 1;
+            }
+        }
+
+        if (toClear.size === 0) return;
+
+        // 3. Подсчёт удаляемых фруктов (для setFruit)
+        const counts = {
+            numberOfStrawberries: 0,
+            numberOfPear: 0,
+            numberOfPlum: 0,
+            numberOfCurrant: 0,
+            numberOfSeaBuckthorn: 0,
+            numberOfGooseberry: 0,
+        };
+        for (const key of toClear) {
+            const fruitName = cells[key]?.name;
+            switch (fruitName) {
+            case states.cellsStrawberriesName: counts.numberOfStrawberries++; break;
+            case states.cellsPearName: counts.numberOfPear++; break;
+            case states.cellsPlumName: counts.numberOfPlum++; break;
+            case states.cellsCurrantName: counts.numberOfCurrant++; break;
+            case states.cellsSeaBuckthornName: counts.numberOfSeaBuckthorn++; break;
+            case states.cellsGooseberryName: counts.numberOfGooseberry++; break;
+            }
+        }
+        setFruit(prev => ({
+            numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
+            numberOfPear: prev.numberOfPear + counts.numberOfPear,
+            numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
+            numberOfCurrant: prev.numberOfCurrant + counts.numberOfCurrant,
+            numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
+            numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
+        }));
+
+        // 4. Помечаем клетки для анимации и блокируем клики
+        setCells((prev: any) => {
+            const newCells = { ...prev };
+            for (const key of toClear) {
+            if (newCells[key]) {
+                newCells[key] = {
+                ...newCells[key],
+                willBeCleared: true, // флаг для CSS-класса cellMatching
+                };
+            }
+            }
+            return newCells;
+        });
+        setStates(prev => ({ ...prev, animationInProgress: true, blockingDuringRecalculation: true }));
+
+        // 5. Таймер на длительность анимации (синхронизировать с CSS)
+        const ANIMATION_DURATION = 500; // миллисекунд (должно совпадать с animation-duration в .cellMatching)
         setTimeout(() => {
-           if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
+            setCells((prevCells: any) => {
+            let newCells = { ...prevCells };
+            // 5.1 Очищаем помеченные клетки (удаляем линии)
+            for (const key of toClear) {
+                if (newCells[key]) {
+                newCells[key] = {
+                    ...newCells[key],
+                    name: "",
+                    empty: true,
+                    choice: false,
+                    willBeCleared: false,
+                };
+                }
             }
-            }));
-        }
-        else if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
+
+            // 5.2 Гравитация и заполнение
+            const getRandomFruit = () => {
+                const fruitNames = [
+                states.cellsStrawberriesName,
+                states.cellsPearName,
+                states.cellsPlumName,
+                states.cellsCurrantName,
+                states.cellsSeaBuckthornName,
+                states.cellsGooseberryName,
+                ];
+                return fruitNames[Math.floor(Math.random() * fruitNames.length)];
+            };
+
+            for (let v = 1; v <= cols; v++) {
+                const columnNames: string[] = [];
+                for (let h = 1; h <= rows; h++) {
+                const cellNumber = (h - 1) * cols + v;
+                const key = `A${cellNumber}V${v}H${h}`;
+                columnNames.push(newCells[key]?.name || "");
+                }
+                const nonEmpty = columnNames.filter(name => name !== "");
+                const emptyCount = rows - nonEmpty.length;
+                const newFruits = Array(emptyCount).fill(null).map(() => getRandomFruit());
+                const newColumn = [...newFruits, ...nonEmpty];
+                for (let h = 1; h <= rows; h++) {
+                const cellNumber = (h - 1) * cols + v;
+                const key = `A${cellNumber}V${v}H${h}`;
+                if (newCells[key]) {
+                    newCells[key] = {
+                    ...newCells[key],
+                    name: newColumn[h - 1],
+                    empty: false,
+                    choice: false,
+                    };
+                }
+                }
             }
-            }));
-        }
-        else if (states.stateStart && cells.A6V6H1.empty && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A36V6H6: {
-                    ...prev.A36V6H6,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A12V6H2.empty && cells.A18V6H3.empty && cells.A24V6H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A36V6H6: {
-                    ...prev.A36V6H6,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A18V6H3.empty && cells.A24V6H4.empty && cells.A30V6H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A24V6H4.empty && cells.A30V6H5.empty && cells.A36V6H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A36V6H6: {
-                    ...prev.A36V6H6,
-                    name: cells.A18V6H3.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A6V6H1.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A12V6H2.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            },
-            }));
-        }
-        else if (states.stateStart && cells.A18V6H3.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A24V6H4.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A18V6H3.name,
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A30V6H5.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A24V6H4.name,
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A18V6H3.name,
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        }
-        else if (states.stateStart && cells.A36V6H6.empty) {
-            setCells((prev: any) => ({
-                ...prev,
-                A36V6H6: {
-                    ...prev.A36V6H6,
-                    name: cells.A30V6H5.name,
-                    empty: false,    
-            },
-                A30V6H5: {
-                    ...prev.A30V6H5,
-                    name: cells.A24V6H4.name,
-                    empty: false,    
-            },
-                A24V6H4: {
-                    ...prev.A24V6H4,
-                    name: cells.A18V6H3.name,
-                    empty: false,    
-            },
-                A18V6H3: {
-                    ...prev.A18V6H3,
-                    name: cells.A12V6H2.name,
-                    empty: false,    
-            },
-                A12V6H2: {
-                    ...prev.A12V6H2,
-                    name: cells.A6V6H1.name,
-                    empty: false,    
-            },
-                A6V6H1: {
-                    ...prev.A6V6H1,
-                    name: getRandomFruitName(),
-                    empty: false,    
-            }
-            }));
-        } 
-        }, 1000);
-    }, [cells]);
+
+            return newCells;
+            });
+
+            // 5.3 Разблокируем интерфейс
+            setStates(prev => ({ ...prev, animationInProgress: false, blockingDuringRecalculation: false }));
+        }, ANIMATION_DURATION);
+    }, [cells, states.animationInProgress]);
 
     // function handleWin() {
     //     setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
@@ -3151,6 +739,36 @@ export const GameThree2lvl = () => {
             setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, plateEndingWin: true}));
         }
     }, [fruit]);
+
+    const getCellClass = (cell: any) => {
+        // Приоритет: если клетка помечена для анимации удаления
+        if (cell.willBeCleared) return classes.cellMatching;
+        // Если имя пустое – обычная пустая клетка (без подсветки)
+        if (cell.name === "") return classes.emptyCells;
+        // Если выбрана (choice: true)
+        if (cell.choice) {
+            switch (cell.name) {
+                case "Strawberries": return classes.strawberriesCellsChoice;
+                case "Pear": return classes.pearCellsChoice;
+                case "Plum": return classes.plumCellsChoice;
+                case "Currant": return classes.currantCellsChoice;
+                case "SeaBuckthorn": return classes.seaBuckthornCellsChoice;
+                case "Gooseberry": return classes.gooseberryCellsChoice;
+            }
+        } else {
+            // Обычное состояние
+            switch (cell.name) {
+                case "Strawberries": return classes.strawberriesCells;
+                case "Pear": return classes.pearCells;
+                case "Plum": return classes.plumCells;
+                case "Currant": return classes.currantCells;
+                case "SeaBuckthorn": return classes.seaBuckthornCells;
+                case "Gooseberry": return classes.gooseberryCells;
+            }
+        }
+        // fallback (не должно срабатывать)
+        return classes.emptyCells;
+    };
  
     return (
         <>
@@ -3212,1117 +830,577 @@ export const GameThree2lvl = () => {
                         { states.plateEndingWin && <div className={states.showButtonsWhenWinning ? classes.rightPlateStart : classes.plate}></div>}
 
                     <div className={classes.fields}>
-                                            {/* HORIZONT 1 */}
-                                            <div className={classes.fieldH1}>
-                    
-                                                {cells.A1V1H1.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A1V1H1.name === "Strawberries" && cells.A1V1H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A1V1H1.name === "Pear" && cells.A1V1H1.choice === false ? classes.pearCells :
-                                                            cells.A1V1H1.name === "Plum" && cells.A1V1H1.choice === false ? classes.plumCells :
-                                                            cells.A1V1H1.name === "Currant" && cells.A1V1H1.choice === false ? classes.currantCells :
-                                                            cells.A1V1H1.name === "SeaBuckthorn" && cells.A1V1H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A1V1H1.name === "Gooseberry" && cells.A1V1H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A1V1H1.name === "Strawberries" && cells.A1V1H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A1V1H1.name === "Pear" && cells.A1V1H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A1V1H1.name === "Plum" && cells.A1V1H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A1V1H1.name === "Currant" && cells.A1V1H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A1V1H1.name === "SeaBuckthorn" && cells.A1V1H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A1V1H1.name === "Gooseberry" && cells.A1V1H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A1V1H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A1V1H1")}
-                                                        disabled={!states.stateStart || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A2V2H1.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A2V2H1.name === "Strawberries" && cells.A2V2H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A2V2H1.name === "Pear" && cells.A2V2H1.choice === false ? classes.pearCells :
-                                                            cells.A2V2H1.name === "Plum" && cells.A2V2H1.choice === false ? classes.plumCells :
-                                                            cells.A2V2H1.name === "Currant" && cells.A2V2H1.choice === false ? classes.currantCells :
-                                                            cells.A2V2H1.name === "SeaBuckthorn" && cells.A2V2H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A2V2H1.name === "Gooseberry" && cells.A2V2H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A2V2H1.name === "Strawberries" && cells.A2V2H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A2V2H1.name === "Pear" && cells.A2V2H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A2V2H1.name === "Plum" && cells.A2V2H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A2V2H1.name === "Currant" && cells.A2V2H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A2V2H1.name === "SeaBuckthorn" && cells.A2V2H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A2V2H1.name === "Gooseberry" && cells.A2V2H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A2V2H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A2V2H1")}
-                                                        disabled={!states.stateStart || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A3V3H1.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A3V3H1.name === "Strawberries" && cells.A3V3H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A3V3H1.name === "Pear" && cells.A3V3H1.choice === false ? classes.pearCells :
-                                                            cells.A3V3H1.name === "Plum" && cells.A3V3H1.choice === false ? classes.plumCells :
-                                                            cells.A3V3H1.name === "Currant" && cells.A3V3H1.choice === false ? classes.currantCells :
-                                                            cells.A3V3H1.name === "SeaBuckthorn" && cells.A3V3H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A3V3H1.name === "Gooseberry" && cells.A3V3H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A3V3H1.name === "Strawberries" && cells.A3V3H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A3V3H1.name === "Pear" && cells.A3V3H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A3V3H1.name === "Plum" && cells.A3V3H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A3V3H1.name === "Currant" && cells.A3V3H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A3V3H1.name === "SeaBuckthorn" && cells.A3V3H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A3V3H1.name === "Gooseberry" && cells.A3V3H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A3V3H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A3V3H1")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A4V4H1.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A4V4H1.name === "Strawberries" && cells.A4V4H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A4V4H1.name === "Pear" && cells.A4V4H1.choice === false ? classes.pearCells :
-                                                            cells.A4V4H1.name === "Plum" && cells.A4V4H1.choice === false ? classes.plumCells :
-                                                            cells.A4V4H1.name === "Currant" && cells.A4V4H1.choice === false ? classes.currantCells :
-                                                            cells.A4V4H1.name === "SeaBuckthorn" && cells.A4V4H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A4V4H1.name === "Gooseberry" && cells.A4V4H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A4V4H1.name === "Strawberries" && cells.A4V4H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A4V4H1.name === "Pear" && cells.A4V4H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A4V4H1.name === "Plum" && cells.A4V4H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A4V4H1.name === "Currant" && cells.A4V4H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A4V4H1.name === "SeaBuckthorn" && cells.A4V4H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A4V4H1.name === "Gooseberry" && cells.A4V4H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A4V4H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A4V4H1")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice  || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A5V5H1.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A5V5H1.name === "Strawberries" && cells.A5V5H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A5V5H1.name === "Pear" && cells.A5V5H1.choice === false ? classes.pearCells :
-                                                            cells.A5V5H1.name === "Plum" && cells.A5V5H1.choice === false ? classes.plumCells :
-                                                            cells.A5V5H1.name === "Currant" && cells.A5V5H1.choice === false ? classes.currantCells :
-                                                            cells.A5V5H1.name === "SeaBuckthorn" && cells.A5V5H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A5V5H1.name === "Gooseberry" && cells.A5V5H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A5V5H1.name === "Strawberries" && cells.A5V5H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A5V5H1.name === "Pear" && cells.A5V5H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A5V5H1.name === "Plum" && cells.A5V5H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A5V5H1.name === "Currant" && cells.A5V5H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A5V5H1.name === "SeaBuckthorn" && cells.A5V5H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A5V5H1.name === "Gooseberry" && cells.A5V5H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A5V5H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A5V5H1")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice 
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A6V6H1.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A6V6H1.name === "Strawberries" && cells.A6V6H1.choice === false ? classes.strawberriesCells :
-                                                            cells.A6V6H1.name === "Pear" && cells.A6V6H1.choice === false ? classes.pearCells :
-                                                            cells.A6V6H1.name === "Plum" && cells.A6V6H1.choice === false ? classes.plumCells :
-                                                            cells.A6V6H1.name === "Currant" && cells.A6V6H1.choice === false ? classes.currantCells :
-                                                            cells.A6V6H1.name === "SeaBuckthorn" && cells.A6V6H1.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A6V6H1.name === "Gooseberry" && cells.A6V6H1.choice === false ? classes.gooseberryCells :
-                                                            cells.A6V6H1.name === "Strawberries" && cells.A6V6H1.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A6V6H1.name === "Pear" && cells.A6V6H1.choice === true ? classes.pearCellsChoice :
-                                                            cells.A6V6H1.name === "Plum" && cells.A6V6H1.choice === true ? classes.plumCellsChoice :
-                                                            cells.A6V6H1.name === "Currant" && cells.A6V6H1.choice === true ? classes.currantCellsChoice :
-                                                            cells.A6V6H1.name === "SeaBuckthorn" && cells.A6V6H1.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A6V6H1.name === "Gooseberry" && cells.A6V6H1.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A6V6H1.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A6V6H1")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice 
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice 
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                            {/* HORIZONT 2 */}
-                                            <div className={classes.fieldH2}>
-                    
-                                                {cells.A7V1H2.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A7V1H2.name === "Strawberries" && cells.A7V1H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A7V1H2.name === "Pear" && cells.A7V1H2.choice === false ? classes.pearCells :
-                                                            cells.A7V1H2.name === "Plum" && cells.A7V1H2.choice === false ? classes.plumCells :
-                                                            cells.A7V1H2.name === "Currant" && cells.A7V1H2.choice === false ? classes.currantCells :
-                                                            cells.A7V1H2.name === "SeaBuckthorn" && cells.A7V1H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A7V1H2.name === "Gooseberry" && cells.A7V1H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A7V1H2.name === "Strawberries" && cells.A7V1H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A7V1H2.name === "Pear" && cells.A7V1H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A7V1H2.name === "Plum" && cells.A7V1H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A7V1H2.name === "Currant" && cells.A7V1H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A7V1H2.name === "SeaBuckthorn" && cells.A7V1H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A7V1H2.name === "Gooseberry" && cells.A7V1H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A7V1H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A7V1H2")}
-                                                        disabled={!states.stateStart  || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A8V2H2.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A8V2H2.name === "Strawberries" && cells.A8V2H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A8V2H2.name === "Pear" && cells.A8V2H2.choice === false ? classes.pearCells :
-                                                            cells.A8V2H2.name === "Plum" && cells.A8V2H2.choice === false ? classes.plumCells :
-                                                            cells.A8V2H2.name === "Currant" && cells.A8V2H2.choice === false ? classes.currantCells :
-                                                            cells.A8V2H2.name === "SeaBuckthorn" && cells.A8V2H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A8V2H2.name === "Gooseberry" && cells.A8V2H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A8V2H2.name === "Strawberries" && cells.A8V2H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A8V2H2.name === "Pear" && cells.A8V2H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A8V2H2.name === "Plum" && cells.A8V2H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A8V2H2.name === "Currant" && cells.A8V2H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A8V2H2.name === "SeaBuckthorn" && cells.A8V2H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A8V2H2.name === "Gooseberry" && cells.A8V2H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A8V2H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A8V2H2")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A9V3H2.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A9V3H2.name === "Strawberries" && cells.A9V3H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A9V3H2.name === "Pear" && cells.A9V3H2.choice === false ? classes.pearCells :
-                                                            cells.A9V3H2.name === "Plum" && cells.A9V3H2.choice === false ? classes.plumCells :
-                                                            cells.A9V3H2.name === "Currant" && cells.A9V3H2.choice === false ? classes.currantCells :
-                                                            cells.A9V3H2.name === "SeaBuckthorn" && cells.A9V3H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A9V3H2.name === "Gooseberry" && cells.A9V3H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A9V3H2.name === "Strawberries" && cells.A9V3H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A9V3H2.name === "Pear" && cells.A9V3H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A9V3H2.name === "Plum" && cells.A9V3H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A9V3H2.name === "Currant" && cells.A9V3H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A9V3H2.name === "SeaBuckthorn" && cells.A9V3H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A9V3H2.name === "Gooseberry" && cells.A9V3H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A9V3H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A9V3H2")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A10V4H2.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A10V4H2.name === "Strawberries" && cells.A10V4H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A10V4H2.name === "Pear" && cells.A10V4H2.choice === false ? classes.pearCells :
-                                                            cells.A10V4H2.name === "Plum" && cells.A10V4H2.choice === false ? classes.plumCells :
-                                                            cells.A10V4H2.name === "Currant" && cells.A10V4H2.choice === false ? classes.currantCells :
-                                                            cells.A10V4H2.name === "SeaBuckthorn" && cells.A10V4H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A10V4H2.name === "Gooseberry" && cells.A10V4H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A10V4H2.name === "Strawberries" && cells.A10V4H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A10V4H2.name === "Pear" && cells.A10V4H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A10V4H2.name === "Plum" && cells.A10V4H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A10V4H2.name === "Currant" && cells.A10V4H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A10V4H2.name === "SeaBuckthorn" && cells.A10V4H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A10V4H2.name === "Gooseberry" && cells.A10V4H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A10V4H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A10V4H2")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A11V5H2.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A11V5H2.name === "Strawberries" && cells.A11V5H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A11V5H2.name === "Pear" && cells.A11V5H2.choice === false ? classes.pearCells :
-                                                            cells.A11V5H2.name === "Plum" && cells.A11V5H2.choice === false ? classes.plumCells :
-                                                            cells.A11V5H2.name === "Currant" && cells.A11V5H2.choice === false ? classes.currantCells :
-                                                            cells.A11V5H2.name === "SeaBuckthorn" && cells.A11V5H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A11V5H2.name === "Gooseberry" && cells.A11V5H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A11V5H2.name === "Strawberries" && cells.A11V5H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A11V5H2.name === "Pear" && cells.A11V5H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A11V5H2.name === "Plum" && cells.A11V5H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A11V5H2.name === "Currant" && cells.A11V5H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A11V5H2.name === "SeaBuckthorn" && cells.A11V5H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A11V5H2.name === "Gooseberry" && cells.A11V5H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A11V5H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A11V5H2")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A12V6H2.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A12V6H2.name === "Strawberries" && cells.A12V6H2.choice === false ? classes.strawberriesCells :
-                                                            cells.A12V6H2.name === "Pear" && cells.A12V6H2.choice === false ? classes.pearCells :
-                                                            cells.A12V6H2.name === "Plum" && cells.A12V6H2.choice === false ? classes.plumCells :
-                                                            cells.A12V6H2.name === "Currant" && cells.A12V6H2.choice === false ? classes.currantCells :
-                                                            cells.A12V6H2.name === "SeaBuckthorn" && cells.A12V6H2.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A12V6H2.name === "Gooseberry" && cells.A12V6H2.choice === false ? classes.gooseberryCells :
-                                                            cells.A12V6H2.name === "Strawberries" && cells.A12V6H2.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A12V6H2.name === "Pear" && cells.A12V6H2.choice === true ? classes.pearCellsChoice :
-                                                            cells.A12V6H2.name === "Plum" && cells.A12V6H2.choice === true ? classes.plumCellsChoice :
-                                                            cells.A12V6H2.name === "Currant" && cells.A12V6H2.choice === true ? classes.currantCellsChoice :
-                                                            cells.A12V6H2.name === "SeaBuckthorn" && cells.A12V6H2.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A12V6H2.name === "Gooseberry" && cells.A12V6H2.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A12V6H2.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A12V6H2")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice 
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                            {/* HORIZONT 3 */}
-                                            <div className={classes.fieldH3}>
-                    
-                                                {cells.A13V1H3.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A13V1H3.name === "Strawberries" && cells.A13V1H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A13V1H3.name === "Pear" && cells.A13V1H3.choice === false ? classes.pearCells :
-                                                            cells.A13V1H3.name === "Plum" && cells.A13V1H3.choice === false ? classes.plumCells :
-                                                            cells.A13V1H3.name === "Currant" && cells.A13V1H3.choice === false ? classes.currantCells :
-                                                            cells.A13V1H3.name === "SeaBuckthorn" && cells.A13V1H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A13V1H3.name === "Gooseberry" && cells.A13V1H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A13V1H3.name === "Strawberries" && cells.A13V1H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A13V1H3.name === "Pear" && cells.A13V1H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A13V1H3.name === "Plum" && cells.A13V1H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A13V1H3.name === "Currant" && cells.A13V1H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A13V1H3.name === "SeaBuckthorn" && cells.A13V1H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A13V1H3.name === "Gooseberry" && cells.A13V1H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A13V1H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A13V1H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A14V2H3.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A14V2H3.name === "Strawberries" && cells.A14V2H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A14V2H3.name === "Pear" && cells.A14V2H3.choice === false ? classes.pearCells :
-                                                            cells.A14V2H3.name === "Plum" && cells.A14V2H3.choice === false ? classes.plumCells :
-                                                            cells.A14V2H3.name === "Currant" && cells.A14V2H3.choice === false ? classes.currantCells :
-                                                            cells.A14V2H3.name === "SeaBuckthorn" && cells.A14V2H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A14V2H3.name === "Gooseberry" && cells.A14V2H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A14V2H3.name === "Strawberries" && cells.A14V2H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A14V2H3.name === "Pear" && cells.A14V2H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A14V2H3.name === "Plum" && cells.A14V2H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A14V2H3.name === "Currant" && cells.A14V2H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A14V2H3.name === "SeaBuckthorn" && cells.A14V2H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A14V2H3.name === "Gooseberry" && cells.A14V2H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A14V2H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A14V2H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice  || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A15V3H3.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A15V3H3.name === "Strawberries" && cells.A15V3H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A15V3H3.name === "Pear" && cells.A15V3H3.choice === false ? classes.pearCells :
-                                                            cells.A15V3H3.name === "Plum" && cells.A15V3H3.choice === false ? classes.plumCells :
-                                                            cells.A15V3H3.name === "Currant" && cells.A15V3H3.choice === false ? classes.currantCells :
-                                                            cells.A15V3H3.name === "SeaBuckthorn" && cells.A15V3H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A15V3H3.name === "Gooseberry" && cells.A15V3H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A15V3H3.name === "Strawberries" && cells.A15V3H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A15V3H3.name === "Pear" && cells.A15V3H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A15V3H3.name === "Plum" && cells.A15V3H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A15V3H3.name === "Currant" && cells.A15V3H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A15V3H3.name === "SeaBuckthorn" && cells.A15V3H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A15V3H3.name === "Gooseberry" && cells.A15V3H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A15V3H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A15V3H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A16V4H3.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A16V4H3.name === "Strawberries" && cells.A16V4H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A16V4H3.name === "Pear" && cells.A16V4H3.choice === false ? classes.pearCells :
-                                                            cells.A16V4H3.name === "Plum" && cells.A16V4H3.choice === false ? classes.plumCells :
-                                                            cells.A16V4H3.name === "Currant" && cells.A16V4H3.choice === false ? classes.currantCells :
-                                                            cells.A16V4H3.name === "SeaBuckthorn" && cells.A16V4H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A16V4H3.name === "Gooseberry" && cells.A16V4H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A16V4H3.name === "Strawberries" && cells.A16V4H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A16V4H3.name === "Pear" && cells.A16V4H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A16V4H3.name === "Plum" && cells.A16V4H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A16V4H3.name === "Currant" && cells.A16V4H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A16V4H3.name === "SeaBuckthorn" && cells.A16V4H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A16V4H3.name === "Gooseberry" && cells.A16V4H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A16V4H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A16V4H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A17V5H3.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A17V5H3.name === "Strawberries" && cells.A17V5H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A17V5H3.name === "Pear" && cells.A17V5H3.choice === false ? classes.pearCells :
-                                                            cells.A17V5H3.name === "Plum" && cells.A17V5H3.choice === false ? classes.plumCells :
-                                                            cells.A17V5H3.name === "Currant" && cells.A17V5H3.choice === false ? classes.currantCells :
-                                                            cells.A17V5H3.name === "SeaBuckthorn" && cells.A17V5H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A17V5H3.name === "Gooseberry" && cells.A17V5H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A17V5H3.name === "Strawberries" && cells.A17V5H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A17V5H3.name === "Pear" && cells.A17V5H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A17V5H3.name === "Plum" && cells.A17V5H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A17V5H3.name === "Currant" && cells.A17V5H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A17V5H3.name === "SeaBuckthorn" && cells.A17V5H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A17V5H3.name === "Gooseberry" && cells.A17V5H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A17V5H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A17V5H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A18V6H3.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A18V6H3.name === "Strawberries" && cells.A18V6H3.choice === false ? classes.strawberriesCells :
-                                                            cells.A18V6H3.name === "Pear" && cells.A18V6H3.choice === false ? classes.pearCells :
-                                                            cells.A18V6H3.name === "Plum" && cells.A18V6H3.choice === false ? classes.plumCells :
-                                                            cells.A18V6H3.name === "Currant" && cells.A18V6H3.choice === false ? classes.currantCells :
-                                                            cells.A18V6H3.name === "SeaBuckthorn" && cells.A18V6H3.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A18V6H3.name === "Gooseberry" && cells.A18V6H3.choice === false ? classes.gooseberryCells :
-                                                            cells.A18V6H3.name === "Strawberries" && cells.A18V6H3.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A18V6H3.name === "Pear" && cells.A18V6H3.choice === true ? classes.pearCellsChoice :
-                                                            cells.A18V6H3.name === "Plum" && cells.A18V6H3.choice === true ? classes.plumCellsChoice :
-                                                            cells.A18V6H3.name === "Currant" && cells.A18V6H3.choice === true ? classes.currantCellsChoice :
-                                                            cells.A18V6H3.name === "SeaBuckthorn" && cells.A18V6H3.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A18V6H3.name === "Gooseberry" && cells.A18V6H3.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A18V6H3.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A18V6H3")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice 
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                            {/* HORIZONT 4 */}
-                                            <div className={classes.fieldH4}>
-                    
-                                                {cells.A19V1H4.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A19V1H4.name === "Strawberries" && cells.A19V1H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A19V1H4.name === "Pear" && cells.A19V1H4.choice === false ? classes.pearCells :
-                                                            cells.A19V1H4.name === "Plum" && cells.A19V1H4.choice === false ? classes.plumCells :
-                                                            cells.A19V1H4.name === "Currant" && cells.A19V1H4.choice === false ? classes.currantCells :
-                                                            cells.A19V1H4.name === "SeaBuckthorn" && cells.A19V1H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A19V1H4.name === "Gooseberry" && cells.A19V1H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A19V1H4.name === "Strawberries" && cells.A19V1H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A19V1H4.name === "Pear" && cells.A19V1H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A19V1H4.name === "Plum" && cells.A19V1H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A19V1H4.name === "Currant" && cells.A19V1H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A19V1H4.name === "SeaBuckthorn" && cells.A19V1H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A19V1H4.name === "Gooseberry" && cells.A19V1H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A19V1H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A19V1H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A20V2H4.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A20V2H4.name === "Strawberries" && cells.A20V2H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A20V2H4.name === "Pear" && cells.A20V2H4.choice === false ? classes.pearCells :
-                                                            cells.A20V2H4.name === "Plum" && cells.A20V2H4.choice === false ? classes.plumCells :
-                                                            cells.A20V2H4.name === "Currant" && cells.A20V2H4.choice === false ? classes.currantCells :
-                                                            cells.A20V2H4.name === "SeaBuckthorn" && cells.A20V2H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A20V2H4.name === "Gooseberry" && cells.A20V2H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A20V2H4.name === "Strawberries" && cells.A20V2H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A20V2H4.name === "Pear" && cells.A20V2H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A20V2H4.name === "Plum" && cells.A20V2H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A20V2H4.name === "Currant" && cells.A20V2H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A20V2H4.name === "SeaBuckthorn" && cells.A20V2H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A20V2H4.name === "Gooseberry" && cells.A20V2H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A20V2H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A20V2H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A21V3H4.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A21V3H4.name === "Strawberries" && cells.A21V3H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A21V3H4.name === "Pear" && cells.A21V3H4.choice === false ? classes.pearCells :
-                                                            cells.A21V3H4.name === "Plum" && cells.A21V3H4.choice === false ? classes.plumCells :
-                                                            cells.A21V3H4.name === "Currant" && cells.A21V3H4.choice === false ? classes.currantCells :
-                                                            cells.A21V3H4.name === "SeaBuckthorn" && cells.A21V3H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A21V3H4.name === "Gooseberry" && cells.A21V3H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A21V3H4.name === "Strawberries" && cells.A21V3H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A21V3H4.name === "Pear" && cells.A21V3H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A21V3H4.name === "Plum" && cells.A21V3H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A21V3H4.name === "Currant" && cells.A21V3H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A21V3H4.name === "SeaBuckthorn" && cells.A21V3H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A21V3H4.name === "Gooseberry" && cells.A21V3H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A21V3H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A21V3H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A22V4H4.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A22V4H4.name === "Strawberries" && cells.A22V4H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A22V4H4.name === "Pear" && cells.A22V4H4.choice === false ? classes.pearCells :
-                                                            cells.A22V4H4.name === "Plum" && cells.A22V4H4.choice === false ? classes.plumCells :
-                                                            cells.A22V4H4.name === "Currant" && cells.A22V4H4.choice === false ? classes.currantCells :
-                                                            cells.A22V4H4.name === "SeaBuckthorn" && cells.A22V4H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A22V4H4.name === "Gooseberry" && cells.A22V4H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A22V4H4.name === "Strawberries" && cells.A22V4H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A22V4H4.name === "Pear" && cells.A22V4H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A22V4H4.name === "Plum" && cells.A22V4H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A22V4H4.name === "Currant" && cells.A22V4H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A22V4H4.name === "SeaBuckthorn" && cells.A22V4H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A22V4H4.name === "Gooseberry" && cells.A22V4H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A22V4H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A22V4H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A23V5H4.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A23V5H4.name === "Strawberries" && cells.A23V5H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A23V5H4.name === "Pear" && cells.A23V5H4.choice === false ? classes.pearCells :
-                                                            cells.A23V5H4.name === "Plum" && cells.A23V5H4.choice === false ? classes.plumCells :
-                                                            cells.A23V5H4.name === "Currant" && cells.A23V5H4.choice === false ? classes.currantCells :
-                                                            cells.A23V5H4.name === "SeaBuckthorn" && cells.A23V5H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A23V5H4.name === "Gooseberry" && cells.A23V5H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A23V5H4.name === "Strawberries" && cells.A23V5H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A23V5H4.name === "Pear" && cells.A23V5H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A23V5H4.name === "Plum" && cells.A23V5H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A23V5H4.name === "Currant" && cells.A23V5H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A23V5H4.name === "SeaBuckthorn" && cells.A23V5H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A23V5H4.name === "Gooseberry" && cells.A23V5H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A23V5H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A23V5H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A24V6H4.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A24V6H4.name === "Strawberries" && cells.A24V6H4.choice === false ? classes.strawberriesCells :
-                                                            cells.A24V6H4.name === "Pear" && cells.A24V6H4.choice === false ? classes.pearCells :
-                                                            cells.A24V6H4.name === "Plum" && cells.A24V6H4.choice === false ? classes.plumCells :
-                                                            cells.A24V6H4.name === "Currant" && cells.A24V6H4.choice === false ? classes.currantCells :
-                                                            cells.A24V6H4.name === "SeaBuckthorn" && cells.A24V6H4.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A24V6H4.name === "Gooseberry" && cells.A24V6H4.choice === false ? classes.gooseberryCells :
-                                                            cells.A24V6H4.name === "Strawberries" && cells.A24V6H4.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A24V6H4.name === "Pear" && cells.A24V6H4.choice === true ? classes.pearCellsChoice :
-                                                            cells.A24V6H4.name === "Plum" && cells.A24V6H4.choice === true ? classes.plumCellsChoice :
-                                                            cells.A24V6H4.name === "Currant" && cells.A24V6H4.choice === true ? classes.currantCellsChoice :
-                                                            cells.A24V6H4.name === "SeaBuckthorn" && cells.A24V6H4.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A24V6H4.name === "Gooseberry" && cells.A24V6H4.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A24V6H4.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A24V6H4")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice 
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                            {/* HORIZONT 5 */}
-                                            <div className={classes.fieldH5}>
-                    
-                                                {cells.A25V1H5.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A25V1H5.name === "Strawberries" && cells.A25V1H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A25V1H5.name === "Pear" && cells.A25V1H5.choice === false ? classes.pearCells :
-                                                            cells.A25V1H5.name === "Plum" && cells.A25V1H5.choice === false ? classes.plumCells :
-                                                            cells.A25V1H5.name === "Currant" && cells.A25V1H5.choice === false ? classes.currantCells :
-                                                            cells.A25V1H5.name === "SeaBuckthorn" && cells.A25V1H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A25V1H5.name === "Gooseberry" && cells.A25V1H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A25V1H5.name === "Strawberries" && cells.A25V1H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A25V1H5.name === "Pear" && cells.A25V1H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A25V1H5.name === "Plum" && cells.A25V1H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A25V1H5.name === "Currant" && cells.A25V1H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A25V1H5.name === "SeaBuckthorn" && cells.A25V1H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A25V1H5.name === "Gooseberry" && cells.A25V1H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A25V1H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A25V1H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A26V2H5.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A26V2H5.name === "Strawberries" && cells.A26V2H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A26V2H5.name === "Pear" && cells.A26V2H5.choice === false ? classes.pearCells :
-                                                            cells.A26V2H5.name === "Plum" && cells.A26V2H5.choice === false ? classes.plumCells :
-                                                            cells.A26V2H5.name === "Currant" && cells.A26V2H5.choice === false ? classes.currantCells :
-                                                            cells.A26V2H5.name === "SeaBuckthorn" && cells.A26V2H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A26V2H5.name === "Gooseberry" && cells.A26V2H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A26V2H5.name === "Strawberries" && cells.A26V2H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A26V2H5.name === "Pear" && cells.A26V2H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A26V2H5.name === "Plum" && cells.A26V2H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A26V2H5.name === "Currant" && cells.A26V2H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A26V2H5.name === "SeaBuckthorn" && cells.A26V2H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A26V2H5.name === "Gooseberry" && cells.A26V2H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A26V2H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A26V2H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A27V3H5.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A27V3H5.name === "Strawberries" && cells.A27V3H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A27V3H5.name === "Pear" && cells.A27V3H5.choice === false ? classes.pearCells :
-                                                            cells.A27V3H5.name === "Plum" && cells.A27V3H5.choice === false ? classes.plumCells :
-                                                            cells.A27V3H5.name === "Currant" && cells.A27V3H5.choice === false ? classes.currantCells :
-                                                            cells.A27V3H5.name === "SeaBuckthorn" && cells.A27V3H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A27V3H5.name === "Gooseberry" && cells.A27V3H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A27V3H5.name === "Strawberries" && cells.A27V3H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A27V3H5.name === "Pear" && cells.A27V3H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A27V3H5.name === "Plum" && cells.A27V3H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A27V3H5.name === "Currant" && cells.A27V3H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A27V3H5.name === "SeaBuckthorn" && cells.A27V3H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A27V3H5.name === "Gooseberry" && cells.A27V3H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A27V3H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A27V3H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A28V4H5.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A28V4H5.name === "Strawberries" && cells.A28V4H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A28V4H5.name === "Pear" && cells.A28V4H5.choice === false ? classes.pearCells :
-                                                            cells.A28V4H5.name === "Plum" && cells.A28V4H5.choice === false ? classes.plumCells :
-                                                            cells.A28V4H5.name === "Currant" && cells.A28V4H5.choice === false ? classes.currantCells :
-                                                            cells.A28V4H5.name === "SeaBuckthorn" && cells.A28V4H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A28V4H5.name === "Gooseberry" && cells.A28V4H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A28V4H5.name === "Strawberries" && cells.A28V4H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A28V4H5.name === "Pear" && cells.A28V4H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A28V4H5.name === "Plum" && cells.A28V4H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A28V4H5.name === "Currant" && cells.A28V4H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A28V4H5.name === "SeaBuckthorn" && cells.A28V4H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A28V4H5.name === "Gooseberry" && cells.A28V4H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A28V4H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A28V4H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A29V5H5.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A29V5H5.name === "Strawberries" && cells.A29V5H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A29V5H5.name === "Pear" && cells.A29V5H5.choice === false ? classes.pearCells :
-                                                            cells.A29V5H5.name === "Plum" && cells.A29V5H5.choice === false ? classes.plumCells :
-                                                            cells.A29V5H5.name === "Currant" && cells.A29V5H5.choice === false ? classes.currantCells :
-                                                            cells.A29V5H5.name === "SeaBuckthorn" && cells.A29V5H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A29V5H5.name === "Gooseberry" && cells.A29V5H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A29V5H5.name === "Strawberries" && cells.A29V5H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A29V5H5.name === "Pear" && cells.A29V5H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A29V5H5.name === "Plum" && cells.A29V5H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A29V5H5.name === "Currant" && cells.A29V5H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A29V5H5.name === "SeaBuckthorn" && cells.A29V5H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A29V5H5.name === "Gooseberry" && cells.A29V5H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A29V5H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A29V5H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A30V6H5.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A30V6H5.name === "Strawberries" && cells.A30V6H5.choice === false ? classes.strawberriesCells :
-                                                            cells.A30V6H5.name === "Pear" && cells.A30V6H5.choice === false ? classes.pearCells :
-                                                            cells.A30V6H5.name === "Plum" && cells.A30V6H5.choice === false ? classes.plumCells :
-                                                            cells.A30V6H5.name === "Currant" && cells.A30V6H5.choice === false ? classes.currantCells :
-                                                            cells.A30V6H5.name === "SeaBuckthorn" && cells.A30V6H5.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A30V6H5.name === "Gooseberry" && cells.A30V6H5.choice === false ? classes.gooseberryCells :
-                                                            cells.A30V6H5.name === "Strawberries" && cells.A30V6H5.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A30V6H5.name === "Pear" && cells.A30V6H5.choice === true ? classes.pearCellsChoice :
-                                                            cells.A30V6H5.name === "Plum" && cells.A30V6H5.choice === true ? classes.plumCellsChoice :
-                                                            cells.A30V6H5.name === "Currant" && cells.A30V6H5.choice === true ? classes.currantCellsChoice :
-                                                            cells.A30V6H5.name === "SeaBuckthorn" && cells.A30V6H5.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A30V6H5.name === "Gooseberry" && cells.A30V6H5.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A30V6H5.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A30V6H5")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice 
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                            {/* HORIZONT 6 */}
-                                            <div className={classes.fieldH6}>
-                    
-                                                {cells.A31V1H6.showCell && <div className={classes.cellsLeftSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A31V1H6.name === "Strawberries" && cells.A31V1H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A31V1H6.name === "Pear" && cells.A31V1H6.choice === false ? classes.pearCells :
-                                                            cells.A31V1H6.name === "Plum" && cells.A31V1H6.choice === false ? classes.plumCells :
-                                                            cells.A31V1H6.name === "Currant" && cells.A31V1H6.choice === false ? classes.currantCells :
-                                                            cells.A31V1H6.name === "SeaBuckthorn" && cells.A31V1H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A31V1H6.name === "Gooseberry" && cells.A31V1H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A31V1H6.name === "Strawberries" && cells.A31V1H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A31V1H6.name === "Pear" && cells.A31V1H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A31V1H6.name === "Plum" && cells.A31V1H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A31V1H6.name === "Currant" && cells.A31V1H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A31V1H6.name === "SeaBuckthorn" && cells.A31V1H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A31V1H6.name === "Gooseberry" && cells.A31V1H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A31V1H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A31V1H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A32V2H6.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A32V2H6.name === "Strawberries" && cells.A32V2H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A32V2H6.name === "Pear" && cells.A32V2H6.choice === false ? classes.pearCells :
-                                                            cells.A32V2H6.name === "Plum" && cells.A32V2H6.choice === false ? classes.plumCells :
-                                                            cells.A32V2H6.name === "Currant" && cells.A32V2H6.choice === false ? classes.currantCells :
-                                                            cells.A32V2H6.name === "SeaBuckthorn" && cells.A32V2H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A32V2H6.name === "Gooseberry" && cells.A32V2H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A32V2H6.name === "Strawberries" && cells.A32V2H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A32V2H6.name === "Pear" && cells.A32V2H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A32V2H6.name === "Plum" && cells.A32V2H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A32V2H6.name === "Currant" && cells.A32V2H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A32V2H6.name === "SeaBuckthorn" && cells.A32V2H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A32V2H6.name === "Gooseberry" && cells.A32V2H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A32V2H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A32V2H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A33V3H6.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A33V3H6.name === "Strawberries" && cells.A33V3H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A33V3H6.name === "Pear" && cells.A33V3H6.choice === false ? classes.pearCells :
-                                                            cells.A33V3H6.name === "Plum" && cells.A33V3H6.choice === false ? classes.plumCells :
-                                                            cells.A33V3H6.name === "Currant" && cells.A33V3H6.choice === false ? classes.currantCells :
-                                                            cells.A33V3H6.name === "SeaBuckthorn" && cells.A33V3H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A33V3H6.name === "Gooseberry" && cells.A33V3H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A33V3H6.name === "Strawberries" && cells.A33V3H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A33V3H6.name === "Pear" && cells.A33V3H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A33V3H6.name === "Plum" && cells.A33V3H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A33V3H6.name === "Currant" && cells.A33V3H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A33V3H6.name === "SeaBuckthorn" && cells.A33V3H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A33V3H6.name === "Gooseberry" && cells.A33V3H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A33V3H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A33V3H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A34V4H6.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A34V4H6.name === "Strawberries" && cells.A34V4H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A34V4H6.name === "Pear" && cells.A34V4H6.choice === false ? classes.pearCells :
-                                                            cells.A34V4H6.name === "Plum" && cells.A34V4H6.choice === false ? classes.plumCells :
-                                                            cells.A34V4H6.name === "Currant" && cells.A34V4H6.choice === false ? classes.currantCells :
-                                                            cells.A34V4H6.name === "SeaBuckthorn" && cells.A34V4H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A34V4H6.name === "Gooseberry" && cells.A34V4H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A34V4H6.name === "Strawberries" && cells.A34V4H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A34V4H6.name === "Pear" && cells.A34V4H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A34V4H6.name === "Plum" && cells.A34V4H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A34V4H6.name === "Currant" && cells.A34V4H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A34V4H6.name === "SeaBuckthorn" && cells.A34V4H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A34V4H6.name === "Gooseberry" && cells.A34V4H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A34V4H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A34V4H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A36V6H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A35V5H6.showCell && <div className={classes.cellsCenterSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A35V5H6.name === "Strawberries" && cells.A35V5H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A35V5H6.name === "Pear" && cells.A35V5H6.choice === false ? classes.pearCells :
-                                                            cells.A35V5H6.name === "Plum" && cells.A35V5H6.choice === false ? classes.plumCells :
-                                                            cells.A35V5H6.name === "Currant" && cells.A35V5H6.choice === false ? classes.currantCells :
-                                                            cells.A35V5H6.name === "SeaBuckthorn" && cells.A35V5H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A35V5H6.name === "Gooseberry" && cells.A35V5H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A35V5H6.name === "Strawberries" && cells.A35V5H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A35V5H6.name === "Pear" && cells.A35V5H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A35V5H6.name === "Plum" && cells.A35V5H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A35V5H6.name === "Currant" && cells.A35V5H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A35V5H6.name === "SeaBuckthorn" && cells.A35V5H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A35V5H6.name === "Gooseberry" && cells.A35V5H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A35V5H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A35V5H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                                {cells.A36V6H6.showCell && <div className={classes.cellsRightSide}>
-                                                    <button
-                                                        className={
-                                                            cells.A36V6H6.name === "Strawberries" && cells.A36V6H6.choice === false ? classes.strawberriesCells :
-                                                            cells.A36V6H6.name === "Pear" && cells.A36V6H6.choice === false ? classes.pearCells :
-                                                            cells.A36V6H6.name === "Plum" && cells.A36V6H6.choice === false ? classes.plumCells :
-                                                            cells.A36V6H6.name === "Currant" && cells.A36V6H6.choice === false ? classes.currantCells :
-                                                            cells.A36V6H6.name === "SeaBuckthorn" && cells.A36V6H6.choice === false ? classes.seaBuckthornCells :
-                                                            cells.A36V6H6.name === "Gooseberry" && cells.A36V6H6.choice === false ? classes.gooseberryCells :
-                                                            cells.A36V6H6.name === "Strawberries" && cells.A36V6H6.choice === true ? classes.strawberriesCellsChoice :
-                                                            cells.A36V6H6.name === "Pear" && cells.A36V6H6.choice === true ? classes.pearCellsChoice :
-                                                            cells.A36V6H6.name === "Plum" && cells.A36V6H6.choice === true ? classes.plumCellsChoice :
-                                                            cells.A36V6H6.name === "Currant" && cells.A36V6H6.choice === true ? classes.currantCellsChoice :
-                                                            cells.A36V6H6.name === "SeaBuckthorn" && cells.A36V6H6.choice === true ? classes.seaBuckthornCellsChoice :
-                                                            cells.A36V6H6.name === "Gooseberry" && cells.A36V6H6.choice === true ? classes.gooseberryCellsChoice :
-                                                            cells.A36V6H6.name === "" ? classes.cellMatching :
-                                                            classes.emptyCells
-                                                        }
-                                                        onClick={() => handleChoiceCell("A36V6H6")}
-                                                        disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
-                                                            || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
-                                                            || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
-                                                            || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
-                                                            || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice 
-                                                            || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice 
-                                                            || states.blockingDuringRecalculation
-                                                        }
-                                                    ></button>
-                                                </div>}
-                    
-                                            </div>
-                    
-                                    </div>
+                        {/* HORIZONT 1 */}
+                        <div className={classes.fieldH1}>
+
+                            {cells.A1V1H1.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A1V1H1)}
+                                    onClick={() => handleChoiceCell("A1V1H1")}
+                                    disabled={!states.stateStart || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A2V2H1.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A2V2H1)}
+                                    onClick={() => handleChoiceCell("A2V2H1")}
+                                    disabled={!states.stateStart || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A3V3H1.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A3V3H1)}
+                                    onClick={() => handleChoiceCell("A3V3H1")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A4V4H1.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A4V4H1)}
+                                    onClick={() => handleChoiceCell("A4V4H1")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice  || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A5V5H1.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A5V5H1)}
+                                    onClick={() => handleChoiceCell("A5V5H1")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice 
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A6V6H1.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A6V6H1)}
+                                    onClick={() => handleChoiceCell("A6V6H1")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice 
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice 
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                        {/* HORIZONT 2 */}
+                        <div className={classes.fieldH2}>
+
+                            {cells.A7V1H2.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A7V1H2)}
+                                    onClick={() => handleChoiceCell("A7V1H2")}
+                                    disabled={!states.stateStart  || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A8V2H2.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A8V2H2)}
+                                    onClick={() => handleChoiceCell("A8V2H2")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A9V3H2.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A9V3H2)}
+                                    onClick={() => handleChoiceCell("A9V3H2")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A10V4H2.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A10V4H2)}
+                                    onClick={() => handleChoiceCell("A10V4H2")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A11V5H2.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A11V5H2)}
+                                    onClick={() => handleChoiceCell("A11V5H2")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A12V6H2.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A12V6H2)}
+                                    onClick={() => handleChoiceCell("A12V6H2")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice 
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                        {/* HORIZONT 3 */}
+                        <div className={classes.fieldH3}>
+
+                            {cells.A13V1H3.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A13V1H3)}
+                                    onClick={() => handleChoiceCell("A13V1H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A14V2H3.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A14V2H3)}
+                                    onClick={() => handleChoiceCell("A14V2H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice  || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A15V3H3.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A15V3H3)}
+                                    onClick={() => handleChoiceCell("A15V3H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A16V4H3.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A16V4H3)}
+                                    onClick={() => handleChoiceCell("A16V4H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A17V5H3.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A17V5H3)}
+                                    onClick={() => handleChoiceCell("A17V5H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A18V6H3.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A18V6H3)}
+                                    onClick={() => handleChoiceCell("A18V6H3")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice 
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                        {/* HORIZONT 4 */}
+                        <div className={classes.fieldH4}>
+
+                            {cells.A19V1H4.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A19V1H4)}
+                                    onClick={() => handleChoiceCell("A19V1H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A20V2H4.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A20V2H4)}
+                                    onClick={() => handleChoiceCell("A20V2H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A21V3H4.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A21V3H4)}
+                                    onClick={() => handleChoiceCell("A21V3H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A22V4H4.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A22V4H4)}
+                                    onClick={() => handleChoiceCell("A22V4H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A23V5H4.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A23V5H4)}
+                                    onClick={() => handleChoiceCell("A23V5H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A24V6H4.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A24V6H4)}
+                                    onClick={() => handleChoiceCell("A24V6H4")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice 
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                        {/* HORIZONT 5 */}
+                        <div className={classes.fieldH5}>
+
+                            {cells.A25V1H5.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A25V1H5)}
+                                    onClick={() => handleChoiceCell("A25V1H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A26V2H5.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A26V2H5)}
+                                    onClick={() => handleChoiceCell("A26V2H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A27V3H5.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A27V3H5)}
+                                    onClick={() => handleChoiceCell("A27V3H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A28V4H5.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A28V4H5)}
+                                    onClick={() => handleChoiceCell("A28V4H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A29V5H5.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A29V5H5)}
+                                    onClick={() => handleChoiceCell("A29V5H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A30V6H5.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A30V6H5)}
+                                    onClick={() => handleChoiceCell("A30V6H5")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice 
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                        {/* HORIZONT 6 */}
+                        <div className={classes.fieldH6}>
+
+                            {cells.A31V1H6.showCell && <div className={classes.cellsLeftSide}>
+                                <button
+                                    className={getCellClass(cells.A31V1H6)}
+                                    onClick={() => handleChoiceCell("A31V1H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A33V3H6.choice || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A32V2H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A32V2H6)}
+                                    onClick={() => handleChoiceCell("A32V2H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A34V4H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A33V3H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A33V3H6)}
+                                    onClick={() => handleChoiceCell("A33V3H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A35V5H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A34V4H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A34V4H6)}
+                                    onClick={() => handleChoiceCell("A34V4H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A29V5H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A36V6H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A35V5H6.showCell && <div className={classes.cellsCenterSide}>
+                                <button
+                                    className={getCellClass(cells.A35V5H6)}
+                                    onClick={() => handleChoiceCell("A35V5H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A30V6H5.choice
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                            {cells.A36V6H6.showCell && <div className={classes.cellsRightSide}>
+                                <button
+                                    className={getCellClass(cells.A36V6H6)}
+                                    onClick={() => handleChoiceCell("A36V6H6")}
+                                    disabled={!states.stateStart || cells.A1V1H1.choice || cells.A2V2H1.choice || cells.A3V3H1.choice || cells.A4V4H1.choice || cells.A5V5H1.choice || cells.A6V6H1.choice
+                                        || cells.A7V1H2.choice || cells.A8V2H2.choice || cells.A9V3H2.choice || cells.A10V4H2.choice || cells.A11V5H2.choice || cells.A12V6H2.choice
+                                        || cells.A13V1H3.choice || cells.A14V2H3.choice || cells.A15V3H3.choice || cells.A16V4H3.choice || cells.A17V5H3.choice || cells.A18V6H3.choice
+                                        || cells.A19V1H4.choice || cells.A20V2H4.choice || cells.A21V3H4.choice || cells.A22V4H4.choice || cells.A23V5H4.choice || cells.A24V6H4.choice
+                                        || cells.A25V1H5.choice || cells.A26V2H5.choice || cells.A27V3H5.choice || cells.A28V4H5.choice || cells.A29V5H5.choice 
+                                        || cells.A31V1H6.choice || cells.A32V2H6.choice || cells.A33V3H6.choice || cells.A34V4H6.choice 
+                                        || states.blockingDuringRecalculation
+                                    }
+                                ></button>
+                            </div>}
+
+                        </div>
+
+                    </div>
 
                 </div>
                 
