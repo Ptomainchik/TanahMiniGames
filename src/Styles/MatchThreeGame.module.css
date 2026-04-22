@@ -334,6 +334,7 @@
     top: 30%;
     left: 1%;
     animation: opacityShuffleAndEnding 2.5s forwards;
+    z-index: 2;
 }
 
 @keyframes opacityShuffleAndEnding {
