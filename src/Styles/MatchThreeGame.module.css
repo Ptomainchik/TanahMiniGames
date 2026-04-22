@@ -98,7 +98,7 @@
     position: absolute;
     top: 1%;
     left: 0.5%;
-    font-family: "El MEssiri";
+    font-family: "El Messiri";
     font-size: 3.3vw;
     font-weight: 700;
     color: springgreen;
@@ -366,7 +366,7 @@
 }
 
 .shuffleButton p{
-    font-family: "El Messeri";
+    font-family: "El Messiri";
     font-size: 1.5vw;
     font-weight: 700;
     color: springgreen;
@@ -411,7 +411,7 @@
 
 .winAndLoseModal h3{
     width: 40%;
-    font-family: "El MEssiri";
+    font-family: "El Messiri";
     font-size: 3vw;
     font-weight: 700;
     text-align: center;
@@ -653,7 +653,7 @@
 
 .pointers p{
     width: 100%;
-    font-family: "El Messeri";
+    font-family: "El Messiri";
     font-size: 1.3vw;
     font-weight: 700;
     text-align: center;
