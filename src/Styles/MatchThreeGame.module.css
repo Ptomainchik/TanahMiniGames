@@ -843,6 +843,16 @@
 
 @media (max-width: 480px) {
 
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
+    background-size: cover;
+}
+
 .gameField{
     width: 100%;
     height: 80%;
@@ -850,6 +860,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundFields.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -946,6 +957,8 @@
     position: absolute;
     top: 10%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .leftPlateEnd{
@@ -954,6 +967,8 @@
     position: absolute;
     top: 10%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .rightPlateStart{
@@ -962,6 +977,8 @@
     position: absolute;
     top: 10%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .imageInfoIntro{
@@ -1199,7 +1216,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) no-repeat center;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
@@ -1271,6 +1288,16 @@
 
 @media (min-width: 481px) and (max-width: 768px) {
 
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
+    background-size: cover;
+}
+
 .gameField{
     width: 100%;
     height: 80%;
@@ -1278,6 +1305,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundFields.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -1374,6 +1402,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .leftPlateEnd{
@@ -1382,6 +1412,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .rightPlateStart{
@@ -1390,6 +1422,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .imageInfoIntro{
@@ -1627,7 +1661,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) no-repeat center;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
@@ -1699,6 +1733,16 @@
 
 @media (min-width: 769px) and (max-width: 1024px) {
 
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
+    background-size: cover;
+}
+
 .gameField{
     width: 100%;
     height: 80%;
@@ -1706,6 +1750,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundFields.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -1802,6 +1847,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .leftPlateEnd{
@@ -1810,6 +1857,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .rightPlateStart{
@@ -1818,6 +1867,8 @@
     position: absolute;
     top: 0%;
     left: 0;
+    background: url(../assets/MatchThreeGameImages/SmallPlate.png) center no-repeat;
+    background-size: cover;
 }
 
 .imageInfoIntro{
@@ -1912,7 +1963,7 @@
     position: absolute;
     top: 50%;
     left: -250%;
-    rotate: 90deg;
+    rotate: 90deg;;
 }
 
 .winAndLoseModal{
@@ -2055,7 +2106,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) no-repeat center;
+    background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
