@@ -438,7 +438,7 @@ function handleCloseWinModalRecipe() {
                 <p>
                     До прихода гостей:
                 </p>
-                {timeLeft}
+                <h3>{timeLeft}</h3>
             </div>
             
             { states.showButtonsWhenWinning && <div className={classes.winAndLoseModal}>  
@@ -488,6 +488,7 @@ function handleCloseWinModalRecipe() {
             </div>}
 
             { states.showLoseModal && <div className={classes.winAndLoseModal}>
+                    <div className={states.showLoseModal ? classes.bottomCuttingBoard : classes.downCuttingBoard}></div>
                     <div className={classes.infoOverlay}>
                         <p className={classes.info}>(Стук в дверь) Эх, жаль. Мы не успели. Что теперь обо мне подумают гости?</p>
                     </div>
