@@ -758,12 +758,25 @@
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
     filter: drop-shadow(0 0 1vw black);
+    animation: shine 1s infinite;
 }
 
 .buttonRecipe:hover{
     filter: drop-shadow( 0vw 0vw 0vw black);
     color: pink;
     transform: translate(-50%, -50%) scale(1.1);
+}
+
+@keyframes shine {
+    0%, 50%, 100% {
+        filter: drop-shadow(0 0 0vw blue);
+    }
+    50% {
+        filter: drop-shadow(0 0 1vw blue);
+    }
+    100%{
+        filter: drop-shadow(0 0 0vw blue);
+    }
 }
 
 .recipeModal{

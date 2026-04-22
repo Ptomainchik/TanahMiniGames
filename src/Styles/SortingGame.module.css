@@ -537,8 +537,8 @@
     background: url(../assets/SortingGameImages/RedJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
 }
 
 .blueCellsChoice{
@@ -547,8 +547,8 @@
     background: url(../assets/SortingGameImages/BlueJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
 }
 
 .greenCellsChoice{
@@ -557,8 +557,8 @@
     background: url(../assets/SortingGameImages/GreenJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
 }
 
 .yellowCellsChoice{
@@ -567,8 +567,8 @@
     background: url(../assets/SortingGameImages/YellowJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
 }
 
 .violetCellsChoice{
@@ -577,8 +577,8 @@
     background: url(../assets/SortingGameImages/VioletJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
 }
 
 .grayCellsChoice{
@@ -587,8 +587,20 @@
     background: url(../assets/SortingGameImages/GrayJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+    animation: ShineOfJar 1s infinite;
+}
+
+@keyframes ShineOfJar {
+    0%, 50%, 100% {
+        filter: drop-shadow(0 0 0.5vw gold);
+    }
+    50% {
+        filter: drop-shadow(0 0 1.5vw gold);
+    }
+    100% {
+        filter: drop-shadow(0 0 0.5vw gold);
+    }
 }
 
 .buttonRecipe{
@@ -606,12 +618,25 @@
     text-align: center;
     transition: transform 1s ease, color 1s ease, filter 1s ease;
     filter: drop-shadow(0 0 1vw black);
+    animation: shine 1s infinite;
 }
 
 .buttonRecipe:hover{
     filter: drop-shadow( 0vw 0vw 0vw black);
     color: pink;
     transform: translate(-50%, -50%) scale(1.1);
+}
+
+@keyframes shine {
+    0%, 50%, 100% {
+        filter: drop-shadow(0 0 0vw pink);
+    }
+    50% {
+        filter: drop-shadow(0 0 1vw pink);
+    }
+    100%{
+        filter: drop-shadow(0 0 0vw pink);
+    }
 }
 
 .recipeModal{
@@ -1086,7 +1111,6 @@
     background: url(../assets/SortingGameImages/RedJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1096,7 +1120,6 @@
     background: url(../assets/SortingGameImages/BlueJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1106,7 +1129,6 @@
     background: url(../assets/SortingGameImages/GreenJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1116,8 +1138,8 @@
     background: url(../assets/SortingGameImages/YellowJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
+
 }
 
 .violetCellsChoice{
@@ -1126,7 +1148,6 @@
     background: url(../assets/SortingGameImages/VioletJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1136,7 +1157,6 @@
     background: url(../assets/SortingGameImages/GrayJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1629,7 +1649,6 @@
     background: url(../assets/SortingGameImages/RedJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1639,7 +1658,6 @@
     background: url(../assets/SortingGameImages/BlueJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1649,7 +1667,6 @@
     background: url(../assets/SortingGameImages/GreenJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1659,7 +1676,6 @@
     background: url(../assets/SortingGameImages/YellowJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1669,7 +1685,6 @@
     background: url(../assets/SortingGameImages/VioletJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -1679,7 +1694,6 @@
     background: url(../assets/SortingGameImages/GrayJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2171,7 +2185,6 @@
     background: url(../assets/SortingGameImages/RedJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2181,7 +2194,6 @@
     background: url(../assets/SortingGameImages/BlueJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2191,7 +2203,6 @@
     background: url(../assets/SortingGameImages/GreenJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2201,7 +2212,6 @@
     background: url(../assets/SortingGameImages/YellowJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2211,7 +2221,6 @@
     background: url(../assets/SortingGameImages/VioletJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
@@ -2221,7 +2230,6 @@
     background: url(../assets/SortingGameImages/GrayJar.png) center no-repeat;
     background-size: contain;
     border: none;
-    filter: drop-shadow(0vw 0.4vw 0.5vw red);
     cursor: pointer;
 }
 
