@@ -6,6 +6,7 @@
     left: 0;
     background: url(../assets/MatchThreeGameImages/BackgroundGamePage.jpg) center no-repeat;
     background-size: cover;
+    font-family: "El Messiri";
 }
 
 .gameField{
@@ -851,6 +852,7 @@
     left: 0;
     background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
     background-size: cover;
+    font-family: "El Messiri";
 }
 
 .gameField{
@@ -873,6 +875,7 @@
     bottom: 2.5%;
     left: 5%;
     font-size: 8vw;
+    font-family: "El Messiri";
 }
 
 .fields {
@@ -1296,6 +1299,7 @@
     left: 0;
     background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
     background-size: cover;
+    font-family: "El Messiri";
 }
 
 .gameField{
@@ -1741,6 +1745,7 @@
     left: 0;
     background: url(../assets/MatchThreeGameImages/SmallBackgroundGamePage.jpg) center no-repeat;
     background-size: cover;
+    font-family: "El Messiri";
 }
 
 .gameField{
