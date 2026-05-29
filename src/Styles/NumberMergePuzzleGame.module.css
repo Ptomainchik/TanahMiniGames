@@ -1,0 +1,2168 @@
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background-size: cover;
+    font-family: "El Messiri";
+}
+
+.gameField{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background-size: cover;
+    border-left: solid rgb(67, 58, 38) 3px;
+    border-right: solid rgb(67, 58, 38) 3px;
+}
+
+.levelPointer{
+    position: absolute;
+    top: 2%;
+    right: 1%;
+    margin: 0;
+    color: springgreen;
+    font-family: "El Messiri";
+    font-size: 1.8vw;
+    font-weight: 600;
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.fields {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);   
+    display: flex; 
+    flex-direction: column;   
+    align-items: center; 
+}
+
+.fieldH1{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH2{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH3{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH4{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH5{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH6{
+    width: 70%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.timer{
+    position: absolute;
+    top: 1%;
+    left: 0.5%;
+    font-family: "El Messiri";
+    font-size: 3.3vw;
+    font-weight: 700;
+    color: springgreen;
+    -webkit-text-stroke: 1px black;
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.timer p{
+    width: 50%;
+    font-size: 1.5vw;
+    -webkit-text-stroke: 0px black;
+}
+
+.screensaverStart{
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: openingScreensaver 2s forwards;
+}
+
+.screensaverEnd{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: closingScreensaver 2s forwards;
+}
+
+@keyframes openingScreensaver {
+    0%, 100% {
+        width: 200%;
+        height: 200%;
+        
+    }
+    100% {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@keyframes closingScreensaver {
+    0%, 100% {
+        width: 100%;
+        height: 100%;
+        opacity: 1;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
+    }
+}
+
+.imageInfoIntro{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    right: -10%;
+    z-index: 3;
+}
+
+.imageInfoEnding{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    right: -10%;
+    z-index: 3;
+    animation: opacityShuffleAndEnding 0.5s forwards;
+}
+
+.imageInfoIntroOpacity{
+    width: 21vw;
+    position: absolute;
+    bottom: 0;
+    right: -10%;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
+}
+
+.infoOverlay{
+    width: 22vw;
+    height: 23vw;
+    position: absolute;
+    top: 15%;
+    right: 5%;
+    margin: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/OverlayText.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    z-index: 3;
+}
+
+.infoOverlayOpacity{
+    width: 22vw;
+    height: 23vw;
+    position: absolute;
+    top: 15%;
+    right: 5%;
+    margin: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/OverlayText.png) no-repeat center;
+    background-size: contain;
+    justify-content: center;
+    z-index: 3;
+    animation: opacityMenu 0.5s forwards;
+}
+
+@keyframes opacityMenu {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.infoText{
+    width: 75%;
+    font-family: "El Messiri";
+    font-weight: 700;
+    font-size: 1.5vw;
+    text-align: center;
+    color: darkolivegreen;
+    -webkit-text-stroke: 1px black;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+}
+
+.buttonStart{
+    font-family: "El Messiri";
+    font-size: 10vw;
+    font-weight: 700;
+    cursor: pointer;
+    color: deepskyblue;
+    -webkit-text-stroke: 2px black;
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    margin: 0;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    z-index: 3;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonStart:hover{
+    filter: drop-shadow(0 0 0 black);
+    color: royalblue;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.buttonRestart{
+    color: cyan;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonRestart:hover{
+    filter: drop-shadow( 0 0 0 black);
+    color: cyan;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.buttonNextAndHome{
+    color: chartreuse;
+    font-size: 3vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.buttonNextAndHome:hover{
+    filter: drop-shadow( 0 0 0 black);
+    color: chartreuse;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.shuffleButton{
+    width: 8vw;
+    height: 10vw;
+    position: absolute;
+    top: 30%;
+    left: 1%;
+    animation: opacityShuffleAndEnding 2.5s forwards;
+    z-index: 2;
+}
+
+@keyframes opacityShuffleAndEnding {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.shuffleButton button{
+    width: 8vw;
+    height: 8vw;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/MatchThreeGameImages/ShuffleArrows.png) no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    filter: drop-shadow( 0 0 3px black);
+    border: none;
+}
+
+.shuffleButton button:hover{
+    filter: drop-shadow( 0 0 6px black);
+}
+
+.shuffleButton p{
+    font-family: "El Messiri";
+    font-size: 1.5vw;
+    font-weight: 700;
+    color: springgreen;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow( 0 0 3px black);
+}
+
+.shuffleButton img {
+    width: 6vw;
+    height: 10vw;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: twitching 1s infinite;
+}
+
+@keyframes twitching {
+    0%, 50%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    50% {
+        transform: translateY(30%) translateX(-50%);
+    }
+    100% {
+        transform: translateY(0) translateX(-50%);
+    }
+}
+
+.winAndLoseModal{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.winAndLoseModal h3{
+    width: 40%;
+    font-family: "El Messiri";
+    font-size: 3vw;
+    font-weight: 700;
+    text-align: center;
+    color: plum;
+    -webkit-text-stroke: 1px black;
+    position: absolute;
+    margin: 0;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    filter: drop-shadow(0 0 1vw black);
+}
+
+.cellsLeftSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+    margin-left: 11%;
+}
+
+.cellsCenterSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+}
+
+.cellsRightSide{
+    width: 7vw;
+    height: 7vw;
+    padding: 0;
+    margin-right: 11%;
+}
+
+.strawberriesCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellStrawberries.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.strawberriesCells:hover{
+    opacity: 0.8;
+}
+
+.cellMatching{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellFruits.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    animation: 0.7s Shine forwards;
+}
+
+@keyframes Shine {
+    0%, 10%, 50%, 100% {
+        filter: drop-shadow(0vw 0.4vw 0.2vw black);
+        opacity: 0.2;
+
+    }
+    10% {
+        filter: drop-shadow(0vw 0vw 0.2vw aqua);
+        opacity: 0.2;
+    }
+    50% {
+        filter: drop-shadow(0vw 0vw 1vw aqua);
+        opacity: 1;
+    }
+    100% {
+        filter: drop-shadow(0vw 0.4vw 0.2vw aqua);
+        opacity: 0;
+    }
+}
+
+.pearCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPear.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.pearCells:hover{
+    opacity: 0.8;
+}
+
+.plumCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPlum.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.plumCells:hover{
+    opacity: 0.8;
+}
+
+.currantCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellCurrant.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.currantCells:hover{
+    opacity: 0.8;
+}
+
+.seaBuckthornCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellSeaBuckthorn.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.seaBuckthornCells:hover{
+    opacity: 0.8;
+}
+
+.gooseberryCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellGooseberry.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.gooseberryCells:hover{
+    opacity: 0.8;
+}
+
+.emptyCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellEmpty.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.strawberriesCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellStrawberriesChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.pearCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPearChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.plumCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellPlumChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.currantCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellCurrantChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.seaBuckthornCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellSeaBuckthornChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.gooseberryCellsChoice{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/MatchThreeGameImages/CellGooseberryChoice.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
+    cursor: pointer;
+}
+
+.pointers{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.pointersBackground{
+    width: 28vw;
+    height: 14vw;
+    position: absolute;
+    bottom: -5%;
+    left: -12%;
+    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 1;
+}
+
+.pointerSackDates{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: 13%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackRaisins{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: 8%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackWalnuts{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: 3%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedApricots{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: -2%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackBarbarries{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: -7%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedFigs{
+    width: 8vw;
+    height: 6vw;
+    position: absolute;
+    bottom: -2%;
+    left: -12%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.buttonRecipe{
+    width: 30%;
+    color: pink;
+    font-size: 4vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    filter: drop-shadow(0 0 1vw black);
+    animation: shine 1s infinite;
+}
+
+.buttonRecipe:hover{
+    filter: drop-shadow( 0vw 0vw 0vw black);
+    color: pink;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+@keyframes shine {
+    0%, 50%, 100% {
+        filter: drop-shadow(0 0 0vw blue);
+    }
+    50% {
+        filter: drop-shadow(0 0 1vw blue);
+    }
+    100%{
+        filter: drop-shadow(0 0 0vw blue);
+    }
+}
+
+.recipeModal{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background-size: cover;
+    z-index: 4;
+    font-family: "El Messiri";
+}
+
+.recipeModal img{
+    width: 30%;
+    position: absolute;
+    top: 5%;
+    left: 2.5%;
+    border: solid wheat 3px;
+    border-radius: 10px;
+}
+
+.recipeModal h1{ 
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    color: gold;
+    font-size: 3vw;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    margin: 0;
+}
+
+.recipeModal ol{
+    position: absolute;
+    top: 12%;
+    left: 33%;
+    color: gold;
+    font-size: 1vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.recipeModal span{
+    width: 60%;
+    position: absolute;
+    top: 60%;
+    left: 34%;
+    color: gold;
+    font-size: 1vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.buttonCloseRecipe{
+    color: red;
+    font-size: 2.5vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    bottom: 0%;
+    left: 85%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    margin: 0;
+}
+
+.buttonCloseRecipe:hover{
+    filter: drop-shadow( 0vw 0vw 0vw black);
+    color: red;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (max-width: 480px) {
+
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background-size: cover;
+    font-family: "El Messiri";
+}
+
+.gameField{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background-size: cover;
+    border-top: solid rgb(67, 58, 38) 3px;
+    border-bottom: solid rgb(67, 58, 38) 3px;
+    border-left: none;
+    border-right: none;
+}
+
+.levelPointer{
+    position: absolute;
+    bottom: 2.5%;
+    left: 5%;
+    font-size: 8vw;
+    font-family: "El Messiri";
+}
+
+.fields {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);  
+    display: flex; 
+    flex-direction: column;   
+    align-items: center; 
+}
+
+.fieldH1{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH2{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH3{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH4{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH5{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH6{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.timer{
+    width: 100%;
+    position: absolute;
+    top: 2.5%;
+    left: 70%;
+    font-size: 8vw;
+}
+
+.timer p{
+    width: 100%;
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    font-size: 6vw;
+}
+
+.screensaverStart{
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: openingScreensaver 2s forwards;
+}
+
+.screensaverEnd{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: closingScreensaver 2s forwards;
+}
+
+.imageInfoIntro{
+    width: 45vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoEnding{
+    width: 45vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoIntroOpacity{
+    width: 45vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.infoOverlay{
+    width: 57vw;
+    height: 58vw;
+    position: absolute;
+    top: 65%;
+    right: 35%;
+}
+
+.infoOverlayOpacity{
+    width: 57vw;
+    height: 58vw;
+    position: absolute;
+    top: 65%;
+    right: 35%;
+}
+
+.infoText{
+    width: 80%;
+    font-size: 4vw;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.buttonStart{
+    font-size: 18vw;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+}
+
+.buttonRestart{
+    font-size: 7.5vw;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+}
+
+.buttonNextAndHome{
+    width: 100%;
+    font-size: 7.5vw;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+}
+
+.shuffleButton{
+    position: absolute;
+    top: 90%;
+    left: 85%;
+}
+
+.shuffleButton button{
+    width: 12vw;
+    height: 12vw;
+}
+
+.shuffleButton p{
+    font-size: 3.5vw;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+}
+
+.shuffleButton img {
+    width: 10vw;
+    height: 14vw;
+    position: absolute;
+    top: 65%;
+    left: -250%;
+    rotate: 90deg;
+}
+
+.winAndLoseModal{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.winAndLoseModal h3{
+    width: 100%;
+    font-size: 8vw;
+    position: absolute;
+    margin: 0;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cellsLeftSide{
+    width: 12.5vw;
+    height: 12.5vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsCenterSide{
+    width: 12.5vw;
+    height: 12.5vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsRightSide{
+    width: 12.5vw;
+    height: 12.5vw;
+    padding: 0;
+    margin: 0;
+}
+
+.pointers{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+
+.pointersBackground{
+    width: 80vw;
+    height: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 1;
+}
+
+.pointerSackDates{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 72%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackRaisins{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 60%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackWalnuts{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 47%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedApricots{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 34%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackBarbarries{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 21%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedFigs{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 8%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.recipeModal{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background-size: cover;
+    z-index: 4;
+    font-family: "El Messiri";
+}
+
+.recipeModal img{
+    width: 40%;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: solid wheat 2px;
+    border-radius: 10px;
+}
+
+.recipeModal h1{ 
+    width: 100%;
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gold;
+    font-size: 7vw;
+    font-weight: 700;
+    text-align: center;
+    -webkit-text-stroke: 0 black;
+    margin: 0;
+}
+
+.recipeModal ol{
+    position: absolute;
+    top: 40%;
+    left: 0%;
+    color: gold;
+    font-size: 2vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.recipeModal span{
+    width: 80%;
+    position: absolute;
+    top: 68%;
+    left: 10%;
+    color: gold;
+    font-size: 2vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.buttonCloseRecipe{
+    color: red;
+    font-size: 4vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 0 black;
+    z-index: 2;
+    position: absolute;
+    bottom: 0%;
+    left: 80%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    margin: 0;
+}
+
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background-size: cover;
+    font-family: "El Messiri";
+}
+
+.gameField{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background-size: cover;
+    border-top: solid rgb(67, 58, 38) 3px;
+    border-bottom: solid rgb(67, 58, 38) 3px;
+    border-left: none;
+    border-right: none;
+}
+
+.levelPointer{
+    position: absolute;
+    bottom: 0%;
+    left: 5%;
+    font-size: 7vw;
+}
+
+.fields {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);  
+    display: flex; 
+    flex-direction: column;   
+    align-items: center; 
+}
+
+.fieldH1{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH2{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH3{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH4{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH5{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH6{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.timer{
+    width: 100%;
+    position: absolute;
+    top: 2.5%;
+    left: 65%;
+    font-size: 7vw;
+}
+
+.timer p{
+    width: 100%;
+    position: absolute;
+    top: -35%;
+    left: -50%;
+    font-size: 5vw;
+}
+
+.screensaverStart{
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: openingScreensaver 2s forwards;
+}
+
+.screensaverEnd{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: closingScreensaver 2s forwards;
+}
+
+.imageInfoIntro{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoEnding{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoIntroOpacity{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.infoOverlay{
+    width: 40vw;
+    height: 41vw;
+    position: absolute;
+    top: 65%;
+    right: 22%;
+}
+
+.infoOverlayOpacity{
+    width: 40vw;
+    height: 41vw;
+    position: absolute;
+    top: 65%;
+    right: 22%;
+}
+
+.infoText{
+    width: 80%;
+    font-size: 3vw;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.buttonStart{
+    font-size: 18vw;
+    position: absolute;
+    top: 48%;
+    left: 50%;
+}
+
+.buttonRestart{
+    font-size: 7vw;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+}
+
+.buttonNextAndHome{
+    width: 100%;
+    font-size: 7vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.shuffleButton{
+    position: absolute;
+    top: 90%;
+    left: 85%;
+}
+
+.shuffleButton button{
+    width: 10vw;
+    height: 10vw;
+}
+
+.shuffleButton p{
+    font-size: 3vw;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+}
+
+.shuffleButton img {
+    width: 8vw;
+    height: 12vw;
+    position: absolute;
+    top: 50%;
+    left: -250%;
+    rotate: 90deg;
+}
+
+.winAndLoseModal{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.winAndLoseModal h3{
+    width: 80%;
+    font-size: 7vw;
+    position: absolute;
+    margin: 0;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cellsLeftSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsCenterSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsRightSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.pointers{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+
+.pointersBackground{
+    width: 80vw;
+    height: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 1;
+}
+
+.pointerSackDates{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 72%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackRaisins{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 60%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackWalnuts{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 47%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedApricots{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 34%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackBarbarries{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 21%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedFigs{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 8%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.buttonRecipe{
+    width: 100%;
+    font-size: 7vw;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.recipeModal{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background-size: cover;
+    z-index: 4;
+    font-family: "El Messiri";
+}
+
+.recipeModal img{
+    width: 40%;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: solid wheat 2px;
+    border-radius: 10px;
+}
+
+.recipeModal h1{ 
+    width: 100%;
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gold;
+    font-size: 6vw;
+    font-weight: 700;
+    text-align: center;
+    -webkit-text-stroke: 1px black;
+    margin: 0;
+}
+
+.recipeModal ol{
+    position: absolute;
+    top: 45%;
+    left: 0%;
+    color: gold;
+    font-size: 1.8vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.recipeModal span{
+    width: 45%;
+    position: absolute;
+    top: 45%;
+    left: 52.5%;
+    color: gold;
+    font-size: 1.8vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.buttonCloseRecipe{
+    color: red;
+    font-size: 4vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    bottom: 0%;
+    left: 80%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    margin: 0;
+}
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+.gamePage{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background-size: cover;
+    font-family: "El Messiri";
+}
+
+.gameField{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background-size: cover;
+    border-top: solid rgb(67, 58, 38) 3px;
+    border-bottom: solid rgb(67, 58, 38) 3px;
+    border-left: none;
+    border-right: none;
+}
+
+.levelPointer{
+    position: absolute;
+    bottom: 0%;
+    left: 5%;
+    font-size: 7vw;
+}
+
+.fields {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);  
+    display: flex; 
+    flex-direction: column;   
+    align-items: center; 
+}
+
+.fieldH1{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH2{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH3{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH4{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH5{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.fieldH6{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    filter: drop-shadow(0.2vw 0.7vw 0.2vw black);
+    justify-content: center;
+}
+
+.timer{
+    width: 100%;
+    position: absolute;
+    top: 2.5%;
+    left: 65%;
+    font-size: 7vw;
+}
+
+.timer p{
+    width: 100%;
+    position: absolute;
+    top: -35%;
+    left: -50%;
+    font-size: 5vw;
+}
+
+.screensaverStart{
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: openingScreensaver 2s forwards;
+}
+
+.screensaverEnd{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+    animation: closingScreensaver 2s forwards;
+}
+
+.imageInfoIntro{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoEnding{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.imageInfoIntroOpacity{
+    width: 30vw;
+    position: absolute;
+    bottom: -14%;
+    right: 0%;
+}
+
+.infoOverlay{
+    width: 40vw;
+    height: 41vw;
+    position: absolute;
+    top: 65%;
+    right: 22%;
+}
+
+.infoOverlayOpacity{
+    width: 40vw;
+    height: 41vw;
+    position: absolute;
+    top: 65%;
+    right: 22%;
+}
+
+.infoText{
+    width: 80%;
+    font-size: 3vw;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.buttonStart{
+    font-size: 18vw;
+    position: absolute;
+    top: 48%;
+    left: 50%;
+}
+
+.buttonRestart{
+    font-size: 7vw;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+}
+
+.buttonNextAndHome{
+    width: 100%;
+    font-size: 7vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.shuffleButton{
+    position: absolute;
+    top: 90%;
+    left: 85%;
+}
+
+.shuffleButton button{
+    width: 10vw;
+    height: 10vw;
+}
+
+.shuffleButton p{
+    font-size: 3vw;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+}
+
+.shuffleButton img {
+    width: 8vw;
+    height: 12vw;
+    position: absolute;
+    top: 50%;
+    left: -250%;
+    rotate: 90deg;;
+}
+
+.winAndLoseModal{
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.winAndLoseModal h3{
+    width: 80%;
+    font-size: 7vw;
+    position: absolute;
+    margin: 0;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cellsLeftSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsCenterSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.cellsRightSide{
+    width: 11vw;
+    height: 11vw;
+    padding: 0;
+    margin: 0;
+}
+
+.pointers{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+
+.pointersBackground{
+    width: 80vw;
+    height: 40vw;
+    position: absolute;
+    bottom: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 1;
+}
+
+.pointerSackDates{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 72%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackRaisins{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 60%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackWalnuts{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 47%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedApricots{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 34%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackBarbarries{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 21%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.pointerSackDriedFigs{
+    width: 19vw;
+    height: 17vw;
+    position: absolute;
+    bottom: -16%;
+    left: 8%;
+    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background-size: contain;
+    margin: 0;
+    z-index: 2;
+}
+
+.buttonRecipe{
+    width: 100%;
+    font-size: 7vw;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.recipeModal{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background-size: cover;
+    z-index: 4;
+    font-family: "El Messiri";
+}
+
+.recipeModal img{
+    width: 40%;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: solid wheat 2px;
+    border-radius: 10px;
+}
+
+.recipeModal h1{ 
+    width: 100%;
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gold;
+    font-size: 6vw;
+    font-weight: 700;
+    text-align: center;
+    -webkit-text-stroke: 1px black;
+    margin: 0;
+}
+
+.recipeModal ol{
+    position: absolute;
+    top: 45%;
+    left: 0%;
+    color: gold;
+    font-size: 1.8vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.recipeModal span{
+    width: 45%;
+    position: absolute;
+    top: 45%;
+    left: 52.5%;
+    color: gold;
+    font-size: 1.8vw;
+    font-weight: 700;
+    margin: 0;
+}
+
+.buttonCloseRecipe{
+    color: red;
+    font-size: 4vw;
+    font-family: "El Messiri";
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
+    z-index: 2;
+    position: absolute;
+    bottom: 0%;
+    left: 80%;
+    transform: translate(-50%, -50%) scale(1);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 1s ease, color 1s ease, filter 1s ease;
+    margin: 0;
+}
+
+}

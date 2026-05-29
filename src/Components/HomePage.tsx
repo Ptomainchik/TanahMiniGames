@@ -16,6 +16,10 @@ export const HomePage = () => {
         navigate("/three1");
     };
 
+    function handleTransitionNumberMergePuzzlePage() {
+        navigate("/merge4");
+    };
+
     return (
         <>
         <div className={classes.homePage}>
@@ -23,6 +27,7 @@ export const HomePage = () => {
            <button className={classes.buttonMemoryGame} onClick={handleTransitionMemoryPage}>Игра на память</button>
            <button className={classes.buttonSortingGame} onClick={handleTransitionSortingPage}>Сортировочная игра</button>
            <button className={classes.buttonMatchThreeGame} onClick={handleTransitionMatchThreePage}>Три в ряд</button>
+           <button className={classes.buttonNumberMergePuzzle} onClick={handleTransitionNumberMergePuzzlePage}>Слияние</button>
         </div>
         
         </>
