@@ -20,6 +20,14 @@ export const HomePage = () => {
         navigate("/merge4");
     };
 
+    function handleTransitionFarmInTheCanyonPage() {
+        navigate("/farm4");
+    };
+
+    function handleTransitionFishShopPage() {
+        navigate("/fish4");
+    };
+
     return (
         <>
         <div className={classes.homePage}>
@@ -28,6 +36,8 @@ export const HomePage = () => {
            <button className={classes.buttonSortingGame} onClick={handleTransitionSortingPage}>Сортировочная игра</button>
            <button className={classes.buttonMatchThreeGame} onClick={handleTransitionMatchThreePage}>Три в ряд</button>
            <button className={classes.buttonNumberMergePuzzle} onClick={handleTransitionNumberMergePuzzlePage}>Слияние</button>
+           <button className={classes.buttonFarmInTheCanyon} onClick={handleTransitionFarmInTheCanyonPage}>Ферма</button>
+           <button className={classes.buttonFishShop} onClick={handleTransitionFishShopPage}>Рыбный магазин</button>
         </div>
         
         </>

@@ -1,38 +1,38 @@
 import { useEffect, useState } from "react";
-import classes from "../../Styles/NumberMergePuzzleGame.module.css";
+import classes from "../../Styles/FishShopGame.module.css";
 import { useNavigate } from "react-router-dom";
-import Merchant from "../../assets/NumberMergePuzzleGameImages/RegistanMan.png";
-import MerchantLose from "../../assets/NumberMergePuzzleGameImages/RegistanManLose.png";
+import InmarWoman from "../../assets/FishShopGameImages/InmarWoman.png";
+import InmarWomanLose from "../../assets/FishShopGameImages/InmarWomanLose.png";
 // import ArrowShuffle from "../../assets/MatchThreeGameImages/Arrow.png";
 import ImageCake from "../../assets/MatchThreeGameImages/ImageCake.jpg";
 
-export const GameNumberMergePuzzle4lvl = () => {
+export const GameFishShop4lvl = () => {
     const [endTime, setEndTime] = useState(null);   
     const [timeLeft, setTimeLeft] = useState("10:00");
     const [fruit, setFruit] = useState({
-        numberOfStrawberries: 0, 
-        numberOfPear: 0, 
-        numberOfPlum: 0,  
-        numberOfCurrant: 0, 
-        numberOfSeaBuckthorn: 0, 
-        numberOfGooseberry: 0,  
+        numberOfAnchovy: 0, 
+        numberOfSeaSalad: 0, 
+        numberOfShrimp: 0,  
+        numberOfSeaScallop: 0, 
+        numberOfRainbowWrasse: 0, 
+        numberOfOctopus: 0,  
     }); 
     const [states, setStates] = useState({
         blockingDuringRecalculation: false,
         animationInProgress: false,
         counterCellsChoices: 0,
-        cellsStrawberries: 0,
-        cellsPear: 0,
-        cellsPlum: 0,
-        cellsCurrant: 0,
-        cellsSeaBuckthorn: 0,
-        cellsGooseberry: 0,
-        cellsStrawberriesName: "Strawberries",
-        cellsPearName: "Pear",
-        cellsPlumName: "Plum",
-        cellsCurrantName: "Currant",
-        cellsSeaBuckthornName: "SeaBuckthorn",
-        cellsGooseberryName: "Gooseberry",
+        cellsAnchovy: 0,
+        cellsSeaSalad: 0,
+        cellsShrimp: 0,
+        cellsSeaScallop: 0,
+        cellsRainbowWrasse: 0,
+        cellsOctopus: 0,
+        cellsAnchovyName: "Anchovy",
+        cellsSeaSaladName: "SeaSalad",
+        cellsShrimpName: "Shrimp",
+        cellsSeaScallopName: "SeaScallop",
+        cellsRainbowWrasseName: "RainbowWrasse",
+        cellsOctopusName: "Octopus",
         stateStart: false,
         showButtonStart: true,
         showButtonsWhenWinning: false,
@@ -346,12 +346,12 @@ export const GameNumberMergePuzzle4lvl = () => {
 
     // Исходный набор цветов (6 каждого)
     const rawColors = [
-        ...Array(6).fill(states.cellsStrawberriesName),
-        ...Array(6).fill(states.cellsPearName),
-        ...Array(6).fill(states.cellsPlumName),
-        ...Array(6).fill(states.cellsCurrantName),
-        ...Array(6).fill(states.cellsSeaBuckthornName),
-        ...Array(6).fill(states.cellsGooseberryName)
+        ...Array(6).fill(states.cellsAnchovyName),
+        ...Array(6).fill(states.cellsSeaSaladName),
+        ...Array(6).fill(states.cellsShrimpName),
+        ...Array(6).fill(states.cellsSeaScallopName),
+        ...Array(6).fill(states.cellsRainbowWrasseName),
+        ...Array(6).fill(states.cellsOctopusName)
     ];
 
     // Генерируем раскладку без линий
@@ -663,31 +663,31 @@ export const GameNumberMergePuzzle4lvl = () => {
 
         // 3. Подсчёт удаляемых фруктов (для setFruit)
         const counts = {
-            numberOfStrawberries: 0,
-            numberOfPear: 0,
-            numberOfPlum: 0,
-            numberOfCurrant: 0,
-            numberOfSeaBuckthorn: 0,
-            numberOfGooseberry: 0,
+            numberOfAnchovy: 0,
+            numberOfSeaSalad: 0,
+            numberOfShrimp: 0,
+            numberOfSeaScallop: 0,
+            numberOfRainbowWrasse: 0,
+            numberOfOctopus: 0,
         };
         for (const key of toClear) {
             const fruitName = cells[key]?.name;
             switch (fruitName) {
-            case states.cellsStrawberriesName: counts.numberOfStrawberries++; break;
-            case states.cellsPearName: counts.numberOfPear++; break;
-            case states.cellsPlumName: counts.numberOfPlum++; break;
-            case states.cellsCurrantName: counts.numberOfCurrant++; break;
-            case states.cellsSeaBuckthornName: counts.numberOfSeaBuckthorn++; break;
-            case states.cellsGooseberryName: counts.numberOfGooseberry++; break;
+            case states.cellsAnchovyName: counts.numberOfAnchovy++; break;
+            case states.cellsSeaSaladName: counts.numberOfSeaSalad++; break;
+            case states.cellsShrimpName: counts.numberOfShrimp++; break;
+            case states.cellsSeaScallopName: counts.numberOfSeaScallop++; break;
+            case states.cellsRainbowWrasseName: counts.numberOfRainbowWrasse++; break;
+            case states.cellsOctopusName: counts.numberOfOctopus++; break;
             }
         }
         setFruit(prev => ({
-            numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
-            numberOfPear: prev.numberOfPear + counts.numberOfPear,
-            numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
-            numberOfCurrant: prev.numberOfCurrant + counts.numberOfCurrant,
-            numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
-            numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
+            numberOfAnchovy: prev.numberOfAnchovy + counts.numberOfAnchovy,
+            numberOfSeaSalad: prev.numberOfSeaSalad + counts.numberOfSeaSalad,
+            numberOfShrimp: prev.numberOfShrimp + counts.numberOfShrimp,
+            numberOfSeaScallop: prev.numberOfSeaScallop + counts.numberOfSeaScallop,
+            numberOfRainbowWrasse: prev.numberOfRainbowWrasse + counts.numberOfRainbowWrasse,
+            numberOfOctopus: prev.numberOfOctopus + counts.numberOfOctopus,
         }));
 
         // 4. Помечаем клетки для анимации и блокируем клики
@@ -726,12 +726,12 @@ export const GameNumberMergePuzzle4lvl = () => {
             // 5.2 Гравитация и заполнение
             const getRandomFruit = () => {
                 const fruitNames = [
-                states.cellsStrawberriesName,
-                states.cellsPearName,
-                states.cellsPlumName,
-                states.cellsCurrantName,
-                states.cellsSeaBuckthornName,
-                states.cellsGooseberryName,
+                states.cellsAnchovyName,
+                states.cellsSeaSaladName,
+                states.cellsShrimpName,
+                states.cellsSeaScallopName,
+                states.cellsRainbowWrasseName,
+                states.cellsOctopusName,
                 ];
                 return fruitNames[Math.floor(Math.random() * fruitNames.length)];
             };
@@ -770,12 +770,12 @@ export const GameNumberMergePuzzle4lvl = () => {
     }, [cells, states.animationInProgress]);
 
     function handleWin() {
-        setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
+        setFruit((prev: any) => ({...prev, numberOfAnchovy: 50, numberOfSeaSalad: 50, numberOfShrimp: 50, numberOfSeaScallop: 50, numberOfRainbowWrasse: 50, numberOfOctopus: 50}))
     };
 
     useEffect(() => {
-        if (fruit.numberOfCurrant >= 50 && fruit.numberOfGooseberry >= 50 && fruit.numberOfPear >= 50
-            && fruit.numberOfPlum >= 50 && fruit.numberOfSeaBuckthorn >= 50 && fruit.numberOfStrawberries >= 50) {
+        if (fruit.numberOfSeaScallop >= 50 && fruit.numberOfOctopus >= 50 && fruit.numberOfSeaSalad >= 50
+            && fruit.numberOfShrimp >= 50 && fruit.numberOfRainbowWrasse >= 50 && fruit.numberOfAnchovy >= 50) {
             setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, screensaverEndingWin: true}));
         }
     }, [fruit]);
@@ -788,22 +788,22 @@ export const GameNumberMergePuzzle4lvl = () => {
         // Если выбрана (choice: true)
         if (cell.choice) {
             switch (cell.name) {
-                case "Strawberries": return classes.strawberriesCellsChoice;
-                case "Pear": return classes.pearCellsChoice;
-                case "Plum": return classes.plumCellsChoice;
-                case "Currant": return classes.currantCellsChoice;
-                case "SeaBuckthorn": return classes.seaBuckthornCellsChoice;
-                case "Gooseberry": return classes.gooseberryCellsChoice;
+                case "Anchovy": return classes.anchovyCellsChoice;
+                case "SeaSalad": return classes.seaSaladCellsChoice;
+                case "Shrimp": return classes.shrimpCellsChoice;
+                case "SeaScallop": return classes.seaScallopCellsChoice;
+                case "RainbowWrasse": return classes.rainbowWrasseCellsChoice;
+                case "Octopus": return classes.octopusCellsChoice;
             }
         } else {
             // Обычное состояние
             switch (cell.name) {
-                case "Strawberries": return classes.strawberriesCells;
-                case "Pear": return classes.pearCells;
-                case "Plum": return classes.plumCells;
-                case "Currant": return classes.currantCells;
-                case "SeaBuckthorn": return classes.seaBuckthornCells;
-                case "Gooseberry": return classes.gooseberryCells;
+                case "Anchovy": return classes.anchovyCells;
+                case "SeaSalad": return classes.seaSaladCells;
+                case "Shrimp": return classes.shrimpCells;
+                case "SeaScallop": return classes.seaScallopCells;
+                case "RainbowWrasse": return classes.rainbowWrasseCells;
+                case "Octopus": return classes.octopusCells;
             }
         }
         // fallback (не должно срабатывать)
@@ -873,7 +873,7 @@ export const GameNumberMergePuzzle4lvl = () => {
                     <div className={classes.infoOverlay}>
                         <p className={classes.infoText}>Если бы не ты, я потеряла бы огромную прибыль. Вот любимый рецепт моего мужа.</p>
                     </div>
-                    <img className={classes.imageInfoEnding} src={Merchant} alt="Merchant" draggable={false}/> 
+                    <img className={classes.imageInfoEnding} src={InmarWoman} alt="InmarWoman" draggable={false}/> 
                     <p className={classes.buttonRecipe} onClick={handleOpenWinModalRecipe}>Секретный рецепт</p>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                     <p className={classes.buttonNextAndHome} onClick={handleHomePageTranzition}>На главную</p>
@@ -883,7 +883,7 @@ export const GameNumberMergePuzzle4lvl = () => {
                     <div className={classes.infoOverlay}>
                         <p className={classes.infoText}>(Звон колокола на площади) Эх, жалко мы не успели, ярмарка уже началась.</p>
                     </div>
-                    <img className={classes.imageInfoEnding} src={MerchantLose} alt="MerchantLose" draggable={false}/> 
+                    <img className={classes.imageInfoEnding} src={InmarWomanLose} alt="InmarWomanLose" draggable={false}/> 
                     <h3>Вы не успели, попробуете ещё раз?</h3>
                     <p className={classes.buttonRestart} onClick={handleRestart}>Ещё раз</p>
                 </div> }
@@ -894,25 +894,22 @@ export const GameNumberMergePuzzle4lvl = () => {
 
                         <div className={classes.pointers}>
 
-                            <div className={classes.pointersBackground}>
+                            <div className={classes.pointerAnchovy}>
                             </div>
 
-                            <div className={classes.pointerSackDates}>
+                            <div className={classes.pointerSeaSalad}>
                             </div>
 
-                            <div className={classes.pointerSackRaisins}>
+                            <div className={classes.pointerShrimp}>
                             </div>
 
-                            <div className={classes.pointerSackWalnuts}>
+                            <div className={classes.pointerSeaScallop}>
                             </div>
 
-                            <div className={classes.pointerSackDriedApricots}>
+                            <div className={classes.pointerRainbowWrasse}>
                             </div>
 
-                            <div className={classes.pointerSackBarbarries}>
-                            </div>
-
-                            <div className={classes.pointerSackDriedFigs}>
+                            <div className={classes.pointerOctopus}>
                             </div>
 
                         </div>
@@ -923,7 +920,7 @@ export const GameNumberMergePuzzle4lvl = () => {
                             <div className={states.stateStart ? classes.infoOverlayOpacity : classes.infoOverlay}> 
                                 <p className={classes.infoText}>Выручай! Скоро на площади начнётся ярмарка, а мне нечего выложить на прилавок.</p>
                             </div>
-                                <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={Merchant} alt="Merchant" draggable={false}/>
+                                <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={InmarWoman} alt="Merchant" draggable={false}/>
                         </div> }
 
                         { states.screensaver && <div className={states.stateStart ? classes.screensaverEnd : !states.stateStart ? classes.screensaverStart : classes.screensaver}></div>}

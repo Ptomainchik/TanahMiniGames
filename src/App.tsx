@@ -13,6 +13,8 @@ import { GameThree2lvl } from "./Components/MatchThreeGame/GameThree2lvl";
 import { GameThree3lvl } from "./Components/MatchThreeGame/GameThree3lvl";
 import { GameThree4lvl } from "./Components/MatchThreeGame/GameThree4lvl";
 import { GameNumberMergePuzzle4lvl } from "./Components/NumberMergePuzzleGame/GameNumberMergePuzzle4lvl";
+import { GameFarmInTheCanyon4lvl } from "./Components/FarmInTheCanyonGame/FarmInTheCanyonGame4lvl";
+import { GameFishShop4lvl } from "./Components/FishShopGame/FishShopGame4lvl";
 
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
           <Route path="three3" element={<GameThree3lvl/>}/>
           <Route path="three4" element={<GameThree4lvl/>}/>
           <Route path="merge4" element={<GameNumberMergePuzzle4lvl/>}/>
+          <Route path="farm4" element={<GameFarmInTheCanyon4lvl/>}/>
+          <Route path="fish4" element={<GameFishShop4lvl/>}/>
       </Routes>
     </BrowserRouter>
       

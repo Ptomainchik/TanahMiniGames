@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) center no-repeat;
     background-size: cover;
     font-family: "El Messiri";
 }
@@ -16,7 +16,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesBackground.jpg) center no-repeat;
     background-size: cover;
     border-left: solid rgb(67, 58, 38) 3px;
     border-right: solid rgb(67, 58, 38) 3px;
@@ -119,7 +119,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -133,7 +133,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -198,7 +198,7 @@
     top: 15%;
     right: 5%;
     margin: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/OverlayText.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/OverlayText.png) no-repeat center;
     background-size: contain;
     justify-content: center;
     z-index: 3;
@@ -211,7 +211,7 @@
     top: 15%;
     right: 5%;
     margin: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/OverlayText.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/OverlayText.png) no-repeat center;
     background-size: contain;
     justify-content: center;
     z-index: 3;
@@ -430,24 +430,10 @@
     margin-right: 11%;
 }
 
-.strawberriesCells{
-    width: 100%;
-    height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellStrawberries.png) center no-repeat;
-    background-size: contain;
-    border: none;
-    filter: drop-shadow(0vw 0.4vw 0.2vw black);
-    cursor: pointer;
-}
-
-.strawberriesCells:hover{
-    opacity: 0.8;
-}
-
 .cellMatching{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellFruits.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellEmpty.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
@@ -474,140 +460,155 @@
     }
 }
 
-.pearCells{
+.peccaryCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellPear.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellPeccary.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.pearCells:hover{
+.peccaryCells:hover{
     opacity: 0.8;
 }
 
-.plumCells{
+.coyoteCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellPlum.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellCoyote.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.plumCells:hover{
+.coyoteCells:hover{
     opacity: 0.8;
 }
 
-.currantCells{
+.bighornSheepCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellCurrant.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellBighornSheep.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.currantCells:hover{
+.bighornSheepCells:hover{
     opacity: 0.8;
 }
 
-.seaBuckthornCells{
+.porcupineCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellSeaBuckthorn.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellPorcupine.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.seaBuckthornCells:hover{
+.porcupineCells:hover{
     opacity: 0.8;
 }
 
-.gooseberryCells{
+.blackVultureCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellGooseberry.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellBlackVulture.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.gooseberryCells:hover{
+.blackVultureCells:hover{
+    opacity: 0.8;
+}
+
+.rattlesnakeCells{
+    width: 100%;
+    height: 100%;
+    background: url(../assets/FarmInTheCanyonGameImages/CellRattlesnake.png) center no-repeat;
+    background-size: contain;
+    border: none;
+    filter: drop-shadow(0vw 0.4vw 0.2vw black);
+    cursor: pointer;
+}
+
+.rattlesnakeCells:hover{
     opacity: 0.8;
 }
 
 .emptyCells{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellEmpty.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellEmpty.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.2vw black);
     cursor: pointer;
 }
 
-.strawberriesCellsChoice{
+.peccaryCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellStrawberriesChoice.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellPeccary.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
 
-.pearCellsChoice{
+.coyoteCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellPearChoice.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellCoyote.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
 
-.plumCellsChoice{
+.bighornSheepCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellPlumChoice.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellBighornSheep.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
 
-.currantCellsChoice{
+.porcupineCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellCurrantChoice.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellPorcupine.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
 
-.seaBuckthornCellsChoice{
+.blackVultureCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellSeaBuckthornChoice.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/CellBlackVulture.png) center no-repeat;
+    background-size: contain;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
     cursor: pointer;
 }
 
-.gooseberryCellsChoice{
+.rattlesnakeCellsChoice{
     width: 100%;
     height: 100%;
-    background: url(../assets/MatchThreeGameImages/CellGooseberryChoice.png) center no-repeat;
+     background: url(../assets/FarmInTheCanyonGameImages/CellRattlesnake.png) center no-repeat;
     background-size: contain;
     border: none;
     filter: drop-shadow(0vw 0.4vw 0.5vw aqua);
@@ -628,79 +629,79 @@
     position: absolute;
     bottom: -5%;
     left: -12%;
-    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/WattleFence.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 1;
 }
 
-.pointerSackDates{
+.pointerPeccary{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: 13%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPeccary.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackRaisins{
+.pointerCoyote{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: 8%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerCoyote.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackWalnuts{
+.pointerBighornSheep{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: 3%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBighornSheep.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedApricots{
+.pointerPorcupine{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: -2%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPorcupine.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackBarbarries{
+.pointerBlackVulture{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: -7%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBlackVulture.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedFigs{
+.pointerRattlesnake{
     width: 8vw;
     height: 6vw;
     position: absolute;
     bottom: -2%;
     left: -12%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerRattlesnake.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -749,7 +750,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
@@ -827,7 +828,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) center no-repeat;
     background-size: cover;
     font-family: "El Messiri";
 }
@@ -839,7 +840,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesBackground.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -942,7 +943,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -956,7 +957,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1113,79 +1114,79 @@
     bottom: -15%;
     left: 50%;
     transform: translateX(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/WattleFence.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 1;
 }
 
-.pointerSackDates{
+.pointerPeccary{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 72%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPeccary.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackRaisins{
+.pointerCoyote{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 60%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerCoyote.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackWalnuts{
+.pointerBighornSheep{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 47%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBighornSheep.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedApricots{
+.pointerPorcupine{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 34%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPorcupine.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackBarbarries{
+.pointerBlackVulture{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 21%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBlackVulture.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedFigs{
+.pointerRattlesnake{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 8%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerRattlesnake.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1206,7 +1207,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
@@ -1281,7 +1282,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) center no-repeat;
     background-size: cover;
     font-family: "El Messiri";
 }
@@ -1293,7 +1294,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesBackground.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -1396,7 +1397,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1410,7 +1411,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1567,79 +1568,79 @@
     bottom: -15%;
     left: 50%;
     transform: translateX(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/WattleFence.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 1;
 }
 
-.pointerSackDates{
+.pointerPeccary{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 72%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPeccary.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackRaisins{
+.pointerCoyote{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 60%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerCoyote.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackWalnuts{
+.pointerBighornSheep{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 47%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBighornSheep.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedApricots{
+.pointerPorcupine{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 34%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPorcupine.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackBarbarries{
+.pointerBlackVulture{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 21%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBlackVulture.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedFigs{
+.pointerRattlesnake{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 8%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerRattlesnake.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1660,7 +1661,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
@@ -1735,7 +1736,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) center no-repeat;
     background-size: cover;
     font-family: "El Messiri";
 }
@@ -1747,7 +1748,7 @@
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Carpet.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesBackground.jpg) center no-repeat;
     background-size: cover;
     border-top: solid rgb(67, 58, 38) 3px;
     border-bottom: solid rgb(67, 58, 38) 3px;
@@ -1850,7 +1851,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -1864,7 +1865,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Scroll.png) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/Moon.png) no-repeat center;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -2021,79 +2022,79 @@
     bottom: -15%;
     left: 50%;
     transform: translateX(-50%);
-    background: url(../assets/NumberMergePuzzleGameImages/Camel.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/WattleFence.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 1;
 }
 
-.pointerSackDates{
+.pointerPeccary{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 72%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDates.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPeccary.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackRaisins{
+.pointerCoyote{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 60%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackRaisins.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerCoyote.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackWalnuts{
+.pointerBighornSheep{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 47%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackWalnuts.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBighornSheep.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedApricots{
+.pointerPorcupine{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 34%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedApricots.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerPorcupine.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackBarbarries{
+.pointerBlackVulture{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 21%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackBarbarries.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerBlackVulture.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
 }
 
-.pointerSackDriedFigs{
+.pointerRattlesnake{
     width: 19vw;
     height: 17vw;
     position: absolute;
     bottom: -16%;
     left: 8%;
-    background: url(../assets/NumberMergePuzzleGameImages/PointerSackDriedFigs.png) center no-repeat;
+    background: url(../assets/FarmInTheCanyonGameImages/PointerRattlesnake.png) center no-repeat;
     background-size: contain;
     margin: 0;
     z-index: 2;
@@ -2114,7 +2115,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: url(../assets/NumberMergePuzzleGameImages/TexturesBackground.jpg) no-repeat center;
+    background: url(../assets/FarmInTheCanyonGameImages/TexturesOfSide.jpg) no-repeat center;
     background-size: cover;
     z-index: 4;
     font-family: "El Messiri";
