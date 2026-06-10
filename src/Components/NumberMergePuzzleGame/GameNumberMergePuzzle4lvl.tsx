@@ -10,29 +10,29 @@ export const GameNumberMergePuzzle4lvl = () => {
     const [endTime, setEndTime] = useState(null);   
     const [timeLeft, setTimeLeft] = useState("10:00");
     const [fruit, setFruit] = useState({
-        numberOfStrawberries: 0, 
-        numberOfPear: 0, 
-        numberOfPlum: 0,  
-        numberOfCurrant: 0, 
-        numberOfSeaBuckthorn: 0, 
-        numberOfGooseberry: 0,  
+        numberOfDates: 0, 
+        numberOfRaisins: 0, 
+        numberOfWalnuts: 0,  
+        numberOfDriedApricots: 0, 
+        numberOfBarberries: 0, 
+        numberOfFigs: 0,  
     }); 
     const [states, setStates] = useState({
         blockingDuringRecalculation: false,
         animationInProgress: false,
         counterCellsChoices: 0,
-        cellsStrawberries: 0,
-        cellsPear: 0,
-        cellsPlum: 0,
-        cellsCurrant: 0,
-        cellsSeaBuckthorn: 0,
-        cellsGooseberry: 0,
-        cellsStrawberriesName: "Strawberries",
-        cellsPearName: "Pear",
-        cellsPlumName: "Plum",
-        cellsCurrantName: "Currant",
-        cellsSeaBuckthornName: "SeaBuckthorn",
-        cellsGooseberryName: "Gooseberry",
+        cellsDates: 0,
+        cellsRaisins: 0,
+        cellsWalnuts: 0,
+        cellsDriedApricots: 0,
+        cellsBarberries: 0,
+        cellsFigs: 0,
+        cellsDatesName: "Dates",
+        cellsRaisinsName: "Raisins",
+        cellsWalnutsName: "Walnuts",
+        cellsDriedApricotsName: "DriedApricots",
+        cellsBarberriesName: "Barberries",
+        cellsFigsName: "Figs",
         stateStart: false,
         showButtonStart: true,
         showButtonsWhenWinning: false,
@@ -346,12 +346,12 @@ export const GameNumberMergePuzzle4lvl = () => {
 
     // Исходный набор цветов (6 каждого)
     const rawColors = [
-        ...Array(6).fill(states.cellsStrawberriesName),
-        ...Array(6).fill(states.cellsPearName),
-        ...Array(6).fill(states.cellsPlumName),
-        ...Array(6).fill(states.cellsCurrantName),
-        ...Array(6).fill(states.cellsSeaBuckthornName),
-        ...Array(6).fill(states.cellsGooseberryName)
+        ...Array(6).fill(states.cellsDatesName),
+        ...Array(6).fill(states.cellsRaisinsName),
+        ...Array(6).fill(states.cellsWalnutsName),
+        ...Array(6).fill(states.cellsDriedApricotsName),
+        ...Array(6).fill(states.cellsBarberriesName),
+        ...Array(6).fill(states.cellsFigsName)
     ];
 
     // Генерируем раскладку без линий
@@ -663,31 +663,31 @@ export const GameNumberMergePuzzle4lvl = () => {
 
         // 3. Подсчёт удаляемых фруктов (для setFruit)
         const counts = {
-            numberOfStrawberries: 0,
-            numberOfPear: 0,
-            numberOfPlum: 0,
-            numberOfCurrant: 0,
-            numberOfSeaBuckthorn: 0,
-            numberOfGooseberry: 0,
+            numberOfDates: 0,
+            numberOfRaisins: 0,
+            numberOfWalnuts: 0,
+            numberOfDriedApricots: 0,
+            numberOfBarberries: 0,
+            numberOfFigs: 0,
         };
         for (const key of toClear) {
             const fruitName = cells[key]?.name;
             switch (fruitName) {
-            case states.cellsStrawberriesName: counts.numberOfStrawberries++; break;
-            case states.cellsPearName: counts.numberOfPear++; break;
-            case states.cellsPlumName: counts.numberOfPlum++; break;
-            case states.cellsCurrantName: counts.numberOfCurrant++; break;
-            case states.cellsSeaBuckthornName: counts.numberOfSeaBuckthorn++; break;
-            case states.cellsGooseberryName: counts.numberOfGooseberry++; break;
+            case states.cellsDatesName: counts.numberOfDates++; break;
+            case states.cellsRaisinsName: counts.numberOfRaisins++; break;
+            case states.cellsWalnutsName: counts.numberOfWalnuts++; break;
+            case states.cellsDriedApricotsName: counts.numberOfDriedApricots++; break;
+            case states.cellsBarberriesName: counts.numberOfBarberries++; break;
+            case states.cellsFigsName: counts.numberOfFigs++; break;
             }
         }
         setFruit(prev => ({
-            numberOfStrawberries: prev.numberOfStrawberries + counts.numberOfStrawberries,
-            numberOfPear: prev.numberOfPear + counts.numberOfPear,
-            numberOfPlum: prev.numberOfPlum + counts.numberOfPlum,
-            numberOfCurrant: prev.numberOfCurrant + counts.numberOfCurrant,
-            numberOfSeaBuckthorn: prev.numberOfSeaBuckthorn + counts.numberOfSeaBuckthorn,
-            numberOfGooseberry: prev.numberOfGooseberry + counts.numberOfGooseberry,
+            numberOfDates: prev.numberOfDates + counts.numberOfDates,
+            numberOfRaisins: prev.numberOfRaisins + counts.numberOfRaisins,
+            numberOfWalnuts: prev.numberOfWalnuts + counts.numberOfWalnuts,
+            numberOfDriedApricots: prev.numberOfDriedApricots + counts.numberOfDriedApricots,
+            numberOfBarberries: prev.numberOfBarberries + counts.numberOfBarberries,
+            numberOfFigs: prev.numberOfFigs + counts.numberOfFigs,
         }));
 
         // 4. Помечаем клетки для анимации и блокируем клики
@@ -726,12 +726,12 @@ export const GameNumberMergePuzzle4lvl = () => {
             // 5.2 Гравитация и заполнение
             const getRandomFruit = () => {
                 const fruitNames = [
-                states.cellsStrawberriesName,
-                states.cellsPearName,
-                states.cellsPlumName,
-                states.cellsCurrantName,
-                states.cellsSeaBuckthornName,
-                states.cellsGooseberryName,
+                states.cellsDatesName,
+                states.cellsRaisinsName,
+                states.cellsWalnutsName,
+                states.cellsDriedApricotsName,
+                states.cellsBarberriesName,
+                states.cellsFigsName,
                 ];
                 return fruitNames[Math.floor(Math.random() * fruitNames.length)];
             };
@@ -770,12 +770,12 @@ export const GameNumberMergePuzzle4lvl = () => {
     }, [cells, states.animationInProgress]);
 
     function handleWin() {
-        setFruit((prev: any) => ({...prev, numberOfStrawberries: 50, numberOfPear: 50, numberOfPlum: 50, numberOfCurrant: 50, numberOfSeaBuckthorn: 50, numberOfGooseberry: 50}))
+        setFruit((prev: any) => ({...prev, numberOfDates: 50, numberOfRaisins: 50, numberOfWalnuts: 50, numberOfDriedApricots: 50, numberOfBarberries: 50, numberOfFigs: 50}))
     };
 
     useEffect(() => {
-        if (fruit.numberOfCurrant >= 50 && fruit.numberOfGooseberry >= 50 && fruit.numberOfPear >= 50
-            && fruit.numberOfPlum >= 50 && fruit.numberOfSeaBuckthorn >= 50 && fruit.numberOfStrawberries >= 50) {
+        if (fruit.numberOfDriedApricots >= 50 && fruit.numberOfFigs >= 50 && fruit.numberOfRaisins >= 50
+            && fruit.numberOfWalnuts >= 50 && fruit.numberOfBarberries >= 50 && fruit.numberOfDates >= 50) {
             setStates((prev: any) => ({...prev, showButtonsWhenWinning: true, screensaverEndingWin: true}));
         }
     }, [fruit]);
@@ -788,22 +788,22 @@ export const GameNumberMergePuzzle4lvl = () => {
         // Если выбрана (choice: true)
         if (cell.choice) {
             switch (cell.name) {
-                case "Strawberries": return classes.strawberriesCellsChoice;
-                case "Pear": return classes.pearCellsChoice;
-                case "Plum": return classes.plumCellsChoice;
-                case "Currant": return classes.currantCellsChoice;
-                case "SeaBuckthorn": return classes.seaBuckthornCellsChoice;
-                case "Gooseberry": return classes.gooseberryCellsChoice;
+                case "Dates": return classes.datesCellsChoice1;
+                case "Raisins": return classes.raisinsCellsChoice1;
+                case "Walnuts": return classes.walnutsCellsChoice1;
+                case "DriedApricots": return classes.driedApricotsCellsChoice1;
+                case "Barberries": return classes.barberriesCellsChoice1;
+                case "Figs": return classes.figsCellsChoice1;
             }
         } else {
             // Обычное состояние
             switch (cell.name) {
-                case "Strawberries": return classes.strawberriesCells;
-                case "Pear": return classes.pearCells;
-                case "Plum": return classes.plumCells;
-                case "Currant": return classes.currantCells;
-                case "SeaBuckthorn": return classes.seaBuckthornCells;
-                case "Gooseberry": return classes.gooseberryCells;
+                case "Dates": return classes.datesCells1;
+                case "Raisins": return classes.raisinsCells1;
+                case "Walnuts": return classes.walnutsCells1;
+                case "DriedApricots": return classes.driedApricotsCells1;
+                case "Barberries": return classes.barberriesCells1;
+                case "Figs": return classes.figsCells1;
             }
         }
         // fallback (не должно срабатывать)
