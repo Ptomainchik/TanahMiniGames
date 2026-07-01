@@ -341,7 +341,7 @@ export const GameFishShop4lvl = () => {
     function handleStartGame() {
     if (states.stateStart) return;
 
-    const tenMinutesLater: any = Date.now() + 10.01 * 60 * 1000;
+    const tenMinutesLater: any = Date.now() + 0.01 * 60 * 1000;
     setEndTime(tenMinutesLater);
 
     // Исходный набор цветов (6 каждого)
@@ -923,11 +923,20 @@ export const GameFishShop4lvl = () => {
                                 <img className={states.stateStart ? classes.imageInfoIntroOpacity : classes.imageInfoIntro} src={InmarWoman} alt="Merchant" draggable={false}/>
                         </div> }
 
-                        { states.screensaver && <div className={states.stateStart ? classes.screensaverEnd : !states.stateStart ? classes.screensaverStart : classes.screensaver}></div>}
+                        {states.screensaver && (
+                        <div 
+                            className={classes.screensaver} 
+                            style={{ 
+                            '--anim-duration': states.stateStart ? '2s' : '5s',
+                            '--anim-iteration': states.stateStart ? 'forwards' : 'infinite',
+                            '--anim-final-bottom': states.stateStart ? '-100%' : '0%'
+                            } as React.CSSProperties}
+                        ></div>
+                        )}
 
-                        { states.screensaverEnding && <div className={states.showLoseModal ? classes.screensaverStart : classes.screensaver}></div>}
+                        { states.screensaverEnding && <div className={states.showLoseModal ? classes.screensaverWinAndLose : classes.screensaverNone}></div>}
 
-                        { states.screensaverEndingWin && <div className={states.showButtonsWhenWinning ? classes.screensaverStart : classes.screensaver}></div>}
+                        { states.screensaverEndingWin && <div className={states.showButtonsWhenWinning ? classes.screensaverWinAndLose : classes.screensaverNone}></div>}
 
                     <div className={classes.fields}>
                         {/* HORIZONT 1 */}
